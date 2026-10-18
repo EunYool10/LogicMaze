@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>논리 미궁: 대우의 열쇠</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #131b2e;
+            --accent-blue: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.3);
+            --accent-purple: #a855f7;
+            --text-main: #f8fafc;
+            --text-soft: #cbd5e1;
+            --text-muted: #64748b;
+            --border-color: #1e293b;
+            --success-color: #10b981;
+            --success-soft: #6ee7b7;
+            --danger-color: #ef4444;
+            --danger-soft: #fca5a5;
+            color-scheme: dark;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        [hidden] { display: none !important; }
+
+        html { height: 100%; }
+
+        body {
+            font-family: 'Pretendard', system-ui, -apple-system, sans-serif;
+            font-size: 16px;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;   /* 위쪽 정렬: 해설이 나타나거나 문장 길이가 달라져도 카드가 위아래로 튀지 않음 */
+            min-height: 100%;
+            padding-block: clamp(20px, 6vh, 64px) 32px;
+            padding-left: max(16px, env(safe-area-inset-left, 0px));
+            padding-right: max(16px, env(safe-area-inset-right, 0px));
+            word-break: keep-all;
+            overflow-wrap: anywhere;
+        }
+
+        .game-container {
+            max-width: 550px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(168, 85, 247, 0.05);
+            padding: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: clamp(1.3rem, 5.5vw, 1.6rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: #fff;
+            letter-spacing: -0.03em;
+            text-shadow: 0 0 10px rgba(255,255,255,0.1);
+            text-wrap: balance;
+        }
+
+        .status-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 16px;
+            justify-content: space-between;
+            background: #0b0f19;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
+        }
+        .status-bar span { font-variant-numeric: tabular-nums; }
+        #lbl-stage { color: var(--accent-purple); }
+        #lbl-hp { color: var(--danger-color); }
+        #hp-box.hit { animation: shake 0.45s ease; }
+
+        .panel {
+            background: #0b0f19;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .panel.prologue { margin-top: 10px; }
+
+        .proposition-box {
+            text-align: center;
+            font-size: 1.15rem;
+            font-weight: 700;
+            line-height: 1.6;
+            color: #e2e8f0;
+            word-break: keep-all;
+        }
+
+        .badge-logic {
+            display: inline-block;
+            background: var(--accent-blue);
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .quiz-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--accent-purple);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button.option-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            width: 100%;
+            text-align: left;
+            padding: 14px 18px;
+            background: #1e293b;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 10px;
+            font: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            line-height: 1.4;
+        }
+
+        /* 터치 기기는 탭한 자리에 hover가 남아 다음 방의 보기가 선택된 것처럼 보이므로 마우스에서만 적용 */
+        @media (hover: hover) {
+            button.option-btn:hover:not(:disabled) {
+                background: #2d3748;
+                border-color: var(--accent-purple);
+                transform: translateX(2px);
+            }
+            button.action-btn:hover { opacity: 0.95; }
+        }
+        button.option-btn:active:not(:disabled) { background: #2d3748; }
+
+        /* 답을 고른 뒤의 보기 상태 */
+        button.option-btn:disabled { cursor: default; }
+        button.option-btn:disabled:not(.is-correct):not(.is-wrong):not(.is-answer) { opacity: 0.6; }
+        button.option-btn.is-correct {
+            border-color: var(--success-color);
+            background: rgba(16, 185, 129, 0.12);
+            box-shadow: 0 0 0 1px var(--success-color), 0 0 18px rgba(16, 185, 129, 0.25);
+        }
+        button.option-btn.is-wrong {
+            border-color: var(--danger-color);
+            background: rgba(239, 68, 68, 0.1);
+            animation: shake 0.45s ease;
+        }
+        .opt-tag {
+            padding: 3px 9px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text-soft);
+            background: rgba(148, 163, 184, 0.14);
+        }
+        .is-correct .opt-tag { color: var(--success-soft); background: rgba(16, 185, 129, 0.2); }
+        .is-wrong .opt-tag { color: var(--danger-soft); background: rgba(239, 68, 68, 0.18); }
+        /* 기회를 모두 잃었을 때 알려 주는 정답 */
+        button.option-btn.is-answer {
+            border: 1px dashed var(--success-color);
+            background: rgba(16, 185, 129, 0.06);
+        }
+        .is-answer .opt-tag { color: var(--success-soft); background: rgba(16, 185, 129, 0.2); }
+
+        button.action-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border: none;
+            color: white;
+            font: inherit;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+            transition: opacity 0.2s ease, transform 0.15s ease;
+        }
+        button.action-btn:active { transform: scale(0.98); }
+
+        button {
+            touch-action: manipulation;          /* 빠르게 두 번 탭해도 화면이 확대되지 않게 */
+            -webkit-tap-highlight-color: transparent;
+        }
+        button:focus-visible {
+            outline: 2px solid var(--accent-purple);
+            outline-offset: 2px;
+        }
+        /* 스크립트가 포커스만 옮겨 두는 영역 (키보드 사용자용) */
+        #panel-proposition:focus, #grid-options:focus { outline: none; }
+
+        /* 정답·오답 해설 (alert 대신 화면 안에 표시) */
+        .feedback {
+            margin-top: 18px;
+            padding: 16px 18px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: #0b0f19;
+        }
+        .feedback.ok { border-color: rgba(16, 185, 129, 0.55); background: rgba(16, 185, 129, 0.08); }
+        .feedback.bad { border-color: rgba(239, 68, 68, 0.55); background: rgba(239, 68, 68, 0.08); }
+        .feedback.pop { animation: slideUp 0.3s ease; }
+        .feedback-title { margin-bottom: 6px; font-weight: 800; line-height: 1.5; }
+        .feedback.ok .feedback-title { color: var(--success-soft); }
+        .feedback.bad .feedback-title { color: var(--danger-soft); }
+        .feedback-desc { font-size: 0.9rem; line-height: 1.65; color: var(--text-soft); }
+        .feedback .action-btn { margin-top: 14px; }
+
+        .guide-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            text-align: center;
+        }
+        .guide-text.story { text-align: left; color: var(--text-soft); }
+
+        .result-panel { text-align: center; padding: 40px 20px; }
+        #result-icon { font-size: 4rem; margin-bottom: 15px; }
+        #result-title { font-size: 1.5rem; margin-bottom: 10px; }
+        #result-desc { color: var(--text-soft); }
+
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeIn 0.35s ease; }
+
+        @media (max-width: 480px) {
+            .game-container { padding: 24px 18px; }
+            .result-panel { padding: 32px 16px; }
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(5px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(2px); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <h1>🚪 논리 미궁: 대우의 열쇠</h1>
+
+    <!-- 화면 1: 프롤로그 및 시작 -->
+    <div id="screen-start" class="screen active">
+        <div class="panel prologue">
+            <p class="guide-text story">
+                당신은 꼬여있는 명제 원리로 작동하는 미궁에 갇혔습니다.<br><br>
+                미궁의 문을 열기 위해서는 방마다 제시되는 원래 명제의 <b>'대우(Contrapositive) 명제'</b>를 올바르게 직관하여 참인 논리 열쇠를 맞춰야 합니다.<br><br>
+                기회는 단 <b>3번</b>, 주어진 모든 스테이지를 풀어 논리의 세계에서 탈출하세요.
+            </p>
+        </div>
+        <button type="button" class="action-btn" id="btn-start">미궁 진입하기</button>
+    </div>
+
+    <!-- 화면 2: 인게임 플레이 -->
+    <div id="screen-game" class="screen">
+        <div class="status-bar">
+            <div>🔑 스테이지: <span id="lbl-stage">1</span>/<span id="lbl-total">5</span></div>
+            <div id="hp-box">❤️ 남은 기회: <span id="lbl-hp">3</span></div>
+        </div>
+
+        <!-- 원래 명제 판넬 -->
+        <div class="panel" id="panel-proposition" tabindex="-1">
+            <span class="badge-logic">원래 명제 (p → q)</span>
+            <div class="proposition-box" id="box-proposition">조건식 로딩 중...</div>
+        </div>
+
+        <!-- 퀴즈 선택 구간 -->
+        <div>
+            <div class="quiz-title">✨ 이 문장의 올바른 대우(~q → ~p)를 고르세요:</div>
+            <div class="options-grid" id="grid-options" role="group" aria-label="대우 후보 보기" tabindex="-1"></div>
+            <div class="feedback" id="feedback" role="status" aria-live="polite" hidden></div>
+        </div>
+    </div>
+
+    <!-- 화면 3: 결과 창 -->
+    <div id="screen-result" class="screen">
+        <div class="panel result-panel">
+            <div id="result-icon">🎉</div>
+            <h2 id="result-title">미궁 탈출 성공!</h2>
+            <p class="guide-text" id="result-desc"></p>
+        </div>
+        <button type="button" class="action-btn" id="btn-restart">처음부터 다시 도전</button>
+    </div>
+</div>
+
+<script>
+    // 보기의 정체: 대우만 원래 명제와 참·거짓이 항상 같다
+    const TYPES = {
+        contra: {
+            name: "대우", form: "~q → ~p",
+            desc: "가정과 결론을 맞바꾸고 둘 다 부정한 문장으로, 원래 명제와 참·거짓이 항상 같습니다."
+        },
+        converse: {
+            name: "역", form: "q → p",
+            desc: "가정과 결론의 자리만 맞바꾼 문장입니다. 원래 명제가 참이어도 역은 거짓일 수 있습니다."
+        },
+        inverse: {
+            name: "이", form: "~p → ~q",
+            desc: "가정과 결론을 부정하기만 한 문장입니다. 원래 명제가 참이어도 이는 거짓일 수 있습니다."
+        },
+        badNegation: {
+            name: "잘못된 부정", form: "~q → (~a ∧ ~b)",
+            desc: "'a이고 b'를 부정하면 'a가 아니거나 b가 아니다'가 됩니다(드모르간 법칙). '그리고'를 그대로 두면 올바른 대우가 아닙니다."
+        }
+    };
+
+    // 스테이지 데이터베이스 (원래 명제, 정답 대우 명제, 오답 보기와 그 정체)
+    const stages = [
+        {
+            prop: "비가 오면, 땅이 젖는다.",
+            ans: "땅이 젖지 않으면, 비가 오지 않은 것이다.",
+            wrongs: [
+                { text: "비가 오지 않으면, 땅이 젖지 않는다.", type: "inverse" },
+                { text: "땅이 젖으면, 비가 온 것이다.", type: "converse" }
+            ]
+        },
+        {
+            prop: "실수 x에 대하여 x > 2이면, x > 0이다.",
+            ans: "실수 x에 대하여 x ≤ 0이면, x ≤ 2이다.",
+            wrongs: [
+                { text: "실수 x에 대하여 x ≤ 2이면, x ≤ 0이다.", type: "inverse" },
+                { text: "실수 x에 대하여 x > 0이면, x > 2이다.", type: "converse" }
+            ]
+        },
+        {
+            prop: "어떤 사람이 마피아라면, 그 사람은 거짓말을 한다.",
+            ans: "어떤 사람이 거짓말을 하지 않는다면, 그 사람은 마피아가 아니다.",
+            wrongs: [
+                { text: "어떤 사람이 거짓말을 한다면, 그 사람은 마피아이다.", type: "converse" },
+                { text: "어떤 사람이 마피아가 아니라면, 그 사람은 거짓말을 하지 않는다.", type: "inverse" }
+            ]
+        },
+        {
+            prop: "정삼각형이면, 이등변삼각형이다.",
+            ans: "이등변삼각형이 아니면, 정삼각형이 아니다.",
+            wrongs: [
+                { text: "이등변삼각형이면, 정삼각형이다.", type: "converse" },
+                { text: "정삼각형이 아니면, 이등변삼각형이 아니다.", type: "inverse" }
+            ]
+        },
+        {
+            prop: "날씨가 덥고 습하면, 불쾌지수가 높다.",
+            ans: "불쾌지수가 높지 않으면, 날씨가 덥지 않거나 습하지 않은 것이다.",
+            note: "'덥고 습하다'의 부정은 '덥지 않거나 습하지 않다'입니다(드모르간 법칙).",
+            wrongs: [
+                { text: "날씨가 덥지 않거나 습하지 않으면, 불쾌지수가 높지 않다.", type: "inverse" },
+                { text: "불쾌지수가 높지 않으면, 날씨가 덥지 않고 습하지 않은 것이다.", type: "badNegation" }
+            ]
+        }
+    ];
+
+    const MAX_HP = 3;
+    let currentStage = 0;
+    let hp = MAX_HP;
+    let locked = false;   // 정답을 맞혔거나 기회를 모두 잃으면 보기를 더 누를 수 없음
+    let optionButtons = [];   // 현재 방의 보기 버튼과 데이터 ({ btn, opt })
+
+    // '동작 줄이기' 설정이면 부드러운 스크롤 대신 바로 이동
+    function scrollMode() {
+        return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    }
+
+    // scrollIntoView는 다른 페이지 안에 넣었을 때 바깥 페이지까지 스크롤하므로 이 창만 스크롤
+    function revealInViewport(el) {
+        const rect = el.getBoundingClientRect();
+        const margin = 16;
+        if (rect.bottom > window.innerHeight - margin) {
+            const toBottom = rect.bottom - window.innerHeight + margin;
+            window.scrollBy({ top: Math.min(toBottom, rect.top - margin), behavior: scrollMode() });
+        }
+    }
+
+    function shuffle(arr) {
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+    function changeScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    function startGame() {
+        currentStage = 0;
+        hp = MAX_HP;
+        loadStage();
+        changeScreen('screen-game');
+        document.getElementById('panel-proposition').focus({ preventScroll: true });
+    }
+
+    function loadStage() {
+        locked = false;
+        document.getElementById('lbl-stage').innerText = currentStage + 1;
+        document.getElementById('lbl-total').innerText = stages.length;
+        document.getElementById('lbl-hp').innerText = hp;
+
+        const data = stages[currentStage];
+        document.getElementById('box-proposition').innerText = `“${data.prop}”`;
+
+        // 보기 섞기 (Fisher–Yates)
+        const options = shuffle([
+            { text: data.ans, type: "contra", isCorrect: true },
+            ...data.wrongs.map(w => ({ text: w.text, type: w.type, isCorrect: false }))
+        ]);
+
+        const grid = document.getElementById('grid-options');
+        grid.innerHTML = '';
+        optionButtons = [];
+
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'option-btn';
+
+            const text = document.createElement('span');
+            text.className = 'opt-text';
+            text.innerText = opt.text;
+
+            // 보기의 정체(대우·역·이)는 답을 고른 뒤에만 공개
+            const tag = document.createElement('span');
+            tag.className = 'opt-tag';
+            tag.innerText = `${TYPES[opt.type].name} · ${TYPES[opt.type].form}`;
+            tag.hidden = true;
+
+            btn.append(text, tag);
+            btn.onclick = () => handleAnswer(btn, opt);
+            grid.appendChild(btn);
+            optionButtons.push({ btn, opt });
+        });
+
+        const feedback = document.getElementById('feedback');
+        feedback.hidden = true;
+        feedback.innerHTML = '';
+    }
+
+    function revealTag(btn) {
+        btn.querySelector('.opt-tag').hidden = false;
+    }
+
+    function lockOptions() {
+        locked = true;
+        document.querySelectorAll('#grid-options .option-btn').forEach(b => { b.disabled = true; });
+    }
+
+    function handleAnswer(btn, opt) {
+        if (locked || btn.disabled) return;
+        btn.disabled = true;   // 같은 오답을 다시 눌러 기회를 또 잃지 않도록
+        revealTag(btn);
+
+        if (opt.isCorrect) {
+            btn.classList.add('is-correct');
+            lockOptions();
+            document.querySelectorAll('#grid-options .option-btn').forEach(revealTag);
+            const note = stages[currentStage].note;
+            const isLast = currentStage === stages.length - 1;
+            showFeedback(
+                'ok',
+                "🎯 정답! 논리 회로가 일치하여 잠금 장치가 해제되었습니다.",
+                TYPES.contra.desc + (note ? ' ' + note : ''),
+                isLast ? "🏁 미궁 탈출하기" : "다음 방으로 →",
+                nextStage
+            );
+        } else {
+            hp--;
+            btn.classList.add('is-wrong');
+            document.getElementById('lbl-hp').innerText = hp;
+            const hpBox = document.getElementById('hp-box');
+            hpBox.classList.remove('hit');
+            void hpBox.offsetWidth;   // 애니메이션 재시작
+            hpBox.classList.add('hit');
+
+            const t = TYPES[opt.type];
+            const why = `고른 문장은 '${t.name}'(${t.form.replace(/ /g, ' ')})입니다. ${t.desc}`;   // 논리식이 줄 중간에서 끊기지 않게
+            if (hp <= 0) {
+                lockOptions();
+                // 기회를 모두 잃으면 정답을 표시해 무엇이 대우였는지 알려 준다
+                optionButtons.forEach(({ btn: b, opt: o }) => {
+                    revealTag(b);
+                    if (o.isCorrect) b.classList.add('is-answer');
+                });
+                showFeedback(
+                    'bad',
+                    "💥 오답! 잘못된 조건 논리로 기계 시스템이 오작동했습니다.",
+                    why + " 남은 기회를 모두 잃었습니다. 점선으로 표시된 보기가 올바른 대우입니다.",
+                    "결과 보기",
+                    () => endGame(false)
+                );
+            } else {
+                showFeedback(
+                    'bad',
+                    "💥 오답! 잘못된 조건 논리로 기계 시스템이 오작동했습니다.",
+                    why + ` 남은 기회는 ${hp}번입니다. 다른 열쇠를 골라 보세요.`
+                );
+                // 누른 보기가 비활성화되면서 포커스를 잃으므로, 키보드로 바로 다른 보기를 고를 수 있게 옮겨 둠
+                document.getElementById('grid-options').focus({ preventScroll: true });
+            }
+        }
+    }
+
+    function showFeedback(kind, title, desc, actionLabel, onAction) {
+        const box = document.getElementById('feedback');
+        box.className = 'feedback ' + kind;
+        box.innerHTML = '';
+
+        const titleEl = document.createElement('p');
+        titleEl.className = 'feedback-title';
+        titleEl.innerText = title;
+        const descEl = document.createElement('p');
+        descEl.className = 'feedback-desc';
+        descEl.innerText = desc;
+        box.append(titleEl, descEl);
+
+        let actionBtn = null;
+        if (actionLabel) {
+            actionBtn = document.createElement('button');
+            actionBtn.type = 'button';
+            actionBtn.className = 'action-btn';
+            actionBtn.innerText = actionLabel;
+            actionBtn.addEventListener('click', onAction, { once: true });
+            box.appendChild(actionBtn);
+        }
+
+        box.hidden = false;
+        void box.offsetWidth;   // 애니메이션 재시작
+        box.classList.add('pop');
+        revealInViewport(box);
+        if (actionBtn) actionBtn.focus({ preventScroll: true });
+    }
+
+    function nextStage() {
+        currentStage++;
+        if (currentStage >= stages.length) {
+            endGame(true);
+        } else {
+            loadStage();
+            window.scrollTo({ top: 0, behavior: scrollMode() });
+            document.getElementById('panel-proposition').focus({ preventScroll: true });
+        }
+    }
+
+    function endGame(isSuccess) {
+        changeScreen('screen-result');
+        const icon = document.getElementById('result-icon');
+        const title = document.getElementById('result-title');
+        const desc = document.getElementById('result-desc');
+
+        if(isSuccess) {
+            icon.innerText = "👑";
+            title.innerText = "미궁 완벽 탈출!";
+            desc.innerText = "대우 명제의 완벽한 직관력을 증명하셨습니다.\n당신의 완벽한 논리력 앞에서는 어떤 미궁의 결계도 무의미합니다.";
+        } else {
+            icon.innerText = "💀";
+            title.innerText = "탈락 (논리 붕괴)";
+            desc.innerText = "남은 기회를 모두 잃어 미궁 속으로 영원히 격리되었습니다.\n대우 규칙(~q → ~p)을 다시 한 번 재정비해보세요.";
+        }
+    }
+
+    document.getElementById('btn-start').addEventListener('click', startGame);
+    document.getElementById('btn-restart').addEventListener('click', startGame);
+</script>
+</body>
+</html>
