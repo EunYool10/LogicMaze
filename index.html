@@ -611,8 +611,16 @@ div.menu-row { cursor: default; }
 'use strict';
 
 /* ───────── 설정 ───────── */
-// 구글 로그인: Firebase 웹 앱 설정을 넣으면 켜진다. null이면 로그인은 '준비 중'으로 안내하고 이 기기에만 저장한다.
-const FIREBASE_CONFIG = null;
+// 구글 로그인: Firebase 웹 앱 설정 (공개용 값이며, 데이터 보호는 firestore.rules가 맡는다).
+// null로 두면 로그인은 '준비 중'으로 안내하고 이 기기에만 저장한다.
+const FIREBASE_CONFIG = {
+  apiKey: 'AIzaSyBUN3A2iB0gmJLiOZWO8GusEiy1BdU-p-o',
+  authDomain: 'logicmaze-eunyool.firebaseapp.com',
+  projectId: 'logicmaze-eunyool',
+  storageBucket: 'logicmaze-eunyool.firebasestorage.app',
+  messagingSenderId: '1008064144216',
+  appId: '1:1008064144216:web:723990264b9c337d8f7b2d',
+};
 const FIREBASE_VERSION = '10.12.2';
 
 const BASE_KEYS = 3;
@@ -875,6 +883,7 @@ function handleAuthError(e) {
   if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') return;
   const known = {
     'auth/operation-not-allowed': '구글 로그인이 아직 켜져 있지 않습니다. 잠시 후 다시 시도해 주세요.',
+    'auth/configuration-not-found': '구글 로그인이 아직 켜져 있지 않습니다. 잠시 후 다시 시도해 주세요.',
     'auth/unauthorized-domain': '이 주소에서는 로그인할 수 없습니다. 게임 공식 주소에서 이용해 주세요.',
     'auth/network-request-failed': '네트워크 연결을 확인한 뒤 다시 시도해 주세요.',
   };
