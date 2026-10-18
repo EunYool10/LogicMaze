@@ -1,607 +1,1448 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>논리 미궁: 대우의 열쇠</title>
-    <style>
-        :root {
-            --bg-color: #0b0f19;
-            --card-bg: #131b2e;
-            --accent-blue: #3b82f6;
-            --accent-glow: rgba(59, 130, 246, 0.3);
-            --accent-purple: #a855f7;
-            --text-main: #f8fafc;
-            --text-soft: #cbd5e1;
-            --text-muted: #64748b;
-            --border-color: #1e293b;
-            --success-color: #10b981;
-            --success-soft: #6ee7b7;
-            --danger-color: #ef4444;
-            --danger-soft: #fca5a5;
-            color-scheme: dark;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>논리 미궁: 대우의 열쇠</title>
+<meta name="description" content="원래 명제의 대우를 골라 다섯 개의 방을 탈출하는 논리 퀴즈 게임">
+<meta name="theme-color" content="#0a100e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@500;700;900&display=swap">
+<style>
+/* Layout: 메뉴는 표제(왼쪽)와 명판 메뉴(오른쪽) 2단, 그 밖의 화면은 가운데 한 단.
+   배경에는 접속할 때마다 새로 생성되는 미궁을 황동 선으로 그린다. */
+:root {
+  /* 에메랄드 금고 (기본 테마) */
+  --ink: #0a100e;
+  --vault: #101916;
+  --vault-rgb: 16, 25, 22;
+  --vault-2: #15201c;
+  --brass: #c9a35b;
+  --brass-rgb: 201, 163, 91;
+  --brass-hi: #ecd29a;
+  --brass-lo: #8f6d33;
+  --bone: #efe8d8;
+  --bone-2: #cbc7b7;
+  --mute: #8f9a90;
+  --hair: rgba(201, 163, 91, 0.24);
+  --hair-strong: rgba(201, 163, 91, 0.5);
+  --verdigris: #7cc4a8;
+  --oxblood: #e0796c;
+  --on-brass: #1b1408;
+  --serif: "Noto Serif KR", "Nanum Myeongjo", "AppleMyungjo", "Batang", serif;
+  --sans: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --latin: "Cormorant Garamond", "Noto Serif KR", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  color-scheme: dark;
+}
+/* 상점 테마 */
+body[data-skin="sapphire"] {
+  --ink: #080c14; --vault: #0e1420; --vault-rgb: 14, 20, 32; --vault-2: #131b2a;
+  --brass: #b7c2d6; --brass-rgb: 183, 194, 214; --brass-hi: #e4eaf5; --brass-lo: #6c7891;
+  --bone: #edf1f7; --bone-2: #c3cad6; --mute: #8892a3;
+  --hair: rgba(183, 194, 214, 0.24); --hair-strong: rgba(183, 194, 214, 0.48); --on-brass: #0d1320;
+}
+body[data-skin="garnet"] {
+  --ink: #110a0b; --vault: #1a1012; --vault-rgb: 26, 16, 18; --vault-2: #221519;
+  --brass: #d5a088; --brass-rgb: 213, 160, 136; --brass-hi: #f3cfbe; --brass-lo: #93604e;
+  --bone: #f3e9e4; --bone-2: #d4c4bd; --mute: #a08f89;
+  --hair: rgba(213, 160, 136, 0.25); --hair-strong: rgba(213, 160, 136, 0.5); --on-brass: #1f0f0b;
+}
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        [hidden] { display: none !important; }
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.65;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.6s ease;
+}
+button { font: inherit; color: inherit; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 1px solid var(--brass-hi); outline-offset: 3px; }
+[data-focus]:focus, #choices:focus { outline: none; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 
-        html { height: 100%; }
+/* ───────── 배경 ───────── */
+#maze {
+  position: fixed; left: 0; top: 0; z-index: 0; pointer-events: none;
+  -webkit-mask-image: radial-gradient(130% 90% at 50% 28%, #000 18%, rgba(0, 0, 0, 0.35) 58%, transparent 86%);
+          mask-image: radial-gradient(130% 90% at 50% 28%, #000 18%, rgba(0, 0, 0, 0.35) 58%, transparent 86%);
+  transition: filter 1.1s ease;
+}
+body.glint #maze { filter: brightness(2.6) saturate(1.2); }
+.vignette {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(120% 70% at 50% -10%, rgba(var(--brass-rgb), 0.08), transparent 60%),
+    radial-gradient(140% 90% at 50% 120%, rgba(0, 0, 0, 0.6), transparent 62%);
+}
+.grain {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.07; mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
 
-        body {
-            font-family: 'Pretendard', system-ui, -apple-system, sans-serif;
-            font-size: 16px;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;   /* 위쪽 정렬: 해설이 나타나거나 문장 길이가 달라져도 카드가 위아래로 튀지 않음 */
-            min-height: 100%;
-            padding-block: clamp(20px, 6vh, 64px) 32px;
-            padding-left: max(16px, env(safe-area-inset-left, 0px));
-            padding-right: max(16px, env(safe-area-inset-right, 0px));
-            word-break: keep-all;
-            overflow-wrap: anywhere;
-        }
+/* ───────── 레이아웃 ───────── */
+.app {
+  position: relative; z-index: 2;
+  width: 100%; max-width: 1120px; margin: 0 auto;
+  padding-block: clamp(24px, 6vh, 72px) 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.screen { animation: rise 0.55s cubic-bezier(.2, .7, .2, 1) both; }
+.narrow { max-width: 680px; margin-inline: auto; }
+.medium { max-width: 940px; margin-inline: auto; }
 
-        .game-container {
-            max-width: 550px;
-            width: 100%;
-            background: var(--card-bg);
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(168, 85, 247, 0.05);
-            padding: 30px;
-            border: 1px solid var(--border-color);
-        }
+/* 명판: 이중 테두리 + 황동 모서리 장식 */
+.frame {
+  position: relative;
+  background: linear-gradient(180deg, rgba(var(--vault-rgb), 0.95), rgba(var(--vault-rgb), 0.88));
+  border: 1px solid var(--hair);
+  border-radius: 3px;
+  box-shadow: 0 40px 90px -50px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.frame::before {
+  content: ""; position: absolute; inset: 6px; pointer-events: none;
+  border: 1px solid rgba(var(--brass-rgb), 0.12); border-radius: 1px;
+}
+.frame::after {
+  content: ""; position: absolute; inset: -1px; pointer-events: none;
+  background:
+    linear-gradient(var(--brass), var(--brass)) left top / 16px 1px no-repeat,
+    linear-gradient(var(--brass), var(--brass)) left top / 1px 16px no-repeat,
+    linear-gradient(var(--brass), var(--brass)) right top / 16px 1px no-repeat,
+    linear-gradient(var(--brass), var(--brass)) right top / 1px 16px no-repeat,
+    linear-gradient(var(--brass), var(--brass)) left bottom / 16px 1px no-repeat,
+    linear-gradient(var(--brass), var(--brass)) left bottom / 1px 16px no-repeat,
+    linear-gradient(var(--brass), var(--brass)) right bottom / 16px 1px no-repeat,
+    linear-gradient(var(--brass), var(--brass)) right bottom / 1px 16px no-repeat;
+}
+.pad { padding: clamp(24px, 4.5vw, 44px); }
 
-        h1 {
-            text-align: center;
-            font-size: clamp(1.3rem, 5.5vw, 1.6rem);
-            font-weight: 800;
-            margin-bottom: 20px;
-            color: #fff;
-            letter-spacing: -0.03em;
-            text-shadow: 0 0 10px rgba(255,255,255,0.1);
-            text-wrap: balance;
-        }
+/* ───────── 글자 ───────── */
+.eyebrow {
+  margin: 0; font-family: var(--latin); font-weight: 600; font-size: 13px;
+  letter-spacing: 0.34em; text-transform: uppercase; color: var(--brass);
+}
+.display {
+  margin: 6px 0 16px; font-family: var(--serif); font-weight: 900;
+  font-size: clamp(56px, 9.5vw, 108px); line-height: 1.02; letter-spacing: -0.02em;
+  background: linear-gradient(180deg, var(--bone) 0%, var(--bone) 42%, var(--brass-hi) 76%, var(--brass) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.subtitle {
+  display: flex; align-items: center; gap: 16px; margin: 0 0 24px;
+  font-family: var(--serif); font-weight: 500; font-size: clamp(16px, 2.2vw, 20px);
+  letter-spacing: 0.5em; color: var(--brass-hi);
+}
+.subtitle::before, .subtitle::after { content: ""; flex: 0 0 44px; height: 1px; background: var(--hair-strong); }
+.subtitle::after { margin-left: -0.5em; }
+.h1 {
+  margin: 8px 0 14px; font-family: var(--serif); font-weight: 900;
+  font-size: clamp(32px, 5.6vw, 48px); line-height: 1.2; letter-spacing: -0.01em; text-wrap: balance;
+}
+.lede, .story { margin: 0; color: var(--bone-2); line-height: 1.85; }
+.lede { max-width: 40ch; font-size: 16.5px; }
+.story { max-width: 54ch; font-size: 16px; }
+.story b, .lede b { color: var(--bone); font-weight: 600; }
+.section-label {
+  display: flex; align-items: center; gap: 14px; margin: 34px 0 14px;
+  font-family: var(--serif); font-size: 15px; font-weight: 700; letter-spacing: 0.3em; color: var(--brass-hi);
+}
+.section-label::after { content: ""; flex: 1; height: 1px; background: var(--hair); }
+.mono { font-family: var(--mono); }
+.muted { color: var(--mute); }
+.chip {
+  display: inline-block; padding: 2px 11px; border-radius: 999px; white-space: nowrap;
+  font-family: var(--mono); font-size: 13.5px; color: var(--brass-hi); border: 1px solid var(--hair-strong);
+}
 
-        .status-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px 16px;
-            justify-content: space-between;
-            background: #0b0f19;
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 25px;
-            border: 1px solid var(--border-color);
-        }
-        .status-bar span { font-variant-numeric: tabular-nums; }
-        #lbl-stage { color: var(--accent-purple); }
-        #lbl-hp { color: var(--danger-color); }
-        #hp-box.hit { animation: shake 0.45s ease; }
+/* ───────── 버튼 ───────── */
+.btn {
+  position: relative; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 50px; padding: 12px 24px; border-radius: 2px;
+  border: 1px solid transparent; background: transparent;
+  font-weight: 600; letter-spacing: 0.03em; text-decoration: none; cursor: pointer;
+  transition: background-color .25s ease, border-color .25s ease, color .25s ease, transform .15s ease, box-shadow .3s ease, opacity .25s ease;
+}
+.btn svg { width: 20px; height: 20px; flex: none; }
+.btn:active:not(:disabled) { transform: translateY(1px); }
+.btn:disabled { opacity: 0.42; cursor: not-allowed; }
+.btn-brass {
+  color: var(--on-brass);
+  background: linear-gradient(180deg, var(--brass-hi) 0%, var(--brass) 52%, var(--brass-lo) 100%);
+  border-color: rgba(255, 244, 214, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 250, 232, 0.55), inset 0 -1px 0 rgba(40, 26, 6, 0.45), 0 14px 34px -18px rgba(var(--brass-rgb), 0.75);
+  text-shadow: 0 1px 0 rgba(255, 244, 214, 0.3);
+}
+.btn-brass::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.5) 50%, transparent 65%);
+  transform: translateX(-130%);
+  transition: transform 0.9s cubic-bezier(.2, .8, .2, 1);
+}
+.btn-ghost { color: var(--bone); border-color: var(--hair-strong); background: rgba(var(--vault-rgb), 0.45); }
+.btn-text { color: var(--mute); min-height: 40px; padding: 8px 10px; }
+.btn-sm { min-height: 40px; padding: 8px 16px; font-size: 14px; }
+@media (hover: hover) {
+  .btn-brass:hover:not(:disabled)::after { transform: translateX(130%); }
+  .btn-brass:hover:not(:disabled) { box-shadow: inset 0 1px 0 rgba(255, 250, 232, 0.6), inset 0 -1px 0 rgba(40, 26, 6, 0.45), 0 18px 40px -16px rgba(var(--brass-rgb), 0.9); }
+  .btn-ghost:hover:not(:disabled) { border-color: var(--brass); background: rgba(var(--brass-rgb), 0.08); }
+  .btn-text:hover:not(:disabled) { color: var(--bone); }
+}
 
-        .panel {
-            background: #0b0f19;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .panel.prologue { margin-top: 10px; }
+/* ───────── 메뉴 ───────── */
+.menu-grid { display: grid; gap: clamp(36px, 6vw, 80px); align-items: center; }
+@media (min-width: 920px) { .menu-grid { grid-template-columns: minmax(0, 1.12fr) minmax(360px, 0.88fr); min-height: 74vh; } }
+.emblem { width: 76px; height: 76px; margin-bottom: 26px; color: var(--brass); }
+.emblem .core { transform-origin: 40px 40px; animation: turn 14s linear infinite; }
+.stats {
+  display: flex; flex-wrap: wrap; margin-top: 32px;
+  border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair);
+}
+.stat { padding: 13px 24px 13px 0; margin-right: 24px; border-right: 1px solid var(--hair); }
+.stat:last-child { border-right: 0; margin-right: 0; }
+.stat-k { display: block; font-size: 12.5px; letter-spacing: 0.08em; color: var(--mute); }
+.stat-v { display: block; font-family: var(--serif); font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stats-empty { margin: 0; padding: 14px 0; color: var(--mute); font-size: 14.5px; }
+.menu-plaque { display: grid; gap: 20px; padding: clamp(22px, 3.6vw, 36px); }
+.plaque-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 14px; }
+.who { color: var(--mute); text-align: right; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.btn-start { width: 100%; min-height: 78px; justify-content: flex-start; gap: 18px; padding: 14px 24px; text-align: left; }
+.btn-start svg { width: 32px; height: 32px; }
+.btn-start b { display: block; font-family: var(--serif); font-size: 22px; font-weight: 900; letter-spacing: 0.06em; }
+.btn-start small { display: block; font-size: 13px; font-weight: 500; letter-spacing: 0.02em; opacity: 0.8; }
+.menu-list { display: grid; }
+.menu-row {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 16px;
+  width: 100%; padding: 17px 6px; text-align: left; cursor: pointer;
+  background: none; border: 0; border-top: 1px solid var(--hair);
+  transition: background-color .3s ease;
+}
+.menu-list > :last-child { border-bottom: 1px solid var(--hair); }
+.menu-row:disabled { cursor: progress; opacity: 0.7; }
+div.menu-row { cursor: default; }
+.ico {
+  display: grid; place-items: center; width: 40px; height: 40px; flex: none;
+  border: 1px solid var(--hair-strong); border-radius: 50%; color: var(--brass); overflow: hidden;
+}
+.ico svg { width: 18px; height: 18px; }
+.ico-google { background: #fff; border-color: transparent; }
+.ico-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.row-text { min-width: 0; }
+.row-label { display: block; font-family: var(--serif); font-size: 19px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.row-sub { display: block; font-size: 13.5px; color: var(--mute); }
+.chev { width: 18px; height: 18px; color: var(--brass); opacity: 0.75; transition: transform .3s ease; }
+@media (hover: hover) {
+  .menu-row:hover:not(:disabled) { background: linear-gradient(90deg, rgba(var(--brass-rgb), 0.09), transparent 75%); }
+  .menu-row:hover:not(:disabled) .chev { transform: translateX(4px); }
+}
+.colophon { margin: 2px 0 0; font-size: 12px; letter-spacing: 0.08em; color: var(--mute); }
 
-        .proposition-box {
-            text-align: center;
-            font-size: 1.15rem;
-            font-weight: 700;
-            line-height: 1.6;
-            color: #e2e8f0;
-            word-break: keep-all;
-        }
+.purse { display: inline-flex; align-items: center; gap: 7px; color: var(--brass-hi); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.purse svg { width: 18px; height: 18px; color: var(--brass); }
+.purse small { font-size: 12.5px; font-weight: 500; color: var(--mute); }
+.purse.big { font-size: 24px; font-family: var(--serif); }
+.purse.big svg { width: 26px; height: 26px; }
 
-        .badge-logic {
-            display: inline-block;
-            background: var(--accent-blue);
-            color: #fff;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
+/* ───────── 입장 준비 ───────── */
+.rules { margin: 28px 0; border-top: 1px solid var(--hair); }
+.rules > div { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--hair); }
+.rules dt { font-family: var(--serif); font-weight: 700; color: var(--brass-hi); }
+.rules dd { margin: 0; font-size: 15px; color: var(--bone-2); }
+.h3 { margin: 0 0 12px; font-family: var(--serif); font-size: 17px; font-weight: 700; }
+.loadout { display: grid; gap: 10px; }
+.loadout-row {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px;
+  padding: 14px 16px; border: 1px solid var(--hair); background: rgba(var(--vault-rgb), 0.55);
+}
+.loadout-row > svg { width: 26px; height: 26px; color: var(--brass); }
+.loadout-row b { display: block; font-family: var(--serif); }
+.loadout-row small { display: block; font-size: 13px; color: var(--mute); }
+.stepper { display: inline-flex; align-items: center; border: 1px solid var(--hair-strong); }
+.stepper button { width: 42px; height: 42px; border: 0; background: none; color: var(--brass-hi); font-size: 19px; cursor: pointer; }
+.stepper button:disabled { opacity: 0.3; cursor: not-allowed; }
+.stepper output { min-width: 30px; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+.auto-note { font-size: 13px; color: var(--mute); }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.actions > .btn { flex: 1 1 180px; max-width: 340px; }
 
-        .quiz-title {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--accent-purple);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+/* ───────── 방 ───────── */
+.hud { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 20px; margin-bottom: 18px; }
+.hud-left { display: grid; gap: 8px; }
+.room-label { display: flex; align-items: baseline; gap: 12px; }
+.room-label b { font-family: var(--serif); font-size: 26px; font-weight: 900; }
+.room-label .num { font-family: var(--latin); font-weight: 700; letter-spacing: 0.04em; }
+.doors { display: flex; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.doors li { width: 20px; height: 26px; border: 1px solid var(--hair-strong); border-bottom-width: 2px; border-radius: 10px 10px 1px 1px; transition: background .4s ease, border-color .4s ease, box-shadow .4s ease; }
+.doors li.is-done { border-color: var(--brass); background: linear-gradient(180deg, var(--brass-hi), var(--brass-lo)); }
+.doors li.is-current { border-color: var(--brass-hi); box-shadow: 0 0 16px -3px var(--brass); }
+.doors li.is-failed { border-color: var(--oxblood); }
+.hud-right { display: flex; align-items: center; gap: 18px; }
+.keys { display: flex; gap: 3px; }
+.keys svg { width: 24px; height: 24px; color: var(--brass); transition: color .3s ease, opacity .3s ease; }
+.keys svg.is-lost { color: var(--mute); opacity: 0.3; }
+.keys.hit { animation: shake 0.45s ease; }
 
-        .options-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 15px;
-        }
+.plaque { padding: clamp(22px, 4vw, 38px); }
+.plaque .eyebrow { letter-spacing: 0.2em; }
+.eyebrow .mono { text-transform: none; letter-spacing: 0.08em; }   /* 논리식은 소문자 그대로 */
+.plaque-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.keyhole { width: 48px; height: 48px; flex: none; color: var(--brass); transition: color .4s ease, filter .4s ease; }
+.keyhole .core { transform-origin: 24px 24px; transition: transform .8s cubic-bezier(.3, 1.4, .4, 1); }
+.keyhole.is-open { color: var(--verdigris); filter: drop-shadow(0 0 10px rgba(124, 196, 168, 0.5)); }
+.keyhole.is-open .core { transform: rotate(90deg); }
+.domain { margin: 12px 0 0; font-family: var(--serif); font-size: 14.5px; color: var(--brass-hi); }
+.prop { margin: 10px 0 0; font-family: var(--serif); font-weight: 700; font-size: clamp(21px, 3.9vw, 28px); line-height: 1.55; letter-spacing: -0.01em; text-wrap: pretty; }
+.prompt { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 30px 0 14px; color: var(--bone-2); }
+.prompt b { font-family: var(--serif); color: var(--bone); }
 
-        button.option-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 8px;
-            width: 100%;
-            text-align: left;
-            padding: 14px 18px;
-            background: #1e293b;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            border-radius: 10px;
-            font: inherit;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            line-height: 1.4;
-        }
+.choices { display: grid; gap: 10px; }
+.choice {
+  display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: 16px; align-items: start;
+  width: 100%; padding: 16px 20px 16px 16px; text-align: left; cursor: pointer;
+  color: var(--bone); background: rgba(var(--vault-rgb), 0.78);
+  border: 1px solid var(--hair); border-radius: 2px;
+  transition: border-color .25s ease, background-color .25s ease, transform .2s ease, opacity .3s ease, box-shadow .35s ease;
+}
+.seal {
+  display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--hair-strong); color: var(--brass);
+  font-family: var(--serif); font-size: 15px; font-weight: 700;
+  transition: background-color .3s ease, color .3s ease, border-color .3s ease;
+}
+.choice-body { display: grid; gap: 8px; justify-items: start; padding-top: 4px; }
+.choice-text { font-size: 16.5px; line-height: 1.6; }
+.tag {
+  padding: 2px 11px; border-radius: 999px; font-size: 12.5px; font-weight: 600; letter-spacing: 0.02em;
+  color: var(--bone-2); border: 1px solid var(--hair);
+}
+@media (hover: hover) {
+  .choice:hover:not(:disabled) { border-color: var(--brass); background: rgba(var(--vault-rgb), 0.96); transform: translateX(3px); }
+  .choice:hover:not(:disabled) .seal { border-color: var(--brass); color: var(--brass-hi); }
+}
+.choice:disabled { cursor: default; }
+.choice:disabled:not(.is-correct):not(.is-wrong):not(.is-answer):not(.is-struck) { opacity: 0.5; }
+.choice.is-correct { border-color: var(--verdigris); box-shadow: inset 0 0 0 1px var(--verdigris), 0 0 34px -14px var(--verdigris); }
+.choice.is-correct .seal { background: var(--verdigris); border-color: transparent; color: #08140f; }
+.choice.is-correct .tag { color: var(--verdigris); border-color: rgba(124, 196, 168, 0.5); }
+.choice.is-wrong { border-color: var(--oxblood); animation: shake 0.45s ease; }
+.choice.is-wrong .seal { border-color: var(--oxblood); color: var(--oxblood); }
+.choice.is-wrong .tag { color: var(--oxblood); border-color: rgba(224, 121, 108, 0.5); }
+.choice.is-answer { border-style: dashed; border-color: var(--verdigris); }
+.choice.is-answer .tag { color: var(--verdigris); }
+.choice.is-struck { opacity: 0.4; }
+.choice.is-struck .choice-text { text-decoration: line-through; text-decoration-color: rgba(var(--brass-rgb), 0.8); }
 
-        /* 터치 기기는 탭한 자리에 hover가 남아 다음 방의 보기가 선택된 것처럼 보이므로 마우스에서만 적용 */
-        @media (hover: hover) {
-            button.option-btn:hover:not(:disabled) {
-                background: #2d3748;
-                border-color: var(--accent-purple);
-                transform: translateX(2px);
-            }
-            button.action-btn:hover { opacity: 0.95; }
-        }
-        button.option-btn:active:not(:disabled) { background: #2d3748; }
+.tools { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 14px; }
+.lens-count { color: var(--brass-hi); font-variant-numeric: tabular-nums; }
 
-        /* 답을 고른 뒤의 보기 상태 */
-        button.option-btn:disabled { cursor: default; }
-        button.option-btn:disabled:not(.is-correct):not(.is-wrong):not(.is-answer) { opacity: 0.6; }
-        button.option-btn.is-correct {
-            border-color: var(--success-color);
-            background: rgba(16, 185, 129, 0.12);
-            box-shadow: 0 0 0 1px var(--success-color), 0 0 18px rgba(16, 185, 129, 0.25);
-        }
-        button.option-btn.is-wrong {
-            border-color: var(--danger-color);
-            background: rgba(239, 68, 68, 0.1);
-            animation: shake 0.45s ease;
-        }
-        .opt-tag {
-            padding: 3px 9px;
-            border-radius: 999px;
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: var(--text-soft);
-            background: rgba(148, 163, 184, 0.14);
-        }
-        .is-correct .opt-tag { color: var(--success-soft); background: rgba(16, 185, 129, 0.2); }
-        .is-wrong .opt-tag { color: var(--danger-soft); background: rgba(239, 68, 68, 0.18); }
-        /* 기회를 모두 잃었을 때 알려 주는 정답 */
-        button.option-btn.is-answer {
-            border: 1px dashed var(--success-color);
-            background: rgba(16, 185, 129, 0.06);
-        }
-        .is-answer .opt-tag { color: var(--success-soft); background: rgba(16, 185, 129, 0.2); }
+.verdict { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--hair-strong); }
+.verdict.pop { animation: rise .35s ease both; }
+.verdict-mark { margin: 0; font-family: var(--latin); font-size: 13px; font-weight: 700; letter-spacing: 0.34em; text-transform: uppercase; }
+.verdict.ok .verdict-mark { color: var(--verdigris); }
+.verdict.bad .verdict-mark { color: var(--oxblood); }
+.verdict-title { margin: 4px 0 6px; font-family: var(--serif); font-size: 18px; font-weight: 700; }
+.verdict-desc { margin: 0; font-size: 15px; color: var(--bone-2); }
+.verdict-reward { margin: 10px 0 0; }
+.verdict .btn { width: 100%; margin-top: 18px; }
 
-        button.action-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-            border: none;
-            color: white;
-            font: inherit;
-            font-weight: 700;
-            font-size: 1rem;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
-            transition: opacity 0.2s ease, transform 0.15s ease;
-        }
-        button.action-btn:active { transform: scale(0.98); }
+/* ───────── 결과 ───────── */
+.result-ledger { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 26px 0 0; border-top: 1px solid var(--hair); }
+.result-ledger > div { padding: 14px 0; border-bottom: 1px solid var(--hair); }
+.result-ledger dt { font-size: 12.5px; letter-spacing: 0.06em; color: var(--mute); }
+.result-ledger dd { margin: 2px 0 0; font-family: var(--serif); font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.breakdown { margin: 12px 0 0; font-size: 13.5px; color: var(--mute); }
+.review { margin-top: 24px; }
+.review summary { padding: 8px 0; cursor: pointer; font-family: var(--serif); font-weight: 700; color: var(--brass-hi); }
+.review ol { display: grid; margin: 6px 0 0; padding: 0; list-style: none; }
+.review li { padding: 14px 0; border-top: 1px solid var(--hair); font-size: 14.5px; }
+.r-head { display: flex; gap: 10px; font-size: 12.5px; letter-spacing: 0.04em; color: var(--mute); }
+.r-ok { color: var(--verdigris); }
+.r-fail { color: var(--oxblood); }
+.r-prop { margin: 4px 0; color: var(--bone-2); }
+.r-ans { margin: 0; }
+.r-ans b { font-weight: 600; color: var(--brass-hi); }
 
-        button {
-            touch-action: manipulation;          /* 빠르게 두 번 탭해도 화면이 확대되지 않게 */
-            -webkit-tap-highlight-color: transparent;
-        }
-        button:focus-visible {
-            outline: 2px solid var(--accent-purple);
-            outline-offset: 2px;
-        }
-        /* 스크립트가 포커스만 옮겨 두는 영역 (키보드 사용자용) */
-        #panel-proposition:focus, #grid-options:focus { outline: none; }
+/* ───────── 상점 ───────── */
+.page-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; }
+.wares { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.ware { display: flex; flex-direction: column; gap: 14px; padding: 24px; }
+.ware-head { display: flex; align-items: center; gap: 14px; }
+.ware h3 { margin: 0; font-family: var(--serif); font-size: 18px; }
+.owned { font-size: 13px; color: var(--mute); }
+.ware p { flex: 1; margin: 0; font-size: 14.5px; color: var(--bone-2); }
+.ware-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.price { display: inline-flex; align-items: center; gap: 6px; color: var(--brass-hi); font-weight: 600; font-variant-numeric: tabular-nums; }
+.price svg { width: 18px; height: 18px; color: var(--brass); }
+.in-use { font-size: 13px; letter-spacing: 0.04em; color: var(--verdigris); }
+.swatch { display: grid; grid-template-columns: 3fr 2fr 1fr; height: 68px; border: 1px solid var(--hair); }
 
-        /* 정답·오답 해설 (alert 대신 화면 안에 표시) */
-        .feedback {
-            margin-top: 18px;
-            padding: 16px 18px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            background: #0b0f19;
-        }
-        .feedback.ok { border-color: rgba(16, 185, 129, 0.55); background: rgba(16, 185, 129, 0.08); }
-        .feedback.bad { border-color: rgba(239, 68, 68, 0.55); background: rgba(239, 68, 68, 0.08); }
-        .feedback.pop { animation: slideUp 0.3s ease; }
-        .feedback-title { margin-bottom: 6px; font-weight: 800; line-height: 1.5; }
-        .feedback.ok .feedback-title { color: var(--success-soft); }
-        .feedback.bad .feedback-title { color: var(--danger-soft); }
-        .feedback-desc { font-size: 0.9rem; line-height: 1.65; color: var(--text-soft); }
-        .feedback .action-btn { margin-top: 14px; }
+/* ───────── 크레딧 ───────── */
+.credits { text-align: center; }
+.credits .eyebrow, .credits .h1 { text-align: center; }
+.roll { display: grid; gap: 26px; margin: 34px 0; }
+.role-name { display: block; font-size: 13px; letter-spacing: 0.3em; color: var(--brass); }
+.role-people { display: block; margin-top: 6px; font-family: var(--serif); font-size: 26px; font-weight: 700; }
+.role-people.small { font-size: 15.5px; font-weight: 500; color: var(--bone-2); }
+.numbers { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); margin: 0; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); }
+.numbers > div { padding: 16px 6px; }
+.numbers dt { font-size: 12.5px; color: var(--mute); }
+.numbers dd { margin: 2px 0 0; font-family: var(--serif); font-size: 26px; font-weight: 900; color: var(--brass-hi); font-variant-numeric: tabular-nums; }
+.thanks { margin: 30px 0 0; font-family: var(--serif); font-size: 17px; color: var(--bone-2); }
+.credits .actions { justify-content: center; }
 
-        .guide-text {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-            text-align: center;
-        }
-        .guide-text.story { text-align: left; color: var(--text-soft); }
+/* ───────── 알림 ───────── */
+.toasts {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: grid; justify-items: center; gap: 8px; pointer-events: none;
+  padding: 0 max(16px, env(safe-area-inset-right, 0px)) calc(20px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+}
+.toast {
+  max-width: 480px; padding: 13px 20px; font-size: 14.5px; color: var(--bone);
+  background: rgba(var(--vault-rgb), 0.97); border: 1px solid var(--hair-strong); border-radius: 2px;
+  box-shadow: 0 24px 50px -20px #000;
+  opacity: 0; transform: translateY(10px); transition: opacity .3s ease, transform .3s ease;
+}
+.toast.show { opacity: 1; transform: none; }
 
-        .result-panel { text-align: center; padding: 40px 20px; }
-        #result-icon { font-size: 4rem; margin-bottom: 15px; }
-        #result-title { font-size: 1.5rem; margin-bottom: 10px; }
-        #result-desc { color: var(--text-soft); }
+@media (max-width: 560px) {
+  .choice { grid-template-columns: 30px minmax(0, 1fr); gap: 12px; padding: 14px; }
+  .seal { width: 30px; height: 30px; font-size: 14px; }
+  .rules > div { grid-template-columns: 58px minmax(0, 1fr); gap: 12px; }
+  .result-ledger dd { font-size: 20px; }
+  .stat { padding-right: 16px; margin-right: 16px; }
+}
 
-        .screen { display: none; }
-        .screen.active { display: block; animation: fadeIn 0.35s ease; }
-
-        @media (max-width: 480px) {
-            .game-container { padding: 24px 18px; }
-            .result-panel { padding: 32px 16px; }
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-6px); }
-            40% { transform: translateX(5px); }
-            60% { transform: translateX(-4px); }
-            80% { transform: translateX(2px); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-        }
-    </style>
+@keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(2px); } }
+@keyframes turn { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+</style>
 </head>
 <body>
+<canvas id="maze" aria-hidden="true"></canvas>
+<div class="vignette" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
 
-<div class="game-container">
-    <h1>🚪 논리 미궁: 대우의 열쇠</h1>
+<svg class="sprite" aria-hidden="true">
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="7" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M11.2 12h10M17 12v3.2M20.2 12v2.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="5.4" fill="none" stroke="currentColor" stroke-width="1" opacity=".7"/></symbol>
+  <symbol id="i-lens" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-door" viewBox="0 0 24 24"><path d="M6 21V10a6 6 0 0 1 12 0v11" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 21h17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="14.6" cy="14.6" r="1.1" fill="currentColor"/></symbol>
+  <symbol id="i-scroll" viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="17" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 20c1.2-3.6 4-5.4 7-5.4s5.8 1.8 7 5.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 1 0 0 17c1.2 0 1.8-.8 1.6-1.8-.3-1.3.5-2.3 1.8-2.3H18a2.5 2.5 0 0 0 2.5-2.6A8.6 8.6 0 0 0 12 3.5Z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="11" r="1.2" fill="currentColor"/><circle cx="11.5" cy="7.8" r="1.2" fill="currentColor"/><circle cx="15.5" cy="9" r="1.2" fill="currentColor"/></symbol>
+</svg>
 
-    <!-- 화면 1: 프롤로그 및 시작 -->
-    <div id="screen-start" class="screen active">
-        <div class="panel prologue">
-            <p class="guide-text story">
-                당신은 꼬여있는 명제 원리로 작동하는 미궁에 갇혔습니다.<br><br>
-                미궁의 문을 열기 위해서는 방마다 제시되는 원래 명제의 <b>'대우(Contrapositive) 명제'</b>를 올바르게 직관하여 참인 논리 열쇠를 맞춰야 합니다.<br><br>
-                기회는 단 <b>3번</b>, 주어진 모든 스테이지를 풀어 논리의 세계에서 탈출하세요.
-            </p>
+<main class="app" id="app">
+
+  <!-- 메뉴 -->
+  <section class="screen" id="screen-menu" aria-labelledby="menu-title">
+    <div class="menu-grid">
+      <header>
+        <svg class="emblem" viewBox="0 0 80 80" aria-hidden="true">
+          <circle cx="40" cy="40" r="38" fill="none" stroke="currentColor" stroke-width="1"/>
+          <circle cx="40" cy="40" r="31" fill="none" stroke="currentColor" stroke-width=".6" stroke-dasharray="2 4"/>
+          <g class="core"><path d="M40 14v6M40 60v6M14 40h6M60 40h6" stroke="currentColor" stroke-width="1"/></g>
+          <circle cx="40" cy="35" r="7" fill="currentColor"/>
+          <path d="M36.4 39.5h7.2L46 54H34Z" fill="currentColor"/>
+        </svg>
+        <p class="eyebrow">Labyrinthus Logicus</p>
+        <h1 class="display" id="menu-title" tabindex="-1" data-focus>논리 미궁</h1>
+        <p class="subtitle">대우의 열쇠</p>
+        <p class="lede">참인 명제는 그 <b>대우</b>와 운명을 함께합니다. 원래 명제를 읽고, 문을 여는 단 하나의 대우를 찾아 다섯 개의 방을 통과하세요.</p>
+        <div class="stats" id="menu-stats"></div>
+      </header>
+
+      <nav class="frame menu-plaque" aria-label="메인 메뉴">
+        <div class="plaque-top">
+          <span class="purse" id="menu-purse"></span>
+          <span class="who" id="menu-who"></span>
         </div>
-        <button type="button" class="action-btn" id="btn-start">미궁 진입하기</button>
+        <button type="button" class="btn btn-brass btn-start" data-go="brief">
+          <svg aria-hidden="true"><use href="#i-door"/></svg>
+          <span><b>시작하기</b><small>다섯 개의 방 · 열쇠 3개로 시작</small></span>
+        </button>
+        <div class="menu-list">
+          <button type="button" class="menu-row" data-go="shop">
+            <span class="ico" aria-hidden="true"><svg><use href="#i-coin"/></svg></span>
+            <span class="row-text"><span class="row-label">상점</span><span class="row-sub">금화로 열쇠와 렌즈, 테마를 삽니다</span></span>
+            <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
+          </button>
+          <button type="button" class="menu-row" data-go="credits">
+            <span class="ico" aria-hidden="true"><svg><use href="#i-scroll"/></svg></span>
+            <span class="row-text"><span class="row-label">크레딧</span><span class="row-sub">이 미궁을 만든 사람들</span></span>
+            <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
+          </button>
+          <div id="account-slot"></div>
+        </div>
+        <p class="colophon">논리 미궁 · 2.0</p>
+      </nav>
+    </div>
+  </section>
+
+  <!-- 입장 준비 -->
+  <section class="screen narrow" id="screen-brief" aria-labelledby="brief-title" hidden>
+    <div class="frame pad">
+      <p class="eyebrow">Prologus</p>
+      <h2 class="h1" id="brief-title" tabindex="-1" data-focus>입장 전에</h2>
+      <p class="story">당신은 꼬여 있는 명제 원리로 작동하는 미궁에 갇혔습니다. 문을 열려면 방마다 제시되는 원래 명제의 <b>대우(Contrapositive)</b>를 올바르게 직관해, 참인 논리 열쇠를 맞춰야 합니다.</p>
+      <dl class="rules">
+        <div><dt>열쇠</dt><dd>3개로 시작합니다. 틀릴 때마다 하나를 잃고, 모두 잃으면 미궁에 갇힙니다.</dd></div>
+        <div><dt>방</dt><dd>모두 다섯 개입니다. 뒤로 갈수록 ‘그리고’, ‘또는’이 섞인 명제가 나옵니다. 문제는 매번 무작위로 바뀝니다.</dd></div>
+        <div><dt>금화</dt><dd>정답 10 · 첫 시도 +5 · 탈출 +30 · 열쇠를 하나도 잃지 않으면 +20</dd></div>
+      </dl>
+      <h3 class="h3">가져갈 물건</h3>
+      <div class="loadout" id="loadout"></div>
+      <div class="actions">
+        <button type="button" class="btn btn-brass" data-act="enter">미궁 진입하기</button>
+        <button type="button" class="btn btn-ghost" data-go="menu">돌아가기</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 방 -->
+  <section class="screen narrow" id="screen-game" aria-labelledby="room-title" hidden>
+    <div class="hud">
+      <div class="hud-left">
+        <p class="room-label"><b id="room-title" tabindex="-1" data-focus></b><span class="muted" id="room-of"></span></p>
+        <ol class="doors" id="doors" aria-label="진행 상황"></ol>
+      </div>
+      <div class="hud-right">
+        <div class="keys" id="keys"></div>
+        <span class="purse" id="run-purse"></span>
+      </div>
     </div>
 
-    <!-- 화면 2: 인게임 플레이 -->
-    <div id="screen-game" class="screen">
-        <div class="status-bar">
-            <div>🔑 스테이지: <span id="lbl-stage">1</span>/<span id="lbl-total">5</span></div>
-            <div id="hp-box">❤️ 남은 기회: <span id="lbl-hp">3</span></div>
-        </div>
+    <article class="frame plaque">
+      <div class="plaque-head">
+        <p class="eyebrow">원래 명제 · <span class="mono">p → q</span></p>
+        <svg class="keyhole" id="keyhole" viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="24" r="22.5" fill="none" stroke="currentColor" stroke-width="1"/>
+          <circle cx="24" cy="24" r="17.5" fill="none" stroke="currentColor" stroke-width=".6" opacity=".55"/>
+          <g class="core"><circle cx="24" cy="20.5" r="4.6" fill="currentColor"/><path d="M21.6 23.5h4.8l1.6 9.5h-8Z" fill="currentColor"/></g>
+        </svg>
+      </div>
+      <p class="domain" id="domain" hidden></p>
+      <p class="prop" id="prop"></p>
+    </article>
 
-        <!-- 원래 명제 판넬 -->
-        <div class="panel" id="panel-proposition" tabindex="-1">
-            <span class="badge-logic">원래 명제 (p → q)</span>
-            <div class="proposition-box" id="box-proposition">조건식 로딩 중...</div>
-        </div>
-
-        <!-- 퀴즈 선택 구간 -->
-        <div>
-            <div class="quiz-title">✨ 이 문장의 올바른 대우(~q → ~p)를 고르세요:</div>
-            <div class="options-grid" id="grid-options" role="group" aria-label="대우 후보 보기" tabindex="-1"></div>
-            <div class="feedback" id="feedback" role="status" aria-live="polite" hidden></div>
-        </div>
+    <p class="prompt"><span>이 명제의 <b>대우</b>를 고르세요</span> <code class="chip">~q → ~p</code></p>
+    <div class="choices" id="choices" role="group" aria-label="대우 후보" tabindex="-1"></div>
+    <div class="tools">
+      <button type="button" class="btn btn-ghost btn-sm" id="btn-lens" data-act="lens">
+        <svg aria-hidden="true"><use href="#i-lens"/></svg>통찰의 렌즈 <span class="lens-count" id="lens-count">0</span>
+      </button>
+      <button type="button" class="btn btn-text btn-sm" id="btn-abandon" data-act="abandon">포기하기</button>
     </div>
+    <section class="verdict" id="verdict" aria-live="polite" hidden></section>
+  </section>
 
-    <!-- 화면 3: 결과 창 -->
-    <div id="screen-result" class="screen">
-        <div class="panel result-panel">
-            <div id="result-icon">🎉</div>
-            <h2 id="result-title">미궁 탈출 성공!</h2>
-            <p class="guide-text" id="result-desc"></p>
-        </div>
-        <button type="button" class="action-btn" id="btn-restart">처음부터 다시 도전</button>
+  <!-- 결과 -->
+  <section class="screen narrow" id="screen-result" aria-labelledby="result-title" hidden>
+    <div class="frame pad">
+      <p class="eyebrow" id="result-mark"></p>
+      <h2 class="h1" id="result-title" tabindex="-1" data-focus></h2>
+      <p class="story" id="result-desc"></p>
+      <dl class="result-ledger" id="result-ledger"></dl>
+      <p class="breakdown" id="result-breakdown"></p>
+      <details class="review" id="review-wrap">
+        <summary>복습 노트</summary>
+        <ol id="review"></ol>
+      </details>
+      <div class="actions">
+        <button type="button" class="btn btn-brass" data-go="brief">다시 도전</button>
+        <button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button>
+      </div>
     </div>
-</div>
+  </section>
+
+  <!-- 상점 -->
+  <section class="screen medium" id="screen-shop" aria-labelledby="shop-title" hidden>
+    <div class="page-head">
+      <div>
+        <p class="eyebrow">Mercatura</p>
+        <h2 class="h1" id="shop-title" tabindex="-1" data-focus>상점</h2>
+      </div>
+      <span class="purse big" id="shop-purse"></span>
+    </div>
+    <h3 class="section-label">소모품</h3>
+    <div class="wares" id="wares-items"></div>
+    <h3 class="section-label">테마</h3>
+    <div class="wares" id="wares-skins"></div>
+    <div class="actions"><button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button></div>
+  </section>
+
+  <!-- 크레딧 -->
+  <section class="screen narrow" id="screen-credits" aria-labelledby="credits-title" hidden>
+    <div class="frame pad credits">
+      <p class="eyebrow">Auctores</p>
+      <h2 class="h1" id="credits-title" tabindex="-1" data-focus>크레딧</h2>
+      <div class="roll">
+        <div><span class="role-name">기획 · 메인개발</span><span class="role-people">은율</span></div>
+        <div><span class="role-name">출제 범위</span><span class="role-people small">고등학교 수학 「명제」 — 역 · 이 · 대우, 드모르간 법칙</span></div>
+      </div>
+      <h3 class="section-label">숫자로 보면</h3>
+      <dl class="numbers" id="credit-numbers"></dl>
+      <p class="thanks">플레이해 주셔서 감사합니다.</p>
+      <div class="actions"><button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button></div>
+    </div>
+  </section>
+</main>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
 
 <script>
-    // 보기의 정체: 대우만 원래 명제와 참·거짓이 항상 같다
-    const TYPES = {
-        contra: {
-            name: "대우", form: "~q → ~p",
-            desc: "가정과 결론을 맞바꾸고 둘 다 부정한 문장으로, 원래 명제와 참·거짓이 항상 같습니다."
-        },
-        converse: {
-            name: "역", form: "q → p",
-            desc: "가정과 결론의 자리만 맞바꾼 문장입니다. 원래 명제가 참이어도 역은 거짓일 수 있습니다."
-        },
-        inverse: {
-            name: "이", form: "~p → ~q",
-            desc: "가정과 결론을 부정하기만 한 문장입니다. 원래 명제가 참이어도 이는 거짓일 수 있습니다."
-        },
-        badNegation: {
-            name: "잘못된 부정", form: "~q → (~a ∧ ~b)",
-            desc: "'a이고 b'를 부정하면 'a가 아니거나 b가 아니다'가 됩니다(드모르간 법칙). '그리고'를 그대로 두면 올바른 대우가 아닙니다."
-        }
-    };
+'use strict';
 
-    // 스테이지 데이터베이스 (원래 명제, 정답 대우 명제, 오답 보기와 그 정체)
-    const stages = [
-        {
-            prop: "비가 오면, 땅이 젖는다.",
-            ans: "땅이 젖지 않으면, 비가 오지 않은 것이다.",
-            wrongs: [
-                { text: "비가 오지 않으면, 땅이 젖지 않는다.", type: "inverse" },
-                { text: "땅이 젖으면, 비가 온 것이다.", type: "converse" }
-            ]
-        },
-        {
-            prop: "실수 x에 대하여 x > 2이면, x > 0이다.",
-            ans: "실수 x에 대하여 x ≤ 0이면, x ≤ 2이다.",
-            wrongs: [
-                { text: "실수 x에 대하여 x ≤ 2이면, x ≤ 0이다.", type: "inverse" },
-                { text: "실수 x에 대하여 x > 0이면, x > 2이다.", type: "converse" }
-            ]
-        },
-        {
-            prop: "어떤 사람이 마피아라면, 그 사람은 거짓말을 한다.",
-            ans: "어떤 사람이 거짓말을 하지 않는다면, 그 사람은 마피아가 아니다.",
-            wrongs: [
-                { text: "어떤 사람이 거짓말을 한다면, 그 사람은 마피아이다.", type: "converse" },
-                { text: "어떤 사람이 마피아가 아니라면, 그 사람은 거짓말을 하지 않는다.", type: "inverse" }
-            ]
-        },
-        {
-            prop: "정삼각형이면, 이등변삼각형이다.",
-            ans: "이등변삼각형이 아니면, 정삼각형이 아니다.",
-            wrongs: [
-                { text: "이등변삼각형이면, 정삼각형이다.", type: "converse" },
-                { text: "정삼각형이 아니면, 이등변삼각형이 아니다.", type: "inverse" }
-            ]
-        },
-        {
-            prop: "날씨가 덥고 습하면, 불쾌지수가 높다.",
-            ans: "불쾌지수가 높지 않으면, 날씨가 덥지 않거나 습하지 않은 것이다.",
-            note: "'덥고 습하다'의 부정은 '덥지 않거나 습하지 않다'입니다(드모르간 법칙).",
-            wrongs: [
-                { text: "날씨가 덥지 않거나 습하지 않으면, 불쾌지수가 높지 않다.", type: "inverse" },
-                { text: "불쾌지수가 높지 않으면, 날씨가 덥지 않고 습하지 않은 것이다.", type: "badNegation" }
-            ]
-        }
-    ];
+/* ───────── 설정 ───────── */
+// 구글 로그인: Firebase 웹 앱 설정을 넣으면 켜진다. null이면 로그인은 '준비 중'으로 안내하고 이 기기에만 저장한다.
+const FIREBASE_CONFIG = null;
+const FIREBASE_VERSION = '10.12.2';
 
-    const MAX_HP = 3;
-    let currentStage = 0;
-    let hp = MAX_HP;
-    let locked = false;   // 정답을 맞혔거나 기회를 모두 잃으면 보기를 더 누를 수 없음
-    let optionButtons = [];   // 현재 방의 보기 버튼과 데이터 ({ btn, opt })
+const BASE_KEYS = 3;
+const MAX_EXTRA_KEYS = 2;
+const REWARD = { correct: 10, firstTry: 5, clear: 30, perfect: 20 };
+const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
+const SEALS = ['가', '나', '다'];
+const DEMORGAN = '‘그리고’를 부정하면 ‘또는’이, ‘또는’을 부정하면 ‘그리고’가 됩니다(드모르간 법칙).';
 
-    // '동작 줄이기' 설정이면 부드러운 스크롤 대신 바로 이동
-    function scrollMode() {
-        return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+// 보기의 정체: 대우만 원래 명제와 참·거짓이 언제나 같다
+const TYPES = {
+  contra: { name: '대우', form: '~q → ~p', desc: '가정과 결론을 맞바꾸고 둘 다 부정한 문장입니다. 원래 명제와 참·거짓이 언제나 같습니다.' },
+  converse: { name: '역', form: 'q → p', desc: '가정과 결론의 자리만 맞바꾼 문장입니다. 원래 명제가 참이어도 역은 거짓일 수 있습니다.' },
+  inverse: { name: '이', form: '~p → ~q', desc: '가정과 결론을 부정하기만 한 문장입니다. 원래 명제가 참이어도 이는 거짓일 수 있습니다.' },
+  bad: { name: '잘못된 부정', form: '', desc: '자리는 대우처럼 바꿨지만 부정을 잘못했습니다. ' + DEMORGAN },
+};
+
+const WARES = {
+  key: { name: '여분의 열쇠', price: 80, max: 9, desc: '다음 도전에 열쇠를 하나 더 가져갑니다. 한 번에 2개까지 쓸 수 있습니다.' },
+  lens: { name: '통찰의 렌즈', price: 50, max: 9, desc: '방 안에서 쓰면 오답 하나를 지워 줍니다. 방마다 한 번 쓸 수 있습니다.' },
+};
+const SKINS = {
+  emerald: { name: '에메랄드 금고', price: 0, desc: '짙은 녹색 가죽과 황동 장식. 미궁의 기본 테마입니다.', swatch: ['#0a100e', '#15201c', '#c9a35b'] },
+  sapphire: { name: '사파이어 천문대', price: 300, desc: '한밤의 남색 위에 은빛 계기판을 얹었습니다.', swatch: ['#080c14', '#131b2a', '#b7c2d6'] },
+  garnet: { name: '가넷 서고', price: 300, desc: '오래된 적갈색 서고와 로즈골드 장식.', swatch: ['#110a0b', '#221519', '#d5a088'] },
+};
+
+/* ───────── 문제 은행 ─────────
+   p: 원래 명제, c: 대우(정답), v: 역, i: 이, b: 잘못된 부정(복합 명제만), d: 변수의 범위, n: 덧붙일 해설
+   방 Ⅰ·Ⅱ는 t1, 방 Ⅲ·Ⅳ는 t2(자동 생성 문제 포함), 방 Ⅴ는 t3에서 무작위로 뽑는다. */
+const BANK = {
+  t1: [
+    { p: '비가 오면, 땅이 젖는다.', c: '땅이 젖지 않으면, 비가 오지 않은 것이다.', v: '땅이 젖으면, 비가 온 것이다.', i: '비가 오지 않으면, 땅이 젖지 않는다.' },
+    { p: '어떤 사람이 마피아라면, 그 사람은 거짓말을 한다.', c: '어떤 사람이 거짓말을 하지 않는다면, 그 사람은 마피아가 아니다.', v: '어떤 사람이 거짓말을 한다면, 그 사람은 마피아이다.', i: '어떤 사람이 마피아가 아니라면, 그 사람은 거짓말을 하지 않는다.' },
+    { p: '정삼각형이면, 이등변삼각형이다.', c: '이등변삼각형이 아니면, 정삼각형이 아니다.', v: '이등변삼각형이면, 정삼각형이다.', i: '정삼각형이 아니면, 이등변삼각형이 아니다.' },
+    { p: '정사각형이면, 직사각형이다.', c: '직사각형이 아니면, 정사각형이 아니다.', v: '직사각형이면, 정사각형이다.', i: '정사각형이 아니면, 직사각형이 아니다.' },
+    { p: '서울에 살면, 한국에 산다.', c: '한국에 살지 않으면, 서울에 살지 않는다.', v: '한국에 살면, 서울에 산다.', i: '서울에 살지 않으면, 한국에 살지 않는다.' },
+    { p: '고양이라면, 포유류이다.', c: '포유류가 아니라면, 고양이가 아니다.', v: '포유류라면, 고양이이다.', i: '고양이가 아니라면, 포유류가 아니다.' },
+    { p: '시험에 합격했다면, 시험을 쳤다.', c: '시험을 치지 않았다면, 시험에 합격하지 않았다.', v: '시험을 쳤다면, 시험에 합격했다.', i: '시험에 합격하지 않았다면, 시험을 치지 않았다.' },
+    { p: '해가 지면, 하늘이 어두워진다.', c: '하늘이 어두워지지 않으면, 해가 지지 않은 것이다.', v: '하늘이 어두워지면, 해가 진 것이다.', i: '해가 지지 않으면, 하늘이 어두워지지 않는다.' },
+    { p: '휴대폰 배터리가 0%이면, 휴대폰이 켜지지 않는다.', c: '휴대폰이 켜지면, 배터리가 0%가 아니다.', v: '휴대폰이 켜지지 않으면, 배터리가 0%이다.', i: '배터리가 0%가 아니면, 휴대폰이 켜진다.', n: '결론이 부정문이면 대우의 가정은 긍정문이 됩니다(부정의 부정).' },
+    { p: '두 각이 맞꼭지각이면, 두 각의 크기는 같다.', c: '두 각의 크기가 같지 않으면, 두 각은 맞꼭지각이 아니다.', v: '두 각의 크기가 같으면, 두 각은 맞꼭지각이다.', i: '두 각이 맞꼭지각이 아니면, 두 각의 크기는 같지 않다.' },
+    { p: '물이 끓고 있으면, 물이 뜨겁다.', c: '물이 뜨겁지 않으면, 물이 끓고 있지 않다.', v: '물이 뜨거우면, 물이 끓고 있다.', i: '물이 끓고 있지 않으면, 물이 뜨겁지 않다.' },
+    { p: '금속이면, 전기가 통한다.', c: '전기가 통하지 않으면, 금속이 아니다.', v: '전기가 통하면, 금속이다.', i: '금속이 아니면, 전기가 통하지 않는다.' },
+  ],
+  t2: [
+    { d: '자연수 n에 대하여', p: 'n이 4의 배수이면, n은 짝수이다.', c: 'n이 짝수가 아니면, n은 4의 배수가 아니다.', v: 'n이 짝수이면, n은 4의 배수이다.', i: 'n이 4의 배수가 아니면, n은 짝수가 아니다.' },
+    { p: '두 삼각형이 합동이면, 두 삼각형의 넓이는 같다.', c: '두 삼각형의 넓이가 같지 않으면, 두 삼각형은 합동이 아니다.', v: '두 삼각형의 넓이가 같으면, 두 삼각형은 합동이다.', i: '두 삼각형이 합동이 아니면, 두 삼각형의 넓이는 같지 않다.' },
+    { p: '식물이 광합성을 하면, 산소를 내놓는다.', c: '식물이 산소를 내놓지 않으면, 광합성을 하지 않은 것이다.', v: '식물이 산소를 내놓으면, 광합성을 한 것이다.', i: '식물이 광합성을 하지 않으면, 산소를 내놓지 않는다.' },
+    { d: '실수 a, b에 대하여', p: 'a = b이면, a² = b²이다.', c: 'a² ≠ b²이면, a ≠ b이다.', v: 'a² = b²이면, a = b이다.', i: 'a ≠ b이면, a² ≠ b²이다.' },
+    { d: '사각형에 대하여', p: '정사각형이면, 두 대각선의 길이가 같다.', c: '두 대각선의 길이가 같지 않으면, 정사각형이 아니다.', v: '두 대각선의 길이가 같으면, 정사각형이다.', i: '정사각형이 아니면, 두 대각선의 길이가 같지 않다.' },
+    { d: '삼각형에 대하여', p: '직각삼각형이면, 90°인 각이 있다.', c: '90°인 각이 없으면, 직각삼각형이 아니다.', v: '90°인 각이 있으면, 직각삼각형이다.', i: '직각삼각형이 아니면, 90°인 각이 없다.', n: '‘90°인 각이 있다’의 부정은 ‘90°인 각이 없다’입니다.' },
+    { d: '실수 x에 대하여', p: 'x² < 1이면, x < 1이다.', c: 'x ≥ 1이면, x² ≥ 1이다.', v: 'x < 1이면, x² < 1이다.', i: 'x² ≥ 1이면, x ≥ 1이다.', n: '‘<’의 부정은 ‘≥’입니다.' },
+    { d: '정수 n에 대하여', p: 'n이 짝수이면, n²도 짝수이다.', c: 'n²이 짝수가 아니면, n도 짝수가 아니다.', v: 'n²이 짝수이면, n도 짝수이다.', i: 'n이 짝수가 아니면, n²도 짝수가 아니다.' },
+    { d: '두 집합 A ⊂ B일 때', p: 'x ∈ A이면, x ∈ B이다.', c: 'x ∉ B이면, x ∉ A이다.', v: 'x ∈ B이면, x ∈ A이다.', i: 'x ∉ A이면, x ∉ B이다.' },
+    { d: '자연수 n에 대하여', p: 'n이 10의 배수이면, n의 일의 자리 숫자는 0이다.', c: 'n의 일의 자리 숫자가 0이 아니면, n은 10의 배수가 아니다.', v: 'n의 일의 자리 숫자가 0이면, n은 10의 배수이다.', i: 'n이 10의 배수가 아니면, n의 일의 자리 숫자는 0이 아니다.' },
+  ],
+  t3: [
+    { p: '날씨가 덥고 습하면, 불쾌지수가 높다.', c: '불쾌지수가 높지 않으면, 날씨가 덥지 않거나 습하지 않은 것이다.', v: '불쾌지수가 높으면, 날씨가 덥고 습한 것이다.', i: '날씨가 덥지 않거나 습하지 않으면, 불쾌지수가 높지 않다.', b: '불쾌지수가 높지 않으면, 날씨가 덥지 않고 습하지 않은 것이다.' },
+    { d: '실수 x, y에 대하여', p: 'x > 0이고 y > 0이면, xy > 0이다.', c: 'xy ≤ 0이면, x ≤ 0이거나 y ≤ 0이다.', v: 'xy > 0이면, x > 0이고 y > 0이다.', i: 'x ≤ 0이거나 y ≤ 0이면, xy ≤ 0이다.', b: 'xy ≤ 0이면, x ≤ 0이고 y ≤ 0이다.' },
+    { d: '정수 n에 대하여', p: 'n이 2의 배수이고 3의 배수이면, n은 6의 배수이다.', c: 'n이 6의 배수가 아니면, n은 2의 배수가 아니거나 3의 배수가 아니다.', v: 'n이 6의 배수이면, n은 2의 배수이고 3의 배수이다.', i: 'n이 2의 배수가 아니거나 3의 배수가 아니면, n은 6의 배수가 아니다.', b: 'n이 6의 배수가 아니면, n은 2의 배수가 아니고 3의 배수도 아니다.' },
+    { d: '실수 x에 대하여', p: 'x = 1이거나 x = 2이면, x² − 3x + 2 = 0이다.', c: 'x² − 3x + 2 ≠ 0이면, x ≠ 1이고 x ≠ 2이다.', v: 'x² − 3x + 2 = 0이면, x = 1이거나 x = 2이다.', i: 'x ≠ 1이고 x ≠ 2이면, x² − 3x + 2 ≠ 0이다.', b: 'x² − 3x + 2 ≠ 0이면, x ≠ 1이거나 x ≠ 2이다.' },
+    { d: '실수 x에 대하여', p: 'x² = 1이면, x = 1이거나 x = −1이다.', c: 'x ≠ 1이고 x ≠ −1이면, x² ≠ 1이다.', v: 'x = 1이거나 x = −1이면, x² = 1이다.', i: 'x² ≠ 1이면, x ≠ 1이고 x ≠ −1이다.', b: 'x ≠ 1이거나 x ≠ −1이면, x² ≠ 1이다.' },
+    { p: '주말이고 날씨가 맑으면, 공원에 간다.', c: '공원에 가지 않으면, 주말이 아니거나 날씨가 맑지 않은 것이다.', v: '공원에 가면, 주말이고 날씨가 맑은 것이다.', i: '주말이 아니거나 날씨가 맑지 않으면, 공원에 가지 않는다.', b: '공원에 가지 않으면, 주말이 아니고 날씨도 맑지 않은 것이다.' },
+    { p: '출석률이 80% 이상이고 시험 점수가 60점 이상이면, 과목을 이수한다.', c: '과목을 이수하지 못하면, 출석률이 80% 미만이거나 시험 점수가 60점 미만이다.', v: '과목을 이수하면, 출석률이 80% 이상이고 시험 점수가 60점 이상이다.', i: '출석률이 80% 미만이거나 시험 점수가 60점 미만이면, 과목을 이수하지 못한다.', b: '과목을 이수하지 못하면, 출석률이 80% 미만이고 시험 점수도 60점 미만이다.', n: '‘이상’의 부정은 ‘미만’입니다.' },
+  ],
+};
+
+// 숫자를 바꿔 끝없이 만들어 내는 문제 (방 Ⅲ·Ⅳ에 섞여 나온다)
+const GENERATORS = [
+  () => {
+    const a = randInt(0, 6), b = a + randInt(1, 6);
+    return Math.random() < 0.5
+      ? { d: '실수 x에 대하여', p: `x > ${b}이면, x > ${a}이다.`, c: `x ≤ ${a}이면, x ≤ ${b}이다.`, v: `x > ${a}이면, x > ${b}이다.`, i: `x ≤ ${b}이면, x ≤ ${a}이다.`, n: '‘>’의 부정은 ‘≤’입니다.' }
+      : { d: '실수 x에 대하여', p: `x ≥ ${b}이면, x ≥ ${a}이다.`, c: `x < ${a}이면, x < ${b}이다.`, v: `x ≥ ${a}이면, x ≥ ${b}이다.`, i: `x < ${b}이면, x < ${a}이다.`, n: '‘≥’의 부정은 ‘<’입니다.' };
+  },
+  () => {
+    const k = pick([2, 3, 4, 5]), big = k * pick([2, 3, 4]);
+    return { d: '자연수 n에 대하여', p: `n이 ${big}의 배수이면, n은 ${k}의 배수이다.`, c: `n이 ${k}의 배수가 아니면, n은 ${big}의 배수가 아니다.`, v: `n이 ${k}의 배수이면, n은 ${big}의 배수이다.`, i: `n이 ${big}의 배수가 아니면, n은 ${k}의 배수가 아니다.` };
+  },
+  () => {
+    const a = randInt(2, 9), sq = a * a;
+    return { d: '실수 x에 대하여', p: `x = ${a}이면, x² = ${sq}이다.`, c: `x² ≠ ${sq}이면, x ≠ ${a}이다.`, v: `x² = ${sq}이면, x = ${a}이다.`, i: `x ≠ ${a}이면, x² ≠ ${sq}이다.` };
+  },
+];
+
+/* ───────── 유틸 ───────── */
+const $ = id => document.getElementById(id);
+function randInt(min, max) { return min + Math.floor(Math.random() * (max - min + 1)); }
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function fmt(n) { return Number(n).toLocaleString('ko-KR'); }
+function purseHTML(n, prefix) { return `<svg aria-hidden="true"><use href="#i-coin"/></svg>${prefix || ''}${fmt(n)}<small>금화</small>`; }
+function scrollMode() { return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'; }
+// scrollIntoView는 다른 페이지 안에 넣었을 때 바깥 페이지까지 스크롤하므로 이 창만 스크롤
+function revealInViewport(el) {
+  const rect = el.getBoundingClientRect();
+  const margin = 16;
+  if (rect.bottom > window.innerHeight - margin) {
+    window.scrollBy({ top: Math.min(rect.bottom - window.innerHeight + margin, rect.top - margin), behavior: scrollMode() });
+  }
+}
+function toast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  $('toasts').appendChild(t);
+  requestAnimationFrame(() => t.classList.add('show'));
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 2800);
+}
+
+/* ───────── 기록 (손님은 이 기기, 로그인하면 계정에도 저장) ───────── */
+const LS_PREFIX = 'logicmaze.v2.';
+function defaultProfile() {
+  return { v: 1, coins: 0, items: { key: 0, lens: 0 }, skins: ['emerald'], skin: 'emerald', stats: { runs: 0, clears: 0, perfect: 0, rooms: 0 } };
+}
+function sanitize(p) {
+  const d = defaultProfile();
+  if (!p || typeof p !== 'object') return d;
+  const int = (x, max) => Math.max(0, Math.min(max, Math.floor(Number(x) || 0)));
+  d.coins = int(p.coins, 10000000);
+  if (p.items && typeof p.items === 'object') { d.items.key = int(p.items.key, WARES.key.max); d.items.lens = int(p.items.lens, WARES.lens.max); }
+  if (Array.isArray(p.skins)) d.skins = Array.from(new Set(['emerald', ...p.skins.filter(s => SKINS[s])]));
+  d.skin = SKINS[p.skin] && d.skins.includes(p.skin) ? p.skin : 'emerald';
+  if (p.stats && typeof p.stats === 'object') for (const k of Object.keys(d.stats)) d.stats[k] = int(p.stats[k], 10000000);
+  return d;
+}
+function readLocal(slot) {
+  try {
+    const raw = localStorage.getItem(LS_PREFIX + slot);
+    return raw ? sanitize(JSON.parse(raw)) : defaultProfile();
+  } catch (e) { return defaultProfile(); }
+}
+function writeLocal(slot, p) {
+  try { localStorage.setItem(LS_PREFIX + slot, JSON.stringify(p)); } catch (e) { /* 저장소를 쓸 수 없는 환경 */ }
+}
+
+const state = { screen: 'menu', extra: 0, run: null };
+const account = { user: null, sync: 'local', busy: false };
+const SYNC_TEXT = { saving: '계정에 저장하는 중…', saved: '계정에 저장됨', error: '계정 저장 실패 · 이 기기에는 저장됨', local: '' };
+let profile = defaultProfile();
+let fb = null;
+let saveTimer = null;
+
+function slotName() { return account.user ? 'u.' + account.user.uid : 'guest'; }
+function commit() {
+  writeLocal(slotName(), profile);
+  if (account.user && fb) {
+    account.sync = 'saving';
+    renderAccount();
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveCloud, 500);
+  }
+}
+async function saveCloud() {
+  if (!account.user || !fb) return;
+  try {
+    await fb.fsM.setDoc(fb.fsM.doc(fb.db, 'users', account.user.uid), { ...profile, updatedAt: fb.fsM.serverTimestamp() });
+    account.sync = 'saved';
+  } catch (e) {
+    console.warn('계정 저장 실패', e);
+    account.sync = 'error';
+  }
+  renderAccount();
+}
+
+/* ───────── 구글 로그인 ───────── */
+async function loadFirebase() {
+  if (fb) return fb;
+  if (!FIREBASE_CONFIG) throw Object.assign(new Error('not configured'), { code: 'app/not-configured' });
+  const base = `https://www.gstatic.com/firebasejs/${FIREBASE_VERSION}`;
+  const [appM, authM, fsM] = await Promise.all([
+    import(`${base}/firebase-app.js`), import(`${base}/firebase-auth.js`), import(`${base}/firebase-firestore.js`),
+  ]);
+  const app = appM.initializeApp(FIREBASE_CONFIG);
+  fb = { auth: authM.getAuth(app), db: fsM.getFirestore(app), authM, fsM };
+  return fb;
+}
+async function initAuth() {
+  if (!FIREBASE_CONFIG) return;
+  try {
+    const f = await loadFirebase();
+    f.authM.getRedirectResult(f.auth).catch(handleAuthError);
+    f.authM.onAuthStateChanged(f.auth, onUser);
+  } catch (e) {
+    console.warn('로그인 모듈을 불러오지 못했습니다', e);
+  }
+}
+async function onUser(user) {
+  if (state.run) return;   // 도전 중에는 기록을 바꾸지 않는다 (메뉴로 돌아오면 반영)
+  if (!user) {
+    account.user = null;
+    account.sync = 'local';
+    profile = readLocal('guest');
+    applySkin();
+    renderMenu();
+    return;
+  }
+  account.user = { uid: user.uid, name: user.displayName || '플레이어', photo: user.photoURL || '' };
+  account.sync = 'saving';
+  renderAccount();
+  try {
+    const ref = fb.fsM.doc(fb.db, 'users', user.uid);
+    const snap = await fb.fsM.getDoc(ref);
+    if (snap.exists()) {
+      profile = sanitize(snap.data());
+    } else {
+      // 처음 로그인하면 이 기기의 손님 기록을 계정으로 옮긴다
+      const guest = readLocal('guest');
+      profile = guest;
+      await fb.fsM.setDoc(ref, { ...profile, updatedAt: fb.fsM.serverTimestamp() });
+      writeLocal('guest', defaultProfile());
+      if (guest.coins || guest.stats.runs) toast('이 기기의 손님 기록을 계정으로 옮겼습니다.');
     }
-
-    // scrollIntoView는 다른 페이지 안에 넣었을 때 바깥 페이지까지 스크롤하므로 이 창만 스크롤
-    function revealInViewport(el) {
-        const rect = el.getBoundingClientRect();
-        const margin = 16;
-        if (rect.bottom > window.innerHeight - margin) {
-            const toBottom = rect.bottom - window.innerHeight + margin;
-            window.scrollBy({ top: Math.min(toBottom, rect.top - margin), behavior: scrollMode() });
-        }
+    account.sync = 'saved';
+  } catch (e) {
+    console.warn('계정 기록을 불러오지 못했습니다', e);
+    profile = readLocal('u.' + user.uid);
+    account.sync = 'error';
+  }
+  writeLocal('u.' + user.uid, profile);
+  applySkin();
+  renderMenu();
+}
+async function login() {
+  if (!FIREBASE_CONFIG) {
+    toast('구글 로그인은 연결을 준비하고 있습니다. 지금은 기록이 이 기기에 저장됩니다.');
+    return;
+  }
+  if (account.busy) return;
+  account.busy = true;
+  renderAccount();
+  try {
+    const f = await loadFirebase();
+    const provider = new f.authM.GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    try {
+      await f.authM.signInWithPopup(f.auth, provider);
+    } catch (e) {
+      if (e && (e.code === 'auth/popup-blocked' || e.code === 'auth/operation-not-supported-in-this-environment')) {
+        await f.authM.signInWithRedirect(f.auth, provider);
+      } else throw e;
     }
+  } catch (e) {
+    handleAuthError(e);
+  } finally {
+    account.busy = false;
+    renderAccount();
+  }
+}
+function handleAuthError(e) {
+  const code = (e && e.code) || '';
+  if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') return;
+  const known = {
+    'auth/operation-not-allowed': '구글 로그인이 아직 켜져 있지 않습니다. 잠시 후 다시 시도해 주세요.',
+    'auth/unauthorized-domain': '이 주소에서는 로그인할 수 없습니다. 게임 공식 주소에서 이용해 주세요.',
+    'auth/network-request-failed': '네트워크 연결을 확인한 뒤 다시 시도해 주세요.',
+  };
+  toast(known[code] || (code.startsWith('auth/')
+    ? `로그인하지 못했습니다 (${code.slice(5)}).`
+    : '이 환경에서는 로그인을 쓸 수 없습니다. 게임 공식 주소에서 이용해 주세요.'));
+}
+async function logout() {
+  if (!fb) return;
+  try {
+    await fb.authM.signOut(fb.auth);
+    toast('로그아웃했습니다. 이 기기의 손님 기록으로 돌아왔습니다.');
+  } catch (e) {
+    toast('로그아웃하지 못했습니다. 다시 시도해 주세요.');
+  }
+}
 
-    function shuffle(arr) {
-        const a = arr.slice();
-        for (let i = a.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [a[i], a[j]] = [a[j], a[i]];
-        }
-        return a;
+/* ───────── 배경 미궁 ───────── */
+let mazeWidth = 0;
+function drawMaze(force) {
+  const canvas = $('maze');
+  const w = document.documentElement.clientWidth || window.innerWidth;   // 스크롤바를 뺀 너비
+  if (!force && w === mazeWidth) return;   // 주소창이 접히며 높이만 바뀔 때는 다시 그리지 않는다
+  mazeWidth = w;
+  const h = Math.max(window.innerHeight, (window.screen && screen.height) || 0);
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(w * dpr);
+  canvas.height = Math.round(h * dpr);
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+
+  // 깊이 우선 탐색으로 완전 미로를 만든다
+  const cell = w < 600 ? 26 : 34;
+  const cols = Math.ceil(w / cell) + 1, rows = Math.ceil(h / cell) + 1, total = cols * rows;
+  const seen = new Uint8Array(total), right = new Uint8Array(total).fill(1), down = new Uint8Array(total).fill(1);
+  const stack = [randInt(0, total - 1)];
+  seen[stack[0]] = 1;
+  while (stack.length) {
+    const cur = stack[stack.length - 1], x = cur % cols, y = (cur - x) / cols;
+    const next = [];
+    if (x > 0 && !seen[cur - 1]) next.push(cur - 1);
+    if (x < cols - 1 && !seen[cur + 1]) next.push(cur + 1);
+    if (y > 0 && !seen[cur - cols]) next.push(cur - cols);
+    if (y < rows - 1 && !seen[cur + cols]) next.push(cur + cols);
+    if (!next.length) { stack.pop(); continue; }
+    const n = pick(next);
+    if (n === cur + 1) right[cur] = 0;
+    else if (n === cur - 1) right[n] = 0;
+    else if (n === cur + cols) down[cur] = 0;
+    else down[n] = 0;
+    seen[n] = 1;
+    stack.push(n);
+  }
+  const color = getComputedStyle(document.body).getPropertyValue('--brass').trim() || '#c9a35b';
+  ctx.strokeStyle = color;
+  ctx.globalAlpha = 0.13;
+  ctx.lineWidth = 1;
+  ctx.lineCap = 'square';
+  ctx.beginPath();
+  for (let k = 0; k < total; k++) {
+    const x = (k % cols) * cell + 0.5, y = Math.floor(k / cols) * cell + 0.5;
+    if (right[k]) { ctx.moveTo(x + cell, y); ctx.lineTo(x + cell, y + cell); }
+    if (down[k]) { ctx.moveTo(x, y + cell); ctx.lineTo(x + cell, y + cell); }
+  }
+  ctx.stroke();
+}
+function glint() {
+  document.body.classList.add('glint');
+  setTimeout(() => document.body.classList.remove('glint'), 900);
+}
+function applySkin() {
+  document.body.dataset.skin = profile.skin;
+  drawMaze(true);
+}
+
+/* ───────── 화면 ───────── */
+function show(name, focus) {
+  document.querySelectorAll('.screen').forEach(s => { s.hidden = s.id !== 'screen-' + name; });
+  state.screen = name;
+  window.scrollTo(0, 0);
+  if (focus !== false) {
+    const target = document.querySelector('#screen-' + name + ' [data-focus]');
+    if (target) target.focus({ preventScroll: true });
+  }
+}
+function navigate(to) {
+  if (to === 'menu') renderMenu();
+  if (to === 'brief') renderBrief();
+  if (to === 'shop') renderShop();
+  if (to === 'credits') renderCredits();
+  show(to);
+}
+
+function renderMenu() {
+  $('menu-purse').innerHTML = purseHTML(profile.coins);
+  const s = profile.stats;
+  $('menu-stats').innerHTML = s.runs
+    ? [['탈출', s.clears + '회'], ['완벽 탈출', s.perfect + '회'], ['지나온 방', fmt(s.rooms) + '개']]
+        .map(([k, v]) => `<div class="stat"><span class="stat-k">${k}</span><span class="stat-v">${v}</span></div>`).join('')
+    : '<p class="stats-empty">아직 미궁에 들어간 기록이 없습니다.</p>';
+  renderAccount();
+}
+
+const GOOGLE_G = '<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
+
+function renderAccount() {
+  const slot = $('account-slot');
+  if (account.user) {
+    slot.innerHTML = `
+      <div class="menu-row">
+        <span class="ico ico-avatar" aria-hidden="true">${account.user.photo ? '<img alt="" referrerpolicy="no-referrer">' : '<svg><use href="#i-person"/></svg>'}</span>
+        <span class="row-text"><span class="row-label"></span><span class="row-sub"></span></span>
+        <button type="button" class="btn btn-text btn-sm" data-act="logout">로그아웃</button>
+      </div>`;
+    if (account.user.photo) slot.querySelector('img').src = account.user.photo;
+    slot.querySelector('.row-label').textContent = account.user.name;
+    slot.querySelector('.row-sub').textContent = SYNC_TEXT[account.sync] || '';
+    $('menu-who').textContent = account.user.name + ' 님';
+  } else {
+    slot.innerHTML = `
+      <button type="button" class="menu-row" data-act="login"${account.busy ? ' disabled' : ''}>
+        <span class="ico ico-google">${GOOGLE_G}</span>
+        <span class="row-text">
+          <span class="row-label">${account.busy ? '로그인하는 중…' : 'Google 계정으로 로그인'}</span>
+          <span class="row-sub">${FIREBASE_CONFIG ? '금화와 기록을 계정에 보관합니다' : '준비 중 · 지금은 이 기기에 저장됩니다'}</span>
+        </span>
+        <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
+      </button>`;
+    $('menu-who').textContent = '손님으로 플레이 중';
+  }
+}
+
+function renderBrief() {
+  const owned = profile.items.key;
+  state.extra = Math.max(0, Math.min(state.extra, owned, MAX_EXTRA_KEYS));
+  const max = Math.min(owned, MAX_EXTRA_KEYS);
+  $('loadout').innerHTML = `
+    <div class="loadout-row">
+      <svg aria-hidden="true"><use href="#i-key"/></svg>
+      <div><b>여분의 열쇠</b><small>보유 ${owned}개 · 한 번에 ${MAX_EXTRA_KEYS}개까지</small></div>
+      <div class="stepper">
+        <button type="button" data-act="extra-down" aria-label="여분의 열쇠 하나 덜 가져가기"${state.extra <= 0 ? ' disabled' : ''}>−</button>
+        <output aria-live="polite">${state.extra}</output>
+        <button type="button" data-act="extra-up" aria-label="여분의 열쇠 하나 더 가져가기"${state.extra >= max ? ' disabled' : ''}>+</button>
+      </div>
+    </div>
+    <div class="loadout-row">
+      <svg aria-hidden="true"><use href="#i-lens"/></svg>
+      <div><b>통찰의 렌즈</b><small>보유 ${profile.items.lens}개 · 방 안에서 사용</small></div>
+      <span class="auto-note">자동으로 챙김</span>
+    </div>`;
+}
+
+function renderShop() {
+  $('shop-purse').innerHTML = purseHTML(profile.coins);
+  $('wares-items').innerHTML = Object.entries(WARES).map(([id, w]) => {
+    const n = profile.items[id];
+    const full = n >= w.max, poor = profile.coins < w.price;
+    return `
+      <article class="frame ware">
+        <div class="ware-head">
+          <span class="ico" aria-hidden="true"><svg><use href="#i-${id}"/></svg></span>
+          <div><h3>${w.name}</h3><span class="owned">보유 ${n}개</span></div>
+        </div>
+        <p>${w.desc}</p>
+        <div class="ware-foot">
+          <span class="price"><svg aria-hidden="true"><use href="#i-coin"/></svg>${fmt(w.price)}</span>
+          <button type="button" class="btn btn-ghost btn-sm" data-act="buy" data-id="${id}"${full || poor ? ' disabled' : ''}>${full ? '가득 찼습니다' : poor ? '금화 부족' : '구입'}</button>
+        </div>
+      </article>`;
+  }).join('');
+  $('wares-skins').innerHTML = Object.entries(SKINS).map(([id, s]) => {
+    const owned = profile.skins.includes(id), using = profile.skin === id, poor = profile.coins < s.price;
+    let foot;
+    if (using) foot = '<span class="in-use">사용 중</span>';
+    else if (owned) foot = `<button type="button" class="btn btn-ghost btn-sm" data-act="equip" data-id="${id}">적용</button>`;
+    else foot = `<button type="button" class="btn btn-ghost btn-sm" data-act="buy" data-id="${id}"${poor ? ' disabled' : ''}>${poor ? '금화 부족' : '구입'}</button>`;
+    return `
+      <article class="frame ware">
+        <div class="swatch" aria-hidden="true">${s.swatch.map(c => `<span data-c="${c}"></span>`).join('')}</div>
+        <div class="ware-head"><div><h3>${s.name}</h3><span class="owned">${owned ? '보유' : '미보유'}</span></div></div>
+        <p>${s.desc}</p>
+        <div class="ware-foot">
+          <span class="price">${s.price ? `<svg aria-hidden="true"><use href="#i-coin"/></svg>${fmt(s.price)}` : '기본'}</span>
+          ${foot}
+        </div>
+      </article>`;
+  }).join('');
+  // 색 견본은 style 속성 대신 스크립트로 칠한다 (style 속성을 막는 보안 정책 대비)
+  document.querySelectorAll('#wares-skins .swatch span').forEach(el => { el.style.background = el.dataset.c; });
+}
+
+function buy(id) {
+  if (WARES[id]) {
+    const w = WARES[id];
+    if (profile.coins < w.price || profile.items[id] >= w.max) return;
+    profile.coins -= w.price;
+    profile.items[id] += 1;
+    commit();
+    toast(`${w.name}을(를) 샀습니다. 보유 ${profile.items[id]}개`);
+  } else if (SKINS[id]) {
+    const s = SKINS[id];
+    if (profile.skins.includes(id) || profile.coins < s.price) return;
+    profile.coins -= s.price;
+    profile.skins.push(id);
+    profile.skin = id;
+    commit();
+    applySkin();
+    toast(`${s.name} 테마를 사서 적용했습니다.`);
+  }
+  renderShop();
+}
+function equip(id) {
+  if (!profile.skins.includes(id)) return;
+  profile.skin = id;
+  commit();
+  applySkin();
+  renderShop();
+  toast(`${SKINS[id].name} 테마를 적용했습니다.`);
+}
+
+function renderCredits() {
+  const handmade = BANK.t1.length + BANK.t2.length + BANK.t3.length;
+  $('credit-numbers').innerHTML = [
+    ['직접 쓴 문제', handmade + '문항'], ['자동 생성 문제', GENERATORS.length + '종'], ['방', '5개'], ['테마', Object.keys(SKINS).length + '종'],
+  ].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+}
+
+/* ───────── 도전 ───────── */
+function makeRoom(item) {
+  const wrong = item.b
+    ? [{ text: item.b, type: 'bad' }, pick([{ text: item.v, type: 'converse' }, { text: item.i, type: 'inverse' }])]
+    : [{ text: item.v, type: 'converse' }, { text: item.i, type: 'inverse' }];
+  const notes = [];
+  if (item.b) notes.push(DEMORGAN);
+  if (item.n) notes.push(item.n);
+  return {
+    domain: item.d || '',
+    prop: item.p,
+    answer: item.c,
+    note: notes.join(' '),
+    options: shuffle([{ text: item.c, type: 'contra', correct: true }, ...wrong.map(w => ({ ...w, correct: false }))]),
+    status: null,
+    wrongHere: 0,
+    lensUsed: false,
+  };
+}
+function buildRooms() {
+  const t1 = shuffle(BANK.t1).slice(0, 2);
+  const t2pool = shuffle(BANK.t2), gens = shuffle(GENERATORS);
+  const t2 = [0, 1].map(k => (Math.random() < 0.5 ? gens[k]() : t2pool[k]));
+  return [...t1, ...t2, pick(BANK.t3)].map(makeRoom);
+}
+
+function enterMaze() {
+  const extra = Math.max(0, Math.min(state.extra, profile.items.key, MAX_EXTRA_KEYS));
+  if (extra) {
+    profile.items.key -= extra;
+    commit();
+  }
+  state.extra = Math.min(state.extra, profile.items.key);
+  state.run = {
+    rooms: buildRooms(), idx: 0, hp: BASE_KEYS + extra, maxHp: BASE_KEYS + extra,
+    wrong: 0, cleared: 0, earned: { correct: 0, firstTry: 0 }, locked: false, buttons: [], over: false,
+  };
+  renderRoom();
+  show('game');
+}
+
+function renderHud(hit) {
+  const run = state.run;
+  $('room-title').innerHTML = `방 <span class="num">${ROMAN[run.idx]}</span>`;
+  $('room-of').textContent = `/ ${ROMAN[run.rooms.length - 1]}`;
+  $('doors').innerHTML = run.rooms.map((r, k) => {
+    const cls = [r.status === 'ok' ? 'is-done' : '', r.status === 'fail' ? 'is-failed' : '', k === run.idx && !r.status ? 'is-current' : ''].join(' ').trim();
+    const label = r.status === 'ok' ? '통과' : r.status === 'fail' ? '실패' : k === run.idx ? '지금 방' : '남은 방';
+    return `<li class="${cls}" aria-label="방 ${ROMAN[k]} ${label}"></li>`;
+  }).join('');
+  const keys = $('keys');
+  keys.innerHTML = Array.from({ length: run.maxHp }, (_, k) =>
+    `<svg class="${k < run.hp ? '' : 'is-lost'}" aria-hidden="true"><use href="#i-key"/></svg>`).join('') +
+    `<span class="sr-only">남은 열쇠 ${run.hp}개</span>`;
+  if (hit) {
+    keys.classList.remove('hit');
+    void keys.offsetWidth;
+    keys.classList.add('hit');
+  }
+  $('run-purse').innerHTML = purseHTML(run.earned.correct + run.earned.firstTry, '+');
+}
+
+function renderRoom() {
+  const run = state.run;
+  const room = run.rooms[run.idx];
+  run.locked = false;
+  renderHud();
+  $('domain').textContent = room.domain;
+  $('domain').hidden = !room.domain;
+  $('prop').textContent = `“${room.prop}”`;
+  $('keyhole').classList.remove('is-open');
+
+  const box = $('choices');
+  box.innerHTML = '';
+  run.buttons = room.options.map((opt, k) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'choice';
+    b.innerHTML = `<span class="seal" aria-hidden="true">${SEALS[k]}</span><span class="choice-body"><span class="choice-text"></span><span class="tag" hidden></span></span>`;
+    b.querySelector('.choice-text').textContent = opt.text;
+    const t = TYPES[opt.type];
+    b.querySelector('.tag').textContent = t.form ? `${t.name} · ${t.form}` : t.name;
+    b.addEventListener('click', () => answer(b, opt));
+    box.appendChild(b);
+    return { b, opt };
+  });
+  const v = $('verdict');
+  v.hidden = true;
+  v.innerHTML = '';
+  resetAbandon();
+  updateLens();
+}
+
+function revealTag(b) { b.querySelector('.tag').hidden = false; }
+
+function answer(btn, opt) {
+  const run = state.run;
+  if (!run || run.locked || btn.disabled) return;
+  const room = run.rooms[run.idx];
+  btn.disabled = true;   // 같은 오답을 다시 눌러 열쇠를 또 잃지 않도록
+  revealTag(btn);
+
+  if (opt.correct) {
+    run.locked = true;
+    room.status = 'ok';
+    btn.classList.add('is-correct');
+    run.buttons.forEach(({ b }) => { b.disabled = true; revealTag(b); });
+    const first = room.wrongHere === 0;
+    run.earned.correct += REWARD.correct;
+    if (first) run.earned.firstTry += REWARD.firstTry;
+    run.cleared += 1;
+    $('keyhole').classList.add('is-open');
+    glint();
+    renderHud();
+    const last = run.idx === run.rooms.length - 1;
+    showVerdict({
+      kind: 'ok', mark: 'Apertum',
+      title: '정답! 논리 회로가 일치하여 잠금 장치가 해제되었습니다.',
+      desc: TYPES.contra.desc + (room.note ? ' ' + room.note : ''),
+      reward: REWARD.correct + (first ? REWARD.firstTry : 0),
+      bonus: first,
+      action: last ? '미궁 탈출하기' : '다음 방으로',
+      onAction: last ? () => finishRun('clear') : nextRoom,
+    });
+  } else {
+    run.hp -= 1;
+    run.wrong += 1;
+    room.wrongHere += 1;
+    btn.classList.add('is-wrong');
+    renderHud(true);
+    const t = TYPES[opt.type];
+    const form = t.form ? `(${t.form.replace(/ /g, ' ')})` : '';
+    const why = `고른 문장은 ‘${t.name}’${form}입니다. ${t.desc}`;
+    if (run.hp <= 0) {
+      run.locked = true;
+      room.status = 'fail';
+      // 열쇠를 모두 잃으면 정답을 점선으로 알려 준다
+      run.buttons.forEach(({ b, opt: o }) => {
+        b.disabled = true;
+        revealTag(b);
+        if (o.correct) b.classList.add('is-answer');
+      });
+      renderHud();
+      showVerdict({
+        kind: 'bad', mark: 'Clausum',
+        title: '오답! 잘못된 조건 논리로 기계 시스템이 오작동했습니다.',
+        desc: why + ' 열쇠를 모두 잃었습니다. 점선으로 표시된 보기가 올바른 대우입니다.',
+        action: '결과 보기',
+        onAction: () => finishRun('fail'),
+      });
+    } else {
+      showVerdict({
+        kind: 'bad', mark: 'Clausum',
+        title: '오답! 잘못된 조건 논리로 기계 시스템이 오작동했습니다.',
+        desc: why + ` 남은 열쇠는 ${run.hp}개입니다. 다른 열쇠를 골라 보세요.`,
+      });
+      $('choices').focus({ preventScroll: true });
     }
+  }
+  updateLens();
+}
 
-    function changeScreen(screenId) {
-        document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
-        document.getElementById(screenId).classList.add('active');
-        window.scrollTo(0, 0);
-    }
+function showVerdict({ kind, mark, title, desc, reward, bonus, action, onAction }) {
+  const v = $('verdict');
+  v.className = 'verdict ' + kind;
+  v.innerHTML = '';
+  const add = (tag, cls, text) => {
+    const el = document.createElement(tag);
+    el.className = cls;
+    el.textContent = text;
+    v.appendChild(el);
+    return el;
+  };
+  add('p', 'verdict-mark', mark);
+  add('p', 'verdict-title', title);
+  add('p', 'verdict-desc', desc);
+  if (reward) {
+    const r = document.createElement('p');
+    r.className = 'verdict-reward purse';
+    r.innerHTML = purseHTML(reward, '+') + (bonus ? '<small>첫 시도 보너스 포함</small>' : '');
+    v.appendChild(r);
+  }
+  let btn = null;
+  if (action) {
+    btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn btn-brass';
+    btn.textContent = action;
+    btn.addEventListener('click', onAction, { once: true });
+    v.appendChild(btn);
+  }
+  v.hidden = false;
+  void v.offsetWidth;
+  v.classList.add('pop');
+  revealInViewport(v);
+  if (btn) btn.focus({ preventScroll: true });
+}
 
-    function startGame() {
-        currentStage = 0;
-        hp = MAX_HP;
-        loadStage();
-        changeScreen('screen-game');
-        document.getElementById('panel-proposition').focus({ preventScroll: true });
-    }
+function nextRoom() {
+  const run = state.run;
+  if (!run || run.over) return;
+  run.idx += 1;
+  renderRoom();
+  window.scrollTo({ top: 0, behavior: scrollMode() });
+  $('room-title').focus({ preventScroll: true });
+}
 
-    function loadStage() {
-        locked = false;
-        document.getElementById('lbl-stage').innerText = currentStage + 1;
-        document.getElementById('lbl-total').innerText = stages.length;
-        document.getElementById('lbl-hp').innerText = hp;
+function updateLens() {
+  const run = state.run;
+  const btn = $('btn-lens');
+  $('lens-count').textContent = profile.items.lens;
+  if (!run) return;
+  const room = run.rooms[run.idx];
+  const targets = run.buttons.filter(({ b, opt }) => !opt.correct && !b.disabled);
+  btn.disabled = profile.items.lens <= 0 || run.locked || room.lensUsed || targets.length === 0;
+}
+function useLens() {
+  const run = state.run;
+  if (!run || run.locked) return;
+  const room = run.rooms[run.idx];
+  const targets = run.buttons.filter(({ b, opt }) => !opt.correct && !b.disabled);
+  if (room.lensUsed || profile.items.lens <= 0 || !targets.length) return;
+  const { b } = pick(targets);
+  b.disabled = true;
+  b.classList.add('is-struck');
+  revealTag(b);
+  room.lensUsed = true;
+  profile.items.lens -= 1;
+  commit();
+  updateLens();
+  toast('통찰의 렌즈가 오답 하나를 지웠습니다.');
+}
 
-        const data = stages[currentStage];
-        document.getElementById('box-proposition').innerText = `“${data.prop}”`;
+function resetAbandon() {
+  const btn = $('btn-abandon');
+  clearTimeout(btn._timer);
+  btn.dataset.armed = '';
+  btn.textContent = '포기하기';
+}
+function onAbandon() {
+  const btn = $('btn-abandon');
+  if (btn.dataset.armed === '1') { resetAbandon(); finishRun('abandon'); return; }
+  btn.dataset.armed = '1';
+  btn.textContent = '한 번 더 누르면 미궁을 나갑니다';
+  clearTimeout(btn._timer);
+  btn._timer = setTimeout(resetAbandon, 3000);
+}
 
-        // 보기 섞기 (Fisher–Yates)
-        const options = shuffle([
-            { text: data.ans, type: "contra", isCorrect: true },
-            ...data.wrongs.map(w => ({ text: w.text, type: w.type, isCorrect: false }))
-        ]);
+const RESULT_COPY = {
+  perfect: { mark: 'Exitus', title: '미궁 완벽 탈출!', desc: '대우 명제의 완벽한 직관력을 증명하셨습니다. 당신의 완벽한 논리력 앞에서는 어떤 미궁의 결계도 무의미합니다.' },
+  clear: { mark: 'Exitus', title: '미궁 탈출 성공!', desc: '대우의 열쇠로 다섯 개의 문을 모두 열었습니다. 다음에는 열쇠를 하나도 잃지 않고 빠져나와 보세요.' },
+  fail: { mark: 'Clausum', title: '탈락 (논리 붕괴)', desc: '남은 기회를 모두 잃어 미궁 속으로 영원히 격리되었습니다. 대우 규칙(~q → ~p)을 다시 한 번 재정비해 보세요.' },
+  abandon: { mark: 'Recessus', title: '미궁에서 물러났습니다', desc: '지나온 방에서 모은 금화는 그대로 받았습니다. 준비가 되면 다시 도전하세요.' },
+};
 
-        const grid = document.getElementById('grid-options');
-        grid.innerHTML = '';
-        optionButtons = [];
+function finishRun(kind) {
+  const run = state.run;
+  if (!run || run.over) return;
+  run.over = true;
+  const perfect = kind === 'clear' && run.wrong === 0;
+  const lines = [];
+  let total = 0;
+  if (run.earned.correct) { lines.push(`정답 ${run.earned.correct}`); total += run.earned.correct; }
+  if (run.earned.firstTry) { lines.push(`첫 시도 ${run.earned.firstTry}`); total += run.earned.firstTry; }
+  if (kind === 'clear') { lines.push(`탈출 ${REWARD.clear}`); total += REWARD.clear; }
+  if (perfect) { lines.push(`완벽 ${REWARD.perfect}`); total += REWARD.perfect; }
 
-        options.forEach(opt => {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'option-btn';
+  profile.coins += total;
+  profile.stats.runs += 1;
+  profile.stats.rooms += run.cleared;
+  if (kind === 'clear') profile.stats.clears += 1;
+  if (perfect) profile.stats.perfect += 1;
+  commit();
 
-            const text = document.createElement('span');
-            text.className = 'opt-text';
-            text.innerText = opt.text;
+  const copy = RESULT_COPY[perfect ? 'perfect' : kind];
+  $('result-mark').textContent = copy.mark;
+  $('result-title').textContent = copy.title;
+  $('result-desc').textContent = copy.desc;
+  $('result-ledger').innerHTML = [
+    ['통과한 방', `${run.cleared} / ${run.rooms.length}`],
+    ['남은 열쇠', `${Math.max(run.hp, 0)}개`],
+    ['오답', `${run.wrong}회`],
+    ['받은 금화', `+${fmt(total)}`],
+  ].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+  $('result-breakdown').textContent = lines.length ? lines.join(' · ') : '이번에는 받은 금화가 없습니다.';
 
-            // 보기의 정체(대우·역·이)는 답을 고른 뒤에만 공개
-            const tag = document.createElement('span');
-            tag.className = 'opt-tag';
-            tag.innerText = `${TYPES[opt.type].name} · ${TYPES[opt.type].form}`;
-            tag.hidden = true;
+  const review = $('review');
+  review.innerHTML = '';
+  run.rooms.forEach((r, k) => {
+    if (!r.status) return;
+    const li = document.createElement('li');
+    li.innerHTML = `<div class="r-head"><span>방 ${ROMAN[k]}</span><span class="${r.status === 'ok' ? 'r-ok' : 'r-fail'}">${r.status === 'ok' ? '통과' : '실패'}</span></div><p class="r-prop"></p><p class="r-ans"><b>대우</b> <span></span></p>`;
+    li.querySelector('.r-prop').textContent = (r.domain ? r.domain + ', ' : '') + r.prop;
+    li.querySelector('.r-ans span').textContent = r.answer;
+    review.appendChild(li);
+  });
+  $('review-wrap').hidden = !review.children.length;
+  $('review-wrap').open = kind === 'fail';
 
-            btn.append(text, tag);
-            btn.onclick = () => handleAnswer(btn, opt);
-            grid.appendChild(btn);
-            optionButtons.push({ btn, opt });
-        });
+  state.run = null;
+  show('result');
+}
 
-        const feedback = document.getElementById('feedback');
-        feedback.hidden = true;
-        feedback.innerHTML = '';
-    }
+/* ───────── 이벤트 ───────── */
+document.addEventListener('click', e => {
+  const go = e.target.closest('[data-go]');
+  if (go && !go.disabled) { navigate(go.dataset.go); return; }
+  const act = e.target.closest('[data-act]');
+  if (!act || act.disabled) return;
+  switch (act.dataset.act) {
+    case 'login': login(); break;
+    case 'logout': logout(); break;
+    case 'enter': enterMaze(); break;
+    case 'extra-down': state.extra = Math.max(0, state.extra - 1); renderBrief(); break;
+    case 'extra-up': state.extra = Math.min(state.extra + 1, profile.items.key, MAX_EXTRA_KEYS); renderBrief(); break;
+    case 'lens': useLens(); break;
+    case 'abandon': onAbandon(); break;
+    case 'buy': buy(act.dataset.id); break;
+    case 'equip': equip(act.dataset.id); break;
+  }
+});
 
-    function revealTag(btn) {
-        btn.querySelector('.opt-tag').hidden = false;
-    }
+let resizeTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => drawMaze(false), 200);
+});
 
-    function lockOptions() {
-        locked = true;
-        document.querySelectorAll('#grid-options .option-btn').forEach(b => { b.disabled = true; });
-    }
-
-    function handleAnswer(btn, opt) {
-        if (locked || btn.disabled) return;
-        btn.disabled = true;   // 같은 오답을 다시 눌러 기회를 또 잃지 않도록
-        revealTag(btn);
-
-        if (opt.isCorrect) {
-            btn.classList.add('is-correct');
-            lockOptions();
-            document.querySelectorAll('#grid-options .option-btn').forEach(revealTag);
-            const note = stages[currentStage].note;
-            const isLast = currentStage === stages.length - 1;
-            showFeedback(
-                'ok',
-                "🎯 정답! 논리 회로가 일치하여 잠금 장치가 해제되었습니다.",
-                TYPES.contra.desc + (note ? ' ' + note : ''),
-                isLast ? "🏁 미궁 탈출하기" : "다음 방으로 →",
-                nextStage
-            );
-        } else {
-            hp--;
-            btn.classList.add('is-wrong');
-            document.getElementById('lbl-hp').innerText = hp;
-            const hpBox = document.getElementById('hp-box');
-            hpBox.classList.remove('hit');
-            void hpBox.offsetWidth;   // 애니메이션 재시작
-            hpBox.classList.add('hit');
-
-            const t = TYPES[opt.type];
-            const why = `고른 문장은 '${t.name}'(${t.form.replace(/ /g, ' ')})입니다. ${t.desc}`;   // 논리식이 줄 중간에서 끊기지 않게
-            if (hp <= 0) {
-                lockOptions();
-                // 기회를 모두 잃으면 정답을 표시해 무엇이 대우였는지 알려 준다
-                optionButtons.forEach(({ btn: b, opt: o }) => {
-                    revealTag(b);
-                    if (o.isCorrect) b.classList.add('is-answer');
-                });
-                showFeedback(
-                    'bad',
-                    "💥 오답! 잘못된 조건 논리로 기계 시스템이 오작동했습니다.",
-                    why + " 남은 기회를 모두 잃었습니다. 점선으로 표시된 보기가 올바른 대우입니다.",
-                    "결과 보기",
-                    () => endGame(false)
-                );
-            } else {
-                showFeedback(
-                    'bad',
-                    "💥 오답! 잘못된 조건 논리로 기계 시스템이 오작동했습니다.",
-                    why + ` 남은 기회는 ${hp}번입니다. 다른 열쇠를 골라 보세요.`
-                );
-                // 누른 보기가 비활성화되면서 포커스를 잃으므로, 키보드로 바로 다른 보기를 고를 수 있게 옮겨 둠
-                document.getElementById('grid-options').focus({ preventScroll: true });
-            }
-        }
-    }
-
-    function showFeedback(kind, title, desc, actionLabel, onAction) {
-        const box = document.getElementById('feedback');
-        box.className = 'feedback ' + kind;
-        box.innerHTML = '';
-
-        const titleEl = document.createElement('p');
-        titleEl.className = 'feedback-title';
-        titleEl.innerText = title;
-        const descEl = document.createElement('p');
-        descEl.className = 'feedback-desc';
-        descEl.innerText = desc;
-        box.append(titleEl, descEl);
-
-        let actionBtn = null;
-        if (actionLabel) {
-            actionBtn = document.createElement('button');
-            actionBtn.type = 'button';
-            actionBtn.className = 'action-btn';
-            actionBtn.innerText = actionLabel;
-            actionBtn.addEventListener('click', onAction, { once: true });
-            box.appendChild(actionBtn);
-        }
-
-        box.hidden = false;
-        void box.offsetWidth;   // 애니메이션 재시작
-        box.classList.add('pop');
-        revealInViewport(box);
-        if (actionBtn) actionBtn.focus({ preventScroll: true });
-    }
-
-    function nextStage() {
-        currentStage++;
-        if (currentStage >= stages.length) {
-            endGame(true);
-        } else {
-            loadStage();
-            window.scrollTo({ top: 0, behavior: scrollMode() });
-            document.getElementById('panel-proposition').focus({ preventScroll: true });
-        }
-    }
-
-    function endGame(isSuccess) {
-        changeScreen('screen-result');
-        const icon = document.getElementById('result-icon');
-        const title = document.getElementById('result-title');
-        const desc = document.getElementById('result-desc');
-
-        if(isSuccess) {
-            icon.innerText = "👑";
-            title.innerText = "미궁 완벽 탈출!";
-            desc.innerText = "대우 명제의 완벽한 직관력을 증명하셨습니다.\n당신의 완벽한 논리력 앞에서는 어떤 미궁의 결계도 무의미합니다.";
-        } else {
-            icon.innerText = "💀";
-            title.innerText = "탈락 (논리 붕괴)";
-            desc.innerText = "남은 기회를 모두 잃어 미궁 속으로 영원히 격리되었습니다.\n대우 규칙(~q → ~p)을 다시 한 번 재정비해보세요.";
-        }
-    }
-
-    document.getElementById('btn-start').addEventListener('click', startGame);
-    document.getElementById('btn-restart').addEventListener('click', startGame);
+function init() {
+  profile = readLocal('guest');
+  applySkin();
+  renderMenu();
+  show('menu', false);
+  initAuth();
+}
+init();
 </script>
 </body>
 </html>
