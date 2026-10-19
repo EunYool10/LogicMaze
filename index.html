@@ -9,6 +9,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@500;700;900&display=swap">
@@ -265,7 +266,47 @@ div.menu-row { cursor: default; }
   .menu-row:hover:not(:disabled) { background: linear-gradient(90deg, rgba(var(--brass-rgb), 0.09), transparent 75%); }
   .menu-row:hover:not(:disabled) .chev { transform: translateX(4px); }
 }
-.colophon { margin: 2px 0 0; font-size: 12px; letter-spacing: 0.08em; color: var(--mute); }
+.consent { margin: 0; font-size: 13px; color: var(--mute); }
+.inline-link { padding: 0; border: 0; background: none; font: inherit; color: var(--brass-hi); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.menu-footer {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 20px;
+  margin-top: clamp(28px, 5vh, 52px); padding-top: 18px; border-top: 1px solid var(--hair); font-size: 14px;
+}
+.link-btn { min-height: 40px; padding: 6px 2px; border: 0; background: none; font-weight: 600; color: var(--mute); cursor: pointer; text-underline-offset: 4px; }
+.install-chip {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 6px 14px; cursor: pointer;
+  font-weight: 700; color: var(--brass-hi); background: rgba(var(--brass-rgb), 0.1); border: 1px solid var(--hair-strong); border-radius: 999px;
+}
+.install-chip svg { width: 16px; height: 16px; }
+.version { font-family: var(--latin); font-size: 15px; font-weight: 700; letter-spacing: 0.06em; color: var(--mute); }
+@media (hover: hover) {
+  .link-btn:hover { color: var(--bone); text-decoration: underline; }
+  .install-chip:hover { background: rgba(var(--brass-rgb), 0.2); }
+}
+
+/* ───────── 안내 문서 (게임 안내 · 패치노트 · 약관 · 의견) ───────── */
+.doc-meta { margin: 0; font-size: 14px; color: var(--mute); }
+.doc-sec { padding: 18px 0; border-top: 1px solid var(--hair); }
+.doc .story + .doc-sec, .doc .doc-meta + .doc-sec, .doc .h1 + .doc-sec { margin-top: 18px; }
+.doc-sec h3 { margin: 0 0 8px; font-family: var(--serif); font-size: 17px; color: var(--brass-hi); }
+.doc-sec ul { display: grid; gap: 6px; margin: 0; padding-left: 20px; font-size: 15px; color: var(--bone-2); }
+.doc-dl { display: grid; gap: 10px; margin: 0; }
+.doc-dl > div { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 12px; }
+.doc-dl dt { font-family: var(--serif); font-weight: 700; }
+.doc-dl dd { margin: 0; font-size: 15px; color: var(--bone-2); }
+.patch-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; margin: 0 0 8px; }
+.patch-v { font-family: var(--latin); font-size: 21px; font-weight: 700; color: var(--brass-hi); }
+.patch-date { font-size: 13px; color: var(--mute); }
+.field-label { display: block; margin: 20px 0 8px; font-size: 14px; font-weight: 600; color: var(--bone-2); }
+.select, .textarea {
+  width: 100%; padding: 12px 14px; font: inherit; font-size: 16px; color: var(--bone);
+  background: rgba(var(--vault-rgb), 0.7); border: 1px solid var(--hair-strong); border-radius: 2px;
+}
+.select option { color: var(--bone); background: var(--vault); }
+.textarea { display: block; min-height: 150px; line-height: 1.65; resize: vertical; }
+.select:focus, .textarea:focus { outline: none; border-color: var(--brass); box-shadow: 0 0 0 3px rgba(var(--brass-rgb), 0.18); }
+.counter { margin: 6px 0 0; text-align: right; font-size: 13px; color: var(--mute); font-variant-numeric: tabular-nums; }
+@media (max-width: 560px) { .doc-dl > div { grid-template-columns: 1fr; gap: 2px; } }
 
 .purse { display: inline-flex; align-items: center; gap: 7px; color: var(--brass-hi); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .purse svg { width: 18px; height: 18px; color: var(--brass); }
@@ -443,6 +484,7 @@ div.menu-row { cursor: default; }
 .work-name { display: block; font-family: var(--serif); font-size: 17px; font-weight: 700; }
 .work-sub { display: block; font-size: 13.5px; color: var(--mute); }
 .work-go { width: 18px; height: 18px; color: var(--brass); transition: transform .25s ease; }
+.works-note { margin: 12px 0 0; font-size: 13.5px; text-align: left; color: var(--mute); }
 @media (hover: hover) {
   .work:hover { border-color: var(--brass); background: rgba(var(--brass-rgb), 0.08); }
   .work:hover .work-go { transform: translate(2px, -2px); }
@@ -495,6 +537,7 @@ div.menu-row { cursor: default; }
   <symbol id="i-scroll" viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="17" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
   <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 20c1.2-3.6 4-5.4 7-5.4s5.8 1.8 7 5.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
   <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-install" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v7M9 11.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 1 0 0 17c1.2 0 1.8-.8 1.6-1.8-.3-1.3.5-2.3 1.8-2.3H18a2.5 2.5 0 0 0 2.5-2.6A8.6 8.6 0 0 0 12 3.5Z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="11" r="1.2" fill="currentColor"/><circle cx="11.5" cy="7.8" r="1.2" fill="currentColor"/><circle cx="15.5" cy="9" r="1.2" fill="currentColor"/></symbol>
 </svg>
@@ -541,8 +584,194 @@ div.menu-row { cursor: default; }
           </button>
           <div id="account-slot"></div>
         </div>
-        <p class="colophon">논리 미궁 · 2.0</p>
+        <p class="consent" id="consent" hidden>로그인하면 <button type="button" class="inline-link" data-go="terms">이용약관 · 개인정보 처리방침</button>에 동의하는 것으로 봅니다.</p>
       </nav>
+    </div>
+    <footer class="menu-footer" aria-label="안내">
+      <button type="button" class="link-btn" data-go="guide">게임 안내</button>
+      <button type="button" class="link-btn" data-go="patch">패치노트</button>
+      <button type="button" class="link-btn" data-go="credits">크레딧</button>
+      <button type="button" class="link-btn" data-go="feedback">의견 보내기</button>
+      <button type="button" class="link-btn" data-go="terms">약관 · 개인정보</button>
+      <button type="button" class="install-chip" id="btn-install" data-act="install" hidden><svg aria-hidden="true"><use href="#i-install"/></svg>앱으로 설치</button>
+      <span class="version" id="app-version"></span>
+    </footer>
+  </section>
+
+  <!-- 게임 안내 -->
+  <section class="screen narrow" id="screen-guide" aria-labelledby="guide-title" hidden>
+    <div class="frame pad doc">
+      <p class="eyebrow">Instructio</p>
+      <h2 class="h1" id="guide-title" tabindex="-1" data-focus>게임 안내</h2>
+      <section class="doc-sec">
+        <h3>게임 방법</h3>
+        <ul>
+          <li>방마다 나오는 명제를 읽고, 질문에 맞는 보기를 고르면 문이 열립니다. 방은 모두 다섯 개입니다.</li>
+          <li>열쇠 3개로 시작하고, 틀릴 때마다 하나를 잃습니다. 열쇠를 모두 잃으면 탈락입니다.</li>
+          <li>답을 고르면 보기마다 해설이 나오고, 결과 화면의 복습 노트에서 다시 볼 수 있습니다.</li>
+        </ul>
+      </section>
+      <section class="doc-sec">
+        <h3>방의 종류</h3>
+        <dl class="doc-dl">
+          <div><dt>대우</dt><dd>원래 명제 p → q의 대우 ~q → ~p를 고릅니다. 대우는 원래 명제와 참·거짓이 언제나 같습니다.</dd></div>
+          <div><dt>역</dt><dd>가정과 결론의 자리만 바꾼 q → p를 고릅니다.</dd></div>
+          <div><dt>부정</dt><dd>‘모든’ ↔ ‘어떤’, ‘그리고’ ↔ ‘또는’처럼 바꿔 명제의 부정을 고릅니다.</dd></div>
+          <div><dt>필요·충분조건</dt><dd>p ⇒ q만 참이면 충분조건, q ⇒ p만 참이면 필요조건, 둘 다 참이면 필요충분조건입니다.</dd></div>
+          <div><dt>반례</dt><dd>가정은 만족하지만 결론은 만족하지 않는 예를 고릅니다. 반례가 하나라도 있으면 명제는 거짓입니다.</dd></div>
+        </dl>
+      </section>
+      <section class="doc-sec">
+        <h3>금화와 물건</h3>
+        <ul>
+          <li>정답 10, 첫 시도 +5, 탈출 +30, 열쇠를 하나도 잃지 않으면 +20 금화를 받습니다.</li>
+          <li>여분의 열쇠 · 보호의 인장 · 불사조 깃털 · 지혜의 촛대는 입장 전에 골라 가져가고, 통찰의 렌즈는 방 안에서 씁니다.</li>
+          <li>금화와 물건은 게임 안에서만 쓰이고 돈으로 바꿀 수 없습니다.</li>
+        </ul>
+      </section>
+      <section class="doc-sec">
+        <h3>기록 저장</h3>
+        <ul>
+          <li>로그인하지 않으면 이 기기의 브라우저에만 저장됩니다. 브라우저 데이터를 지우면 사라질 수 있습니다.</li>
+          <li>Google 계정으로 로그인하면 계정에 저장되어 다른 기기에서도 이어서 할 수 있습니다. 처음 로그인할 때 이 기기의 손님 기록이 계정으로 옮겨집니다.</li>
+        </ul>
+      </section>
+      <section class="doc-sec">
+        <h3>알아 두세요</h3>
+        <ul>
+          <li>문제는 고등학교 1학년 공통수학 「집합과 명제」 범위에서 나옵니다. 교육과정에서 다루지 않는 명제의 ‘이’는 나오지 않습니다.</li>
+          <li>무료로 운영하는 게임이라 내용이 바뀌거나 잠시 멈출 수 있습니다. 새 버전이 나오면 새로고침하면 됩니다.</li>
+          <li>문제에 오류가 있거나 궁금한 점이 있으면 ‘의견 보내기’로 알려 주세요.</li>
+        </ul>
+      </section>
+      <div class="actions"><button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button></div>
+    </div>
+  </section>
+
+  <!-- 패치노트 -->
+  <section class="screen narrow" id="screen-patch" aria-labelledby="patch-title" hidden>
+    <div class="frame pad doc">
+      <p class="eyebrow">Annales</p>
+      <h2 class="h1" id="patch-title" tabindex="-1" data-focus>패치노트</h2>
+      <div id="patch-list"></div>
+      <div class="actions"><button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button></div>
+    </div>
+  </section>
+
+  <!-- 의견 보내기 -->
+  <section class="screen narrow" id="screen-feedback" aria-labelledby="feedback-title" hidden>
+    <div class="frame pad doc">
+      <p class="eyebrow">Epistula</p>
+      <h2 class="h1" id="feedback-title" tabindex="-1" data-focus>의견 보내기</h2>
+      <p class="story">버그, 문제 오류, 아이디어, 계정 기록 삭제 요청을 보내 주세요. 보낸 내용은 운영진만 봅니다.</p>
+      <div id="feedback-form">
+        <label class="field-label" for="fb-category">종류</label>
+        <select id="fb-category" class="select">
+          <option value="bug">버그 신고</option>
+          <option value="problem">문제 오류</option>
+          <option value="idea">아이디어</option>
+          <option value="delete">계정 기록 삭제 요청</option>
+          <option value="etc">기타</option>
+        </select>
+        <label class="field-label" for="fb-text">내용</label>
+        <textarea id="fb-text" class="textarea" maxlength="1000" rows="6" placeholder="어느 방에서 무엇이 어떻게 됐는지 적어 주세요."></textarea>
+        <p class="counter"><span id="fb-count">0</span> / 1000</p>
+        <div class="actions">
+          <button type="button" class="btn btn-brass" data-act="send-feedback">보내기</button>
+          <button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button>
+        </div>
+      </div>
+      <div id="feedback-login" hidden>
+        <p class="doc-meta">장난 글을 막기 위해 의견은 Google 계정으로 로그인한 뒤에 보낼 수 있습니다.</p>
+        <div class="actions">
+          <button type="button" class="btn btn-brass" data-act="login">Google 계정으로 로그인</button>
+          <button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 이용약관 · 개인정보 처리방침 -->
+  <section class="screen narrow" id="screen-terms" aria-labelledby="terms-title" hidden>
+    <div class="frame pad doc">
+      <p class="eyebrow">Leges</p>
+      <h2 class="h1" id="terms-title" tabindex="-1" data-focus>이용약관 · 개인정보 처리방침</h2>
+      <p class="doc-meta">시행일 2026년 10월 19일 · 로그인하면 아래 내용에 동의하는 것으로 봅니다. 로그인하지 않아도 모든 기능을 쓸 수 있습니다.</p>
+      <section class="doc-sec">
+        <h3>1. 어떤 서비스인가요</h3>
+        <ul>
+          <li>논리 미궁(이하 “서비스”)은 은율이 만들어 무료로 운영하는 명제 논리 퀴즈 게임입니다.</li>
+          <li>광고와 결제가 없습니다. 금화와 상점 물건은 게임 안에서만 쓰이고 돈으로 바꿀 수 없습니다.</li>
+        </ul>
+      </section>
+      <section class="doc-sec">
+        <h3>2. 계정</h3>
+        <ul>
+          <li>로그인은 Google 계정으로만 합니다. 비밀번호는 Google이 처리하고, 서비스는 받지도 저장하지도 않습니다.</li>
+          <li>내 계정을 남과 같이 쓰거나 남의 계정으로 로그인하면 안 됩니다.</li>
+          <li>만 14세 미만이라면 보호자의 동의를 받은 뒤 로그인해 주세요.</li>
+        </ul>
+      </section>
+      <section class="doc-sec">
+        <h3>3. 모으는 정보와 쓰는 곳</h3>
+        <ul>
+          <li>로그인하면: Google 계정의 고유 번호, 이메일, 이름, 프로필 사진 주소를 계정 확인과 화면 표시에 씁니다. 이메일은 관리자 계정인지 확인할 때만 쓰고 게임 기록에 넣지 않습니다.</li>
+          <li>게임 기록: 금화, 가진 물건과 테마, 판 수 · 탈출 · 완벽 탈출 · 지나온 방 수, 마지막 저장 시각.</li>
+          <li>의견 보내기: 보낸 내용과 종류, 계정 고유 번호, 게임 버전, 기기 정보(브라우저 · 운영체제 종류, 화면 크기), 보낸 시각.</li>
+          <li>로그인하지 않으면 모든 기록은 이 기기의 브라우저 저장소에만 있습니다. 광고 추적 쿠키는 쓰지 않습니다.</li>
+        </ul>
+      </section>
+      <section class="doc-sec">
+        <h3>4. 다른 사람에게 보이는 정보</h3>
+        <ul>
+          <li>다른 사람에게 공개되는 정보는 없습니다. 내 기록은 나만 읽고 쓸 수 있고, 보낸 의견은 운영진만 봅니다.</li>
+        </ul>
+      </section>
+      <section class="doc-sec">
+        <h3>5. 저장하는 곳과 함께 쓰는 서비스</h3>
+        <ul>
+          <li>계정과 클라우드 기록, 보낸 의견: Google Firebase(Authentication, Cloud Firestore). 기록은 서울 지역 서버에 저장합니다.</li>
+          <li>게임 화면: GitHub Pages.</li>
+          <li>글꼴: Google Fonts.</li>
+          <li>개인정보를 팔거나 광고에 쓰지 않습니다.</li>
+        </ul>
+      </section>
+      <section class="doc-sec">
+        <h3>6. 보관 기간과 지우기</h3>
+        <ul>
+          <li>클라우드 기록은 계정을 쓰는 동안 보관합니다.</li>
+          <li>이 기기의 기록은 브라우저 데이터를 지우면 함께 지워집니다.</li>
+          <li>계정 기록을 모두 지우고 싶다면 ‘의견 보내기’에서 ‘계정 기록 삭제 요청’을 보내 주세요. 확인한 뒤 지워 드립니다.</li>
+        </ul>
+      </section>
+      <section class="doc-sec">
+        <h3>7. 공정한 플레이</h3>
+        <ul>
+          <li>금화나 기록 조작, 버그 악용, 데이터베이스를 직접 건드리는 행동은 하면 안 됩니다.</li>
+          <li>이상한 기록은 운영진이 지울 수 있습니다.</li>
+        </ul>
+      </section>
+      <section class="doc-sec">
+        <h3>8. 운영진</h3>
+        <ul>
+          <li>운영진 계정은 확인과 테스트를 위해 상점 물건을 무료로 받을 수 있습니다.</li>
+        </ul>
+      </section>
+      <section class="doc-sec">
+        <h3>9. 서비스 변경과 책임</h3>
+        <ul>
+          <li>배우면서 만드는 무료 서비스라서 내용이 바뀌거나 잠시 멈출 수 있습니다.</li>
+          <li>기록이 사라지지 않게 노력하지만, 데이터가 사라져도 보상해 드리기는 어렵습니다.</li>
+        </ul>
+      </section>
+      <section class="doc-sec">
+        <h3>10. 문의와 약관 변경</h3>
+        <ul>
+          <li>궁금한 점, 기록 삭제 요청, 신고는 ‘의견 보내기’로 보내 주세요.</li>
+          <li>약관이 바뀌면 패치노트로 알려 드립니다. 바뀐 뒤에도 계속 이용하면 바뀐 약관에 동의한 것으로 봅니다.</li>
+        </ul>
+      </section>
+      <div class="actions"><button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button></div>
     </div>
   </section>
 
@@ -554,7 +783,7 @@ div.menu-row { cursor: default; }
       <p class="story">당신은 꼬여 있는 명제 원리로 작동하는 미궁에 갇혔습니다. 문을 열려면 방마다 제시되는 원래 명제의 <b>대우(Contrapositive)</b>를 올바르게 직관해, 참인 논리 열쇠를 맞춰야 합니다.</p>
       <dl class="rules">
         <div><dt>열쇠</dt><dd>3개로 시작합니다. 틀릴 때마다 하나를 잃고, 모두 잃으면 미궁에 갇힙니다.</dd></div>
-        <div><dt>방</dt><dd>모두 다섯 개입니다. 대우를 찾는 방을 중심으로 역·이 찾기, 부정, 필요·충분조건, 반례 방이 섞여 나오고, 마지막 방은 ‘그리고’·‘또는’이 섞인 명제입니다. 문제는 매번 무작위로 바뀝니다.</dd></div>
+        <div><dt>방</dt><dd>모두 다섯 개입니다. 대우를 찾는 방을 중심으로 역 찾기, 부정, 필요·충분조건, 반례 방이 섞여 나오고, 마지막 방은 ‘그리고’·‘또는’이 섞인 명제입니다. 문제는 매번 무작위로 바뀝니다.</dd></div>
         <div><dt>금화</dt><dd>정답 10 · 첫 시도 +5 · 탈출 +30 · 열쇠를 하나도 잃지 않으면 +20</dd></div>
       </dl>
       <h3 class="h3">가져갈 물건</h3>
@@ -649,7 +878,6 @@ div.menu-row { cursor: default; }
       <div class="roll">
         <div><span class="role-name">제작</span><span class="role-people">은율</span></div>
         <div><span class="role-name">디자인</span><span class="role-people">은율</span></div>
-        <div><span class="role-name">출제 범위</span><span class="role-people small">고등학교 수학 「명제」 — 역 · 이 · 대우, 부정, 필요·충분조건, 반례, 드모르간 법칙</span></div>
       </div>
       <h3 class="section-label">숫자로 보면</h3>
       <dl class="numbers" id="credit-numbers"></dl>
@@ -668,6 +896,7 @@ div.menu-row { cursor: default; }
           <svg class="work-go" aria-hidden="true"><use href="#i-external"/></svg><span class="sr-only">(새 창)</span>
         </a>
       </div>
+      <p class="works-note">SchoolFix와 계란이의 모험은 무료 서버를 쓰고 있어서, 처음 열 때 잠든 서버를 깨우느라 30~40초쯤 걸릴 수 있습니다. 화면이 뜰 때까지 조금만 기다려 주세요.</p>
       <p class="thanks">플레이해주셔서 감사합니다!!</p>
       <div class="actions"><button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button></div>
     </div>
@@ -692,6 +921,32 @@ const FIREBASE_CONFIG = {
 };
 const FIREBASE_VERSION = '10.12.2';
 
+// 패치노트 (맨 위가 지금 버전). 약관을 바꾸면 여기에도 적는다.
+const PATCH_NOTES = [
+  { v: '3.1.0', date: '2026년 10월 19일', items: [
+    '문제 범위를 고등학교 1학년 공통수학 「집합과 명제」에 맞췄습니다. 교육과정에서 다루지 않는 명제의 ‘이’는 더 이상 나오지 않습니다.',
+    '‘이 찾기’ 방을 없애고, 대우 방의 함정 보기를 ‘자리는 바꿨지만 한쪽만 부정한 문장’으로 바꿨습니다.',
+    '게임 안내, 패치노트, 의견 보내기, 이용약관 · 개인정보 처리방침을 추가했습니다.',
+    '홈 화면에 앱으로 설치할 수 있습니다.',
+    '크레딧을 정리했습니다.',
+  ] },
+  { v: '3.0.0', date: '2026년 10월 19일', items: [
+    '상점에 보호의 인장, 불사조 깃털, 지혜의 촛대와 새 테마 흑요석 전당 · 호박 공방이 들어왔습니다.',
+    '새 방: 역 찾기, 부정, 필요 · 충분조건, 반례. 대우 문제도 18개 늘었습니다.',
+    '크레딧에 은율이의 다른 작품 링크를 달았습니다.',
+  ] },
+  { v: '2.2.0', date: '2026년 10월 19일', items: [
+    '방이 바뀐 직후 연달아 눌러도 다음 방의 보기가 눌리지 않습니다.',
+    '로그아웃하거나 창을 닫을 때 마지막 기록을 먼저 계정에 저장합니다.',
+    '관리자 계정은 상점 물건을 무료로 받을 수 있습니다.',
+    '큰 제목과 로그인 버튼 글자가 잘리던 문제를 고치고, 아이콘을 새로 만들었습니다.',
+  ] },
+  { v: '2.1.0', date: '2026년 10월 19일', items: ['Google 계정으로 로그인하면 금화와 기록이 계정에 저장됩니다.'] },
+  { v: '2.0.0', date: '2026년 10월 18일', items: ['새 디자인과 무작위 문제, 시작 메뉴 · 상점 · 크레딧이 생겼습니다.'] },
+  { v: '1.0.0', date: '2026년 10월 18일', items: ['논리 미궁이 처음 열렸습니다.'] },
+];
+const APP_VERSION = PATCH_NOTES[0].v;
+
 const BASE_KEYS = 3;
 const MAX_EXTRA_KEYS = 2;
 const REWARD = { correct: 10, firstTry: 5, clear: 30, perfect: 20 };
@@ -703,7 +958,7 @@ const DEMORGAN = '‘그리고’를 부정하면 ‘또는’이, ‘또는’�
 const TYPES = {
   contra: { name: '대우', obj: '를', form: '~q → ~p', make: '대우는 가정과 결론을 맞바꾸고 둘 다 부정합니다.', desc: '가정과 결론을 맞바꾸고 둘 다 부정한 문장입니다. 원래 명제와 참·거짓이 언제나 같습니다.' },
   converse: { name: '역', obj: '을', form: 'q → p', make: '역은 가정과 결론의 자리만 맞바꿉니다.', desc: '가정과 결론의 자리만 맞바꾼 문장입니다. 원래 명제가 참이어도 역은 거짓일 수 있습니다.' },
-  inverse: { name: '이', obj: '를', form: '~p → ~q', make: '이는 가정과 결론을 그대로 두고 둘 다 부정합니다.', desc: '가정과 결론을 부정하기만 한 문장입니다. 원래 명제가 참이어도 이는 거짓일 수 있습니다.' },
+  partial: { name: '한쪽만 부정', obj: '을', form: '', make: '', desc: '대우처럼 자리를 바꿨지만 가정과 결론 중 한쪽만 부정했습니다. 대우는 둘 다 부정해야 합니다.' },
   bad: { name: '잘못된 부정', obj: '을', form: '', make: '', desc: '자리는 대우처럼 바꿨지만 부정을 잘못했습니다. ' + DEMORGAN },
 };
 
@@ -729,57 +984,57 @@ const SKINS = {
    방 Ⅰ·Ⅱ는 t1, 방 Ⅲ·Ⅳ는 t2(자동 생성 문제 포함), 방 Ⅴ는 t3에서 무작위로 뽑는다. */
 const BANK = {
   t1: [
-    { p: '비가 오면, 땅이 젖는다.', c: '땅이 젖지 않으면, 비가 오지 않은 것이다.', v: '땅이 젖으면, 비가 온 것이다.', i: '비가 오지 않으면, 땅이 젖지 않는다.' },
-    { p: '어떤 사람이 마피아라면, 그 사람은 거짓말을 한다.', c: '어떤 사람이 거짓말을 하지 않는다면, 그 사람은 마피아가 아니다.', v: '어떤 사람이 거짓말을 한다면, 그 사람은 마피아이다.', i: '어떤 사람이 마피아가 아니라면, 그 사람은 거짓말을 하지 않는다.' },
-    { p: '정삼각형이면, 이등변삼각형이다.', c: '이등변삼각형이 아니면, 정삼각형이 아니다.', v: '이등변삼각형이면, 정삼각형이다.', i: '정삼각형이 아니면, 이등변삼각형이 아니다.' },
-    { p: '정사각형이면, 직사각형이다.', c: '직사각형이 아니면, 정사각형이 아니다.', v: '직사각형이면, 정사각형이다.', i: '정사각형이 아니면, 직사각형이 아니다.' },
-    { p: '서울에 살면, 한국에 산다.', c: '한국에 살지 않으면, 서울에 살지 않는다.', v: '한국에 살면, 서울에 산다.', i: '서울에 살지 않으면, 한국에 살지 않는다.' },
-    { p: '고양이라면, 포유류이다.', c: '포유류가 아니라면, 고양이가 아니다.', v: '포유류라면, 고양이이다.', i: '고양이가 아니라면, 포유류가 아니다.' },
-    { p: '시험에 합격했다면, 시험을 쳤다.', c: '시험을 치지 않았다면, 시험에 합격하지 않았다.', v: '시험을 쳤다면, 시험에 합격했다.', i: '시험에 합격하지 않았다면, 시험을 치지 않았다.' },
-    { p: '해가 지면, 하늘이 어두워진다.', c: '하늘이 어두워지지 않으면, 해가 지지 않은 것이다.', v: '하늘이 어두워지면, 해가 진 것이다.', i: '해가 지지 않으면, 하늘이 어두워지지 않는다.' },
-    { p: '휴대폰 배터리가 0%이면, 휴대폰이 켜지지 않는다.', c: '휴대폰이 켜지면, 배터리가 0%가 아니다.', v: '휴대폰이 켜지지 않으면, 배터리가 0%이다.', i: '배터리가 0%가 아니면, 휴대폰이 켜진다.', n: '결론이 부정문이면 대우의 가정은 긍정문이 됩니다(부정의 부정).' },
-    { p: '두 각이 맞꼭지각이면, 두 각의 크기는 같다.', c: '두 각의 크기가 같지 않으면, 두 각은 맞꼭지각이 아니다.', v: '두 각의 크기가 같으면, 두 각은 맞꼭지각이다.', i: '두 각이 맞꼭지각이 아니면, 두 각의 크기는 같지 않다.' },
-    { p: '물이 끓고 있으면, 물이 뜨겁다.', c: '물이 뜨겁지 않으면, 물이 끓고 있지 않다.', v: '물이 뜨거우면, 물이 끓고 있다.', i: '물이 끓고 있지 않으면, 물이 뜨겁지 않다.' },
-    { p: '금속이면, 전기가 통한다.', c: '전기가 통하지 않으면, 금속이 아니다.', v: '전기가 통하면, 금속이다.', i: '금속이 아니면, 전기가 통하지 않는다.' },
-    { p: '사과이면, 과일이다.', c: '과일이 아니면, 사과가 아니다.', v: '과일이면, 사과이다.', i: '사과가 아니면, 과일이 아니다.' },
-    { p: '펭귄이면, 새이다.', c: '새가 아니면, 펭귄이 아니다.', v: '새이면, 펭귄이다.', i: '펭귄이 아니면, 새가 아니다.' },
-    { p: '부산에 가면, 바다를 볼 수 있다.', c: '바다를 볼 수 없으면, 부산에 가지 않은 것이다.', v: '바다를 볼 수 있으면, 부산에 간 것이다.', i: '부산에 가지 않으면, 바다를 볼 수 없다.' },
-    { p: '얼음이 녹으면, 물이 된다.', c: '물이 되지 않으면, 얼음이 녹지 않은 것이다.', v: '물이 되면, 얼음이 녹은 것이다.', i: '얼음이 녹지 않으면, 물이 되지 않는다.' },
-    { p: '버스 카드에 잔액이 없으면, 버스를 탈 수 없다.', c: '버스를 탈 수 있으면, 버스 카드에 잔액이 있다.', v: '버스를 탈 수 없으면, 버스 카드에 잔액이 없다.', i: '버스 카드에 잔액이 있으면, 버스를 탈 수 있다.', n: '결론이 부정문이면 대우의 가정은 긍정문이 됩니다(부정의 부정).' },
-    { p: '평행사변형이면, 사각형이다.', c: '사각형이 아니면, 평행사변형이 아니다.', v: '사각형이면, 평행사변형이다.', i: '평행사변형이 아니면, 사각형이 아니다.' },
-    { p: '전등 스위치가 꺼져 있으면, 전등이 켜지지 않는다.', c: '전등이 켜지면, 전등 스위치가 꺼져 있지 않다.', v: '전등이 켜지지 않으면, 전등 스위치가 꺼져 있다.', i: '전등 스위치가 꺼져 있지 않으면, 전등이 켜진다.', n: '결론이 부정문이면 대우의 가정은 긍정문이 됩니다(부정의 부정).' },
+    { p: '비가 오면, 땅이 젖는다.', c: '땅이 젖지 않으면, 비가 오지 않은 것이다.', v: '땅이 젖으면, 비가 온 것이다.' },
+    { p: '어떤 사람이 마피아라면, 그 사람은 거짓말을 한다.', c: '어떤 사람이 거짓말을 하지 않는다면, 그 사람은 마피아가 아니다.', v: '어떤 사람이 거짓말을 한다면, 그 사람은 마피아이다.' },
+    { p: '정삼각형이면, 이등변삼각형이다.', c: '이등변삼각형이 아니면, 정삼각형이 아니다.', v: '이등변삼각형이면, 정삼각형이다.' },
+    { p: '정사각형이면, 직사각형이다.', c: '직사각형이 아니면, 정사각형이 아니다.', v: '직사각형이면, 정사각형이다.' },
+    { p: '서울에 살면, 한국에 산다.', c: '한국에 살지 않으면, 서울에 살지 않는다.', v: '한국에 살면, 서울에 산다.' },
+    { p: '고양이라면, 포유류이다.', c: '포유류가 아니라면, 고양이가 아니다.', v: '포유류라면, 고양이이다.' },
+    { p: '시험에 합격했다면, 시험을 쳤다.', c: '시험을 치지 않았다면, 시험에 합격하지 않았다.', v: '시험을 쳤다면, 시험에 합격했다.' },
+    { p: '해가 지면, 하늘이 어두워진다.', c: '하늘이 어두워지지 않으면, 해가 지지 않은 것이다.', v: '하늘이 어두워지면, 해가 진 것이다.' },
+    { p: '휴대폰 배터리가 0%이면, 휴대폰이 켜지지 않는다.', c: '휴대폰이 켜지면, 배터리가 0%가 아니다.', v: '휴대폰이 켜지지 않으면, 배터리가 0%이다.', n: '결론이 부정문이면 대우의 가정은 긍정문이 됩니다(부정의 부정).' },
+    { p: '두 각이 맞꼭지각이면, 두 각의 크기는 같다.', c: '두 각의 크기가 같지 않으면, 두 각은 맞꼭지각이 아니다.', v: '두 각의 크기가 같으면, 두 각은 맞꼭지각이다.' },
+    { p: '물이 끓고 있으면, 물이 뜨겁다.', c: '물이 뜨겁지 않으면, 물이 끓고 있지 않다.', v: '물이 뜨거우면, 물이 끓고 있다.' },
+    { p: '금속이면, 전기가 통한다.', c: '전기가 통하지 않으면, 금속이 아니다.', v: '전기가 통하면, 금속이다.' },
+    { p: '사과이면, 과일이다.', c: '과일이 아니면, 사과가 아니다.', v: '과일이면, 사과이다.' },
+    { p: '펭귄이면, 새이다.', c: '새가 아니면, 펭귄이 아니다.', v: '새이면, 펭귄이다.' },
+    { p: '부산에 가면, 바다를 볼 수 있다.', c: '바다를 볼 수 없으면, 부산에 가지 않은 것이다.', v: '바다를 볼 수 있으면, 부산에 간 것이다.' },
+    { p: '얼음이 녹으면, 물이 된다.', c: '물이 되지 않으면, 얼음이 녹지 않은 것이다.', v: '물이 되면, 얼음이 녹은 것이다.' },
+    { p: '버스 카드에 잔액이 없으면, 버스를 탈 수 없다.', c: '버스를 탈 수 있으면, 버스 카드에 잔액이 있다.', v: '버스를 탈 수 없으면, 버스 카드에 잔액이 없다.', n: '결론이 부정문이면 대우의 가정은 긍정문이 됩니다(부정의 부정).' },
+    { p: '평행사변형이면, 사각형이다.', c: '사각형이 아니면, 평행사변형이 아니다.', v: '사각형이면, 평행사변형이다.' },
+    { p: '전등 스위치가 꺼져 있으면, 전등이 켜지지 않는다.', c: '전등이 켜지면, 전등 스위치가 꺼져 있지 않다.', v: '전등이 켜지지 않으면, 전등 스위치가 꺼져 있다.', n: '결론이 부정문이면 대우의 가정은 긍정문이 됩니다(부정의 부정).' },
   ],
   t2: [
-    { d: '자연수 n에 대하여', p: 'n이 4의 배수이면, n은 짝수이다.', c: 'n이 짝수가 아니면, n은 4의 배수가 아니다.', v: 'n이 짝수이면, n은 4의 배수이다.', i: 'n이 4의 배수가 아니면, n은 짝수가 아니다.' },
-    { p: '두 삼각형이 합동이면, 두 삼각형의 넓이는 같다.', c: '두 삼각형의 넓이가 같지 않으면, 두 삼각형은 합동이 아니다.', v: '두 삼각형의 넓이가 같으면, 두 삼각형은 합동이다.', i: '두 삼각형이 합동이 아니면, 두 삼각형의 넓이는 같지 않다.' },
-    { p: '식물이 광합성을 하면, 산소를 내놓는다.', c: '식물이 산소를 내놓지 않으면, 광합성을 하지 않은 것이다.', v: '식물이 산소를 내놓으면, 광합성을 한 것이다.', i: '식물이 광합성을 하지 않으면, 산소를 내놓지 않는다.' },
-    { d: '실수 a, b에 대하여', p: 'a = b이면, a² = b²이다.', c: 'a² ≠ b²이면, a ≠ b이다.', v: 'a² = b²이면, a = b이다.', i: 'a ≠ b이면, a² ≠ b²이다.' },
-    { d: '사각형에 대하여', p: '정사각형이면, 두 대각선의 길이가 같다.', c: '두 대각선의 길이가 같지 않으면, 정사각형이 아니다.', v: '두 대각선의 길이가 같으면, 정사각형이다.', i: '정사각형이 아니면, 두 대각선의 길이가 같지 않다.' },
-    { d: '삼각형에 대하여', p: '직각삼각형이면, 90°인 각이 있다.', c: '90°인 각이 없으면, 직각삼각형이 아니다.', v: '90°인 각이 있으면, 직각삼각형이다.', i: '직각삼각형이 아니면, 90°인 각이 없다.', n: '‘90°인 각이 있다’의 부정은 ‘90°인 각이 없다’입니다.' },
-    { d: '실수 x에 대하여', p: 'x² < 1이면, x < 1이다.', c: 'x ≥ 1이면, x² ≥ 1이다.', v: 'x < 1이면, x² < 1이다.', i: 'x² ≥ 1이면, x ≥ 1이다.', n: '‘<’의 부정은 ‘≥’입니다.' },
-    { d: '정수 n에 대하여', p: 'n이 짝수이면, n²도 짝수이다.', c: 'n²이 짝수가 아니면, n도 짝수가 아니다.', v: 'n²이 짝수이면, n도 짝수이다.', i: 'n이 짝수가 아니면, n²도 짝수가 아니다.' },
-    { d: '두 집합 A ⊂ B일 때', p: 'x ∈ A이면, x ∈ B이다.', c: 'x ∉ B이면, x ∉ A이다.', v: 'x ∈ B이면, x ∈ A이다.', i: 'x ∉ A이면, x ∉ B이다.' },
-    { d: '자연수 n에 대하여', p: 'n이 10의 배수이면, n의 일의 자리 숫자는 0이다.', c: 'n의 일의 자리 숫자가 0이 아니면, n은 10의 배수가 아니다.', v: 'n의 일의 자리 숫자가 0이면, n은 10의 배수이다.', i: 'n이 10의 배수가 아니면, n의 일의 자리 숫자는 0이 아니다.' },
-    { d: '실수 x에 대하여', p: 'x > 1이면, x² > 1이다.', c: 'x² ≤ 1이면, x ≤ 1이다.', v: 'x² > 1이면, x > 1이다.', i: 'x ≤ 1이면, x² ≤ 1이다.', n: '‘>’의 부정은 ‘≤’입니다.' },
-    { d: '평면 위의 서로 다른 두 직선에 대하여', p: '두 직선이 평행하면, 두 직선은 만나지 않는다.', c: '두 직선이 만나면, 두 직선은 평행하지 않다.', v: '두 직선이 만나지 않으면, 두 직선은 평행하다.', i: '두 직선이 평행하지 않으면, 두 직선은 만난다.' },
-    { d: '정수 n에 대하여', p: 'n이 홀수이면, n²도 홀수이다.', c: 'n²이 홀수가 아니면, n도 홀수가 아니다.', v: 'n²이 홀수이면, n도 홀수이다.', i: 'n이 홀수가 아니면, n²도 홀수가 아니다.' },
-    { p: '물체에 힘이 작용하지 않으면, 물체의 운동 상태는 변하지 않는다.', c: '물체의 운동 상태가 변하면, 물체에 힘이 작용한 것이다.', v: '물체의 운동 상태가 변하지 않으면, 물체에 힘이 작용하지 않은 것이다.', i: '물체에 힘이 작용하면, 물체의 운동 상태가 변한다.', n: '결론이 부정문이면 대우의 가정은 긍정문이 됩니다(부정의 부정).' },
-    { d: '두 집합 A, B에 대하여', p: 'A ⊂ B이면, A ∩ B = A이다.', c: 'A ∩ B ≠ A이면, A ⊄ B이다.', v: 'A ∩ B = A이면, A ⊂ B이다.', i: 'A ⊄ B이면, A ∩ B ≠ A이다.' },
-    { d: '자연수 n에 대하여', p: 'n이 소수이면, n의 약수는 2개이다.', c: 'n의 약수가 2개가 아니면, n은 소수가 아니다.', v: 'n의 약수가 2개이면, n은 소수이다.', i: 'n이 소수가 아니면, n의 약수는 2개가 아니다.' },
-    { d: '이차방정식 ax² + bx + c = 0 (a ≠ 0)에 대하여', p: 'b² − 4ac < 0이면, 실근이 없다.', c: '실근이 있으면, b² − 4ac ≥ 0이다.', v: '실근이 없으면, b² − 4ac < 0이다.', i: 'b² − 4ac ≥ 0이면, 실근이 있다.', n: '‘실근이 없다’의 부정은 ‘실근이 있다’, ‘<’의 부정은 ‘≥’입니다.' },
+    { d: '자연수 n에 대하여', p: 'n이 4의 배수이면, n은 짝수이다.', c: 'n이 짝수가 아니면, n은 4의 배수가 아니다.', v: 'n이 짝수이면, n은 4의 배수이다.' },
+    { p: '두 삼각형이 합동이면, 두 삼각형의 넓이는 같다.', c: '두 삼각형의 넓이가 같지 않으면, 두 삼각형은 합동이 아니다.', v: '두 삼각형의 넓이가 같으면, 두 삼각형은 합동이다.' },
+    { p: '식물이 광합성을 하면, 산소를 내놓는다.', c: '식물이 산소를 내놓지 않으면, 광합성을 하지 않은 것이다.', v: '식물이 산소를 내놓으면, 광합성을 한 것이다.' },
+    { d: '실수 a, b에 대하여', p: 'a = b이면, a² = b²이다.', c: 'a² ≠ b²이면, a ≠ b이다.', v: 'a² = b²이면, a = b이다.' },
+    { d: '사각형에 대하여', p: '정사각형이면, 두 대각선의 길이가 같다.', c: '두 대각선의 길이가 같지 않으면, 정사각형이 아니다.', v: '두 대각선의 길이가 같으면, 정사각형이다.' },
+    { d: '삼각형에 대하여', p: '직각삼각형이면, 90°인 각이 있다.', c: '90°인 각이 없으면, 직각삼각형이 아니다.', v: '90°인 각이 있으면, 직각삼각형이다.', n: '‘90°인 각이 있다’의 부정은 ‘90°인 각이 없다’입니다.' },
+    { d: '실수 x에 대하여', p: 'x² < 1이면, x < 1이다.', c: 'x ≥ 1이면, x² ≥ 1이다.', v: 'x < 1이면, x² < 1이다.', n: '‘<’의 부정은 ‘≥’입니다.' },
+    { d: '정수 n에 대하여', p: 'n이 짝수이면, n²도 짝수이다.', c: 'n²이 짝수가 아니면, n도 짝수가 아니다.', v: 'n²이 짝수이면, n도 짝수이다.' },
+    { d: '두 집합 A ⊂ B일 때', p: 'x ∈ A이면, x ∈ B이다.', c: 'x ∉ B이면, x ∉ A이다.', v: 'x ∈ B이면, x ∈ A이다.' },
+    { d: '자연수 n에 대하여', p: 'n이 10의 배수이면, n의 일의 자리 숫자는 0이다.', c: 'n의 일의 자리 숫자가 0이 아니면, n은 10의 배수가 아니다.', v: 'n의 일의 자리 숫자가 0이면, n은 10의 배수이다.' },
+    { d: '실수 x에 대하여', p: 'x > 1이면, x² > 1이다.', c: 'x² ≤ 1이면, x ≤ 1이다.', v: 'x² > 1이면, x > 1이다.', n: '‘>’의 부정은 ‘≤’입니다.' },
+    { d: '평면 위의 서로 다른 두 직선에 대하여', p: '두 직선이 평행하면, 두 직선은 만나지 않는다.', c: '두 직선이 만나면, 두 직선은 평행하지 않다.', v: '두 직선이 만나지 않으면, 두 직선은 평행하다.' },
+    { d: '정수 n에 대하여', p: 'n이 홀수이면, n²도 홀수이다.', c: 'n²이 홀수가 아니면, n도 홀수가 아니다.', v: 'n²이 홀수이면, n도 홀수이다.' },
+    { p: '물체에 힘이 작용하지 않으면, 물체의 운동 상태는 변하지 않는다.', c: '물체의 운동 상태가 변하면, 물체에 힘이 작용한 것이다.', v: '물체의 운동 상태가 변하지 않으면, 물체에 힘이 작용하지 않은 것이다.', n: '결론이 부정문이면 대우의 가정은 긍정문이 됩니다(부정의 부정).' },
+    { d: '두 집합 A, B에 대하여', p: 'A ⊂ B이면, A ∩ B = A이다.', c: 'A ∩ B ≠ A이면, A ⊄ B이다.', v: 'A ∩ B = A이면, A ⊂ B이다.' },
+    { d: '자연수 n에 대하여', p: 'n이 소수이면, n의 약수는 2개이다.', c: 'n의 약수가 2개가 아니면, n은 소수가 아니다.', v: 'n의 약수가 2개이면, n은 소수이다.' },
+    { d: '이차방정식 ax² + bx + c = 0 (a ≠ 0)에 대하여', p: 'b² − 4ac < 0이면, 실근이 없다.', c: '실근이 있으면, b² − 4ac ≥ 0이다.', v: '실근이 없으면, b² − 4ac < 0이다.', n: '‘실근이 없다’의 부정은 ‘실근이 있다’, ‘<’의 부정은 ‘≥’입니다.' },
   ],
   t3: [
-    { p: '날씨가 덥고 습하면, 불쾌지수가 높다.', c: '불쾌지수가 높지 않으면, 날씨가 덥지 않거나 습하지 않은 것이다.', v: '불쾌지수가 높으면, 날씨가 덥고 습한 것이다.', i: '날씨가 덥지 않거나 습하지 않으면, 불쾌지수가 높지 않다.', b: '불쾌지수가 높지 않으면, 날씨가 덥지 않고 습하지 않은 것이다.' },
-    { d: '실수 x, y에 대하여', p: 'x > 0이고 y > 0이면, xy > 0이다.', c: 'xy ≤ 0이면, x ≤ 0이거나 y ≤ 0이다.', v: 'xy > 0이면, x > 0이고 y > 0이다.', i: 'x ≤ 0이거나 y ≤ 0이면, xy ≤ 0이다.', b: 'xy ≤ 0이면, x ≤ 0이고 y ≤ 0이다.' },
-    { d: '정수 n에 대하여', p: 'n이 2의 배수이고 3의 배수이면, n은 6의 배수이다.', c: 'n이 6의 배수가 아니면, n은 2의 배수가 아니거나 3의 배수가 아니다.', v: 'n이 6의 배수이면, n은 2의 배수이고 3의 배수이다.', i: 'n이 2의 배수가 아니거나 3의 배수가 아니면, n은 6의 배수가 아니다.', b: 'n이 6의 배수가 아니면, n은 2의 배수가 아니고 3의 배수도 아니다.' },
-    { d: '실수 x에 대하여', p: 'x = 1이거나 x = 2이면, x² − 3x + 2 = 0이다.', c: 'x² − 3x + 2 ≠ 0이면, x ≠ 1이고 x ≠ 2이다.', v: 'x² − 3x + 2 = 0이면, x = 1이거나 x = 2이다.', i: 'x ≠ 1이고 x ≠ 2이면, x² − 3x + 2 ≠ 0이다.', b: 'x² − 3x + 2 ≠ 0이면, x ≠ 1이거나 x ≠ 2이다.' },
-    { d: '실수 x에 대하여', p: 'x² = 1이면, x = 1이거나 x = −1이다.', c: 'x ≠ 1이고 x ≠ −1이면, x² ≠ 1이다.', v: 'x = 1이거나 x = −1이면, x² = 1이다.', i: 'x² ≠ 1이면, x ≠ 1이고 x ≠ −1이다.', b: 'x ≠ 1이거나 x ≠ −1이면, x² ≠ 1이다.' },
-    { p: '주말이고 날씨가 맑으면, 공원에 간다.', c: '공원에 가지 않으면, 주말이 아니거나 날씨가 맑지 않은 것이다.', v: '공원에 가면, 주말이고 날씨가 맑은 것이다.', i: '주말이 아니거나 날씨가 맑지 않으면, 공원에 가지 않는다.', b: '공원에 가지 않으면, 주말이 아니고 날씨도 맑지 않은 것이다.' },
-    { p: '출석률이 80% 이상이고 시험 점수가 60점 이상이면, 과목을 이수한다.', c: '과목을 이수하지 못하면, 출석률이 80% 미만이거나 시험 점수가 60점 미만이다.', v: '과목을 이수하면, 출석률이 80% 이상이고 시험 점수가 60점 이상이다.', i: '출석률이 80% 미만이거나 시험 점수가 60점 미만이면, 과목을 이수하지 못한다.', b: '과목을 이수하지 못하면, 출석률이 80% 미만이고 시험 점수도 60점 미만이다.', n: '‘이상’의 부정은 ‘미만’입니다.' },
-    { d: '실수 a, b에 대하여', p: 'a > 0이고 b > 0이면, a + b > 0이다.', c: 'a + b ≤ 0이면, a ≤ 0이거나 b ≤ 0이다.', v: 'a + b > 0이면, a > 0이고 b > 0이다.', i: 'a ≤ 0이거나 b ≤ 0이면, a + b ≤ 0이다.', b: 'a + b ≤ 0이면, a ≤ 0이고 b ≤ 0이다.' },
-    { d: '정수 n에 대하여', p: 'n이 4의 배수이거나 6의 배수이면, n은 짝수이다.', c: 'n이 짝수가 아니면, n은 4의 배수가 아니고 6의 배수도 아니다.', v: 'n이 짝수이면, n은 4의 배수이거나 6의 배수이다.', i: 'n이 4의 배수가 아니고 6의 배수도 아니면, n은 짝수가 아니다.', b: 'n이 짝수가 아니면, n은 4의 배수가 아니거나 6의 배수가 아니다.' },
-    { p: '비가 오거나 눈이 오면, 운동회를 미룬다.', c: '운동회를 미루지 않으면, 비가 오지 않고 눈도 오지 않은 것이다.', v: '운동회를 미루면, 비가 오거나 눈이 온 것이다.', i: '비가 오지 않고 눈도 오지 않으면, 운동회를 미루지 않는다.', b: '운동회를 미루지 않으면, 비가 오지 않거나 눈이 오지 않은 것이다.' },
-    { p: '입장권이 있고 신분증이 있으면, 입장할 수 있다.', c: '입장할 수 없으면, 입장권이 없거나 신분증이 없는 것이다.', v: '입장할 수 있으면, 입장권이 있고 신분증이 있는 것이다.', i: '입장권이 없거나 신분증이 없으면, 입장할 수 없다.', b: '입장할 수 없으면, 입장권도 없고 신분증도 없는 것이다.' },
+    { p: '날씨가 덥고 습하면, 불쾌지수가 높다.', c: '불쾌지수가 높지 않으면, 날씨가 덥지 않거나 습하지 않은 것이다.', v: '불쾌지수가 높으면, 날씨가 덥고 습한 것이다.', b: '불쾌지수가 높지 않으면, 날씨가 덥지 않고 습하지 않은 것이다.' },
+    { d: '실수 x, y에 대하여', p: 'x > 0이고 y > 0이면, xy > 0이다.', c: 'xy ≤ 0이면, x ≤ 0이거나 y ≤ 0이다.', v: 'xy > 0이면, x > 0이고 y > 0이다.', b: 'xy ≤ 0이면, x ≤ 0이고 y ≤ 0이다.' },
+    { d: '정수 n에 대하여', p: 'n이 2의 배수이고 3의 배수이면, n은 6의 배수이다.', c: 'n이 6의 배수가 아니면, n은 2의 배수가 아니거나 3의 배수가 아니다.', v: 'n이 6의 배수이면, n은 2의 배수이고 3의 배수이다.', b: 'n이 6의 배수가 아니면, n은 2의 배수가 아니고 3의 배수도 아니다.' },
+    { d: '실수 x에 대하여', p: 'x = 1이거나 x = 2이면, x² − 3x + 2 = 0이다.', c: 'x² − 3x + 2 ≠ 0이면, x ≠ 1이고 x ≠ 2이다.', v: 'x² − 3x + 2 = 0이면, x = 1이거나 x = 2이다.', b: 'x² − 3x + 2 ≠ 0이면, x ≠ 1이거나 x ≠ 2이다.' },
+    { d: '실수 x에 대하여', p: 'x² = 1이면, x = 1이거나 x = −1이다.', c: 'x ≠ 1이고 x ≠ −1이면, x² ≠ 1이다.', v: 'x = 1이거나 x = −1이면, x² = 1이다.', b: 'x ≠ 1이거나 x ≠ −1이면, x² ≠ 1이다.' },
+    { p: '주말이고 날씨가 맑으면, 공원에 간다.', c: '공원에 가지 않으면, 주말이 아니거나 날씨가 맑지 않은 것이다.', v: '공원에 가면, 주말이고 날씨가 맑은 것이다.', b: '공원에 가지 않으면, 주말이 아니고 날씨도 맑지 않은 것이다.' },
+    { p: '출석률이 80% 이상이고 시험 점수가 60점 이상이면, 과목을 이수한다.', c: '과목을 이수하지 못하면, 출석률이 80% 미만이거나 시험 점수가 60점 미만이다.', v: '과목을 이수하면, 출석률이 80% 이상이고 시험 점수가 60점 이상이다.', b: '과목을 이수하지 못하면, 출석률이 80% 미만이고 시험 점수도 60점 미만이다.', n: '‘이상’의 부정은 ‘미만’입니다.' },
+    { d: '실수 a, b에 대하여', p: 'a > 0이고 b > 0이면, a + b > 0이다.', c: 'a + b ≤ 0이면, a ≤ 0이거나 b ≤ 0이다.', v: 'a + b > 0이면, a > 0이고 b > 0이다.', b: 'a + b ≤ 0이면, a ≤ 0이고 b ≤ 0이다.' },
+    { d: '정수 n에 대하여', p: 'n이 4의 배수이거나 6의 배수이면, n은 짝수이다.', c: 'n이 짝수가 아니면, n은 4의 배수가 아니고 6의 배수도 아니다.', v: 'n이 짝수이면, n은 4의 배수이거나 6의 배수이다.', b: 'n이 짝수가 아니면, n은 4의 배수가 아니거나 6의 배수가 아니다.' },
+    { p: '비가 오거나 눈이 오면, 운동회를 미룬다.', c: '운동회를 미루지 않으면, 비가 오지 않고 눈도 오지 않은 것이다.', v: '운동회를 미루면, 비가 오거나 눈이 온 것이다.', b: '운동회를 미루지 않으면, 비가 오지 않거나 눈이 오지 않은 것이다.' },
+    { p: '입장권이 있고 신분증이 있으면, 입장할 수 있다.', c: '입장할 수 없으면, 입장권이 없거나 신분증이 없는 것이다.', v: '입장할 수 있으면, 입장권이 있고 신분증이 있는 것이다.', b: '입장할 수 없으면, 입장권도 없고 신분증도 없는 것이다.' },
   ],
   // 부정: neg가 정답, w는 오답과 그 해설
   neg: [
@@ -842,16 +1097,16 @@ const GENERATORS = [
   () => {
     const a = randInt(0, 6), b = a + randInt(1, 6);
     return Math.random() < 0.5
-      ? { d: '실수 x에 대하여', p: `x > ${b}이면, x > ${a}이다.`, c: `x ≤ ${a}이면, x ≤ ${b}이다.`, v: `x > ${a}이면, x > ${b}이다.`, i: `x ≤ ${b}이면, x ≤ ${a}이다.`, n: '‘>’의 부정은 ‘≤’입니다.' }
-      : { d: '실수 x에 대하여', p: `x ≥ ${b}이면, x ≥ ${a}이다.`, c: `x < ${a}이면, x < ${b}이다.`, v: `x ≥ ${a}이면, x ≥ ${b}이다.`, i: `x < ${b}이면, x < ${a}이다.`, n: '‘≥’의 부정은 ‘<’입니다.' };
+      ? { d: '실수 x에 대하여', p: `x > ${b}이면, x > ${a}이다.`, c: `x ≤ ${a}이면, x ≤ ${b}이다.`, v: `x > ${a}이면, x > ${b}이다.`, n: '‘>’의 부정은 ‘≤’입니다.' }
+      : { d: '실수 x에 대하여', p: `x ≥ ${b}이면, x ≥ ${a}이다.`, c: `x < ${a}이면, x < ${b}이다.`, v: `x ≥ ${a}이면, x ≥ ${b}이다.`, n: '‘≥’의 부정은 ‘<’입니다.' };
   },
   () => {
     const k = pick([2, 3, 4, 5]), big = k * pick([2, 3, 4]);
-    return { d: '자연수 n에 대하여', p: `n이 ${big}의 배수이면, n은 ${k}의 배수이다.`, c: `n이 ${k}의 배수가 아니면, n은 ${big}의 배수가 아니다.`, v: `n이 ${k}의 배수이면, n은 ${big}의 배수이다.`, i: `n이 ${big}의 배수가 아니면, n은 ${k}의 배수가 아니다.` };
+    return { d: '자연수 n에 대하여', p: `n이 ${big}의 배수이면, n은 ${k}의 배수이다.`, c: `n이 ${k}의 배수가 아니면, n은 ${big}의 배수가 아니다.`, v: `n이 ${k}의 배수이면, n은 ${big}의 배수이다.` };
   },
   () => {
     const a = randInt(2, 9), sq = a * a;
-    return { d: '실수 x에 대하여', p: `x = ${a}이면, x² = ${sq}이다.`, c: `x² ≠ ${sq}이면, x ≠ ${a}이다.`, v: `x² = ${sq}이면, x = ${a}이다.`, i: `x ≠ ${a}이면, x² ≠ ${sq}이다.` };
+    return { d: '실수 x에 대하여', p: `x = ${a}이면, x² = ${sq}이다.`, c: `x² ≠ ${sq}이면, x ≠ ${a}이다.`, v: `x² = ${sq}이면, x = ${a}이다.` };
   },
 ];
 // 숫자를 바꿔 만드는 필요·충분조건 문제
@@ -880,7 +1135,6 @@ const COUNTER_GENS = [
 const KINDS = {
   contra: { eyebrow: '원래 명제 · <span class="mono">p → q</span>', prompt: '이 명제의 <b>대우</b>를 고르세요', chip: '~q → ~p', label: '대우' },
   converse: { eyebrow: '원래 명제 · <span class="mono">p → q</span>', prompt: '이 명제의 <b>역</b>을 고르세요', chip: 'q → p', label: '역' },
-  inverse: { eyebrow: '원래 명제 · <span class="mono">p → q</span>', prompt: '이 명제의 <b>이</b>를 고르세요', chip: '~p → ~q', label: '이' },
   neg: { eyebrow: '명제 · <span class="mono">p</span>', prompt: '이 명제의 <b>부정</b>을 고르세요', chip: '~p', label: '부정' },
   cond: { eyebrow: '두 조건 · <span class="mono">p, q</span>', prompt: 'p는 q이기 위한 <b>어떤 조건</b>인가요?', chip: 'p ⇒ q · q ⇒ p', label: '조건' },
   counter: { eyebrow: '원래 명제 · <span class="mono">p → q</span>', prompt: '이 명제가 거짓임을 보이는 <b>반례</b>를 고르세요', chip: '가정 ○ · 결론 ×', label: '반례' },
@@ -1058,6 +1312,7 @@ function afterProfileChange() {
   applySkin();
   if (state.screen === 'shop') renderShop();
   else if (state.screen === 'brief') renderBrief();
+  else if (state.screen === 'feedback') renderFeedback();
   renderMenu();
 }
 async function onUser(user) {
@@ -1273,6 +1528,8 @@ function navigate(to) {
   if (to === 'brief') renderBrief();
   if (to === 'shop') renderShop();
   if (to === 'credits') renderCredits();
+  if (to === 'patch') renderPatch();
+  if (to === 'feedback') renderFeedback();
   show(to);
   if (to === 'menu') retryAccount();   // 계정 기록을 못 불러온 상태면 메뉴로 올 때마다 다시 시도
 }
@@ -1321,6 +1578,7 @@ function renderAccount() {
       </button>`;
     $('menu-who').textContent = '손님으로 플레이 중';
   }
+  $('consent').hidden = !!account.user || !FIREBASE_CONFIG;
 }
 
 function renderBrief() {
@@ -1457,28 +1715,38 @@ function newRoom(kind, item, answer, note, options, extra) {
     options, status: null, wrongHere: 0, lensUsed: false,
   }, extra || {});
 }
+function whyOf(type) {
+  const t = TYPES[type];
+  return type === 'partial' ? `고른 문장은 ${t.desc}` : `고른 문장은 ‘${t.name}’${formOf(type)}입니다. ${t.desc}`;
+}
+// 오답 보기: 대우와 역의 앞뒤 절을 엇갈려 붙여, 자리는 바꿨지만 한쪽만 부정한 문장(~q → p 또는 q → ~p)을 만든다
+function clausesOf(s) { const at = s.indexOf(', '); return [s.slice(0, at), s.slice(at + 2)]; }
+function partialOf(item) {
+  const [c1, c2] = clausesOf(item.c), [v1, v2] = clausesOf(item.v);
+  return Math.random() < 0.5 ? `${c1}, ${v2}` : `${v1}, ${c2}`;
+}
 function contraRoom(item) {
   const wrong = item.b
-    ? [{ text: item.b, type: 'bad' }, pick([{ text: item.v, type: 'converse' }, { text: item.i, type: 'inverse' }])]
-    : [{ text: item.v, type: 'converse' }, { text: item.i, type: 'inverse' }];
+    ? [{ text: item.b, type: 'bad' }, pick([{ text: item.v, type: 'converse' }, { text: partialOf(item), type: 'partial' }])]
+    : [{ text: item.v, type: 'converse' }, { text: partialOf(item), type: 'partial' }];
   const notes = [TYPES.contra.desc];
   if (item.b) notes.push(DEMORGAN);
   if (item.n) notes.push(item.n);
   return newRoom('contra', item, item.c, notes.join(' '), shuffle([
     { text: item.c, correct: true, tag: tagOf('contra') },
-    ...wrong.map(w => ({ text: w.text, correct: false, tag: tagOf(w.type), why: `고른 문장은 ‘${TYPES[w.type].name}’${formOf(w.type)}입니다. ${TYPES[w.type].desc}` })),
+    ...wrong.map(w => ({ text: w.text, correct: false, tag: tagOf(w.type), why: whyOf(w.type) })),
   ]));
 }
-// 역·이 찾기: 같은 명제에서 대우 대신 역(converse)이나 이(inverse)를 고른다
-function mirrorRoom(item, target) {
-  const t = TYPES[target];
-  const text = { contra: item.c, converse: item.v, inverse: item.i };
-  const topic = t.obj === '을' ? '은' : '는';
-  return newRoom(target, item, text[target],
-    `${t.make} 원래 명제가 참이어도 ${t.name}${topic} 거짓일 수 있습니다. 참·거짓이 언제나 같은 것은 대우뿐입니다.`,
-    shuffle(['contra', 'converse', 'inverse'].map(type => (type === target
-      ? { text: text[type], correct: true, tag: tagOf(type) }
-      : { text: text[type], correct: false, tag: tagOf(type), why: `고른 문장은 ‘${TYPES[type].name}’${formOf(type)}입니다. 이번 방은 ‘${t.name}’${t.obj} 찾는 방입니다. ${t.make}` }))));
+// 역 찾기: 같은 명제에서 대우 대신 역(q → p)을 고른다
+function converseRoom(item) {
+  const make = TYPES.converse.make;
+  return newRoom('converse', item, item.v,
+    `${make} 원래 명제가 참이어도 역은 거짓일 수 있습니다. 참·거짓이 언제나 같은 것은 대우뿐입니다.`,
+    shuffle([
+      { text: item.v, correct: true, tag: tagOf('converse') },
+      { text: item.c, correct: false, tag: tagOf('contra'), why: `고른 문장은 ‘대우’${formOf('contra')}입니다. 이번 방은 ‘역’을 찾는 방입니다. ${make}` },
+      { text: partialOf(item), correct: false, tag: tagOf('partial'), why: `고른 문장은 자리를 바꾸면서 한쪽만 부정했습니다. 이번 방은 ‘역’을 찾는 방입니다. ${make}` },
+    ]));
 }
 function negRoom(item) {
   return newRoom('neg', item, item.neg, '부정은 원래 명제와 참·거짓이 정반대입니다. ' + item.n, shuffle([
@@ -1499,10 +1767,11 @@ function counterRoom(item) {
     { text: item.out, correct: false, tag: '가정 ×', why: '이 값은 가정을 만족하지 않습니다. 가정을 만족하지 않는 값으로는 명제가 거짓임을 보일 수 없습니다.' },
   ]));
 }
-// 방 Ⅰ: 대우, Ⅱ: 대우 또는 역·이 찾기, Ⅲ·Ⅳ: 수학 대우와 특별한 방(조건·반례·부정)을 무작위 순서로, Ⅴ: ‘그리고’·‘또는’이 섞인 대우
+// 방 Ⅰ: 대우, Ⅱ: 대우 또는 역 찾기, Ⅲ·Ⅳ: 수학 대우와 특별한 방(조건·반례·부정)을 무작위 순서로, Ⅴ: ‘그리고’·‘또는’이 섞인 대우
+// (명제의 ‘이’는 고1 공통수학에서 다루지 않으므로 내지 않는다)
 function buildRooms() {
   const t1 = shuffle(BANK.t1);
-  const r2 = Math.random() < 0.5 ? contraRoom(t1[1]) : mirrorRoom(t1[1], pick(['converse', 'inverse']));
+  const r2 = Math.random() < 0.5 ? contraRoom(t1[1]) : converseRoom(t1[1]);
   const r3 = contraRoom(Math.random() < 0.5 ? pick(GENERATORS)() : pick(BANK.t2));
   const special = pick(['cond', 'counter', 'neg']);
   const r4 = special === 'cond' ? condRoom(Math.random() < 0.5 ? pick(COND_GENS)() : pick(BANK.cond))
@@ -1849,6 +2118,65 @@ function finishRun(kind) {
   }
 }
 
+/* ───────── 패치노트 · 의견 보내기 ───────── */
+function renderPatch() {
+  $('patch-list').innerHTML = PATCH_NOTES.map(p => `
+    <section class="doc-sec">
+      <h3 class="patch-head"><span class="patch-v">v${p.v}</span><span class="patch-date">${p.date}</span></h3>
+      <ul>${p.items.map(t => `<li>${t}</li>`).join('')}</ul>
+    </section>`).join('');
+}
+function updateCount() { $('fb-count').textContent = $('fb-text').value.length; }
+function renderFeedback() {
+  const can = !!account.user;
+  $('feedback-form').hidden = !can;
+  $('feedback-login').hidden = can;
+  updateCount();
+}
+function deviceInfo() {
+  return `${navigator.userAgent} · ${window.screen ? screen.width + 'x' + screen.height : ''}`.slice(0, 300);
+}
+async function sendFeedback() {
+  const text = $('fb-text').value.trim();
+  if (text.length < 5) { toast('내용을 5자 이상 적어 주세요.'); return; }
+  if (!account.user || !fb) { toast('의견을 보내려면 먼저 Google 계정으로 로그인해 주세요.'); renderFeedback(); return; }
+  const btn = document.querySelector('[data-act="send-feedback"]');
+  btn.disabled = true;
+  try {
+    await fb.fsM.addDoc(fb.fsM.collection(fb.db, 'feedback'), {
+      uid: account.user.uid, category: $('fb-category').value, text: text.slice(0, 1000),
+      version: APP_VERSION, device: deviceInfo(), createdAt: fb.fsM.serverTimestamp(),
+    });
+    $('fb-text').value = '';
+    updateCount();
+    toast('의견을 보냈습니다. 고맙습니다!');
+  } catch (e) {
+    console.warn('의견을 보내지 못했습니다', e);
+    toast('보내지 못했습니다. 잠시 후 다시 시도해 주세요.');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+/* ───────── 앱으로 설치 ───────── */
+let installPrompt = null;
+function isStandalone() { return (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true; }
+function isIOS() { return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); }
+function updateInstall() { $('btn-install').hidden = isStandalone() || !(installPrompt || isIOS()); }
+async function installApp() {
+  if (installPrompt) {
+    const p = installPrompt;
+    installPrompt = null;
+    p.prompt();
+    await p.userChoice.catch(() => null);
+    updateInstall();
+  } else if (isIOS()) {
+    toast('Safari 아래쪽의 공유 버튼을 누른 뒤 ‘홈 화면에 추가’를 고르면 설치됩니다.');
+  }
+}
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installPrompt = e; updateInstall(); });
+window.addEventListener('appinstalled', () => { installPrompt = null; updateInstall(); toast('앱으로 설치했습니다. 홈 화면에서 바로 열 수 있습니다.'); });
+
 /* ───────── 이벤트 ───────── */
 document.addEventListener('click', e => {
   const go = e.target.closest('[data-go]');
@@ -1862,6 +2190,8 @@ document.addEventListener('click', e => {
     case 'extra-down': state.extra = Math.max(0, state.extra - 1); renderBrief(); break;
     case 'extra-up': state.extra = Math.min(state.extra + 1, profile.items.key, MAX_EXTRA_KEYS); renderBrief(); break;
     case 'take': toggleTake(act.dataset.id); break;
+    case 'send-feedback': sendFeedback(); break;
+    case 'install': installApp(); break;
     case 'lens': useLens(); break;
     case 'abandon': onAbandon(); break;
     case 'buy': buy(act.dataset.id); break;
@@ -1883,9 +2213,16 @@ window.addEventListener('resize', () => {
 function init() {
   profile = readLocal('guest');
   applySkin();
+  $('app-version').textContent = 'v' + APP_VERSION;
+  $('fb-text').addEventListener('input', updateCount);
   renderMenu();
   show('menu', false);
+  updateInstall();
   initAuth();
+  // 앱 설치용 서비스 워커 (https에서만; 쓸 수 없는 환경이면 조용히 넘어간다)
+  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
 }
 init();
 </script>

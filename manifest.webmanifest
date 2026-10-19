@@ -1,0 +1,16 @@
+{
+  "name": "논리 미궁: 대우의 열쇠",
+  "short_name": "논리 미궁",
+  "description": "원래 명제의 대우를 골라 다섯 개의 방을 탈출하는 논리 퀴즈 게임",
+  "lang": "ko",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0a100e",
+  "theme_color": "#0a100e",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
