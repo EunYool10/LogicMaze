@@ -22,8 +22,11 @@ self.addEventListener('fetch', event => {
     event.respondWith(
       fetch(req)
         .then(res => {
-          const copy = res.clone();
-          caches.open(CACHE).then(cache => cache.put('./', copy));
+          // 정상 응답만 저장한다. 없는 주소의 404 화면이 연결이 끊겼을 때 여는 화면이 되면 안 된다.
+          if (res.ok && res.type === 'basic') {
+            const copy = res.clone();
+            caches.open(CACHE).then(cache => cache.put('./', copy));
+          }
           return res;
         })
         .catch(() => caches.match('./')),

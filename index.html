@@ -2220,9 +2220,12 @@ function init() {
   updateInstall();
   initAuth();
   // 앱 설치용 서비스 워커 (https에서만; 쓸 수 없는 환경이면 조용히 넘어간다)
-  if ('serviceWorker' in navigator && location.protocol === 'https:') {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
-  }
+  // (샌드박스 iframe 같은 곳에서는 navigator.serviceWorker를 읽기만 해도 오류가 나므로 try로 감싼다)
+  try {
+    if ('serviceWorker' in navigator && location.protocol === 'https:') {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+  } catch (e) { /* 등록할 수 없는 환경 */ }
 }
 init();
 </script>
