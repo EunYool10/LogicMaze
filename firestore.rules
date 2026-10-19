@@ -10,9 +10,7 @@ rules_version = '2';
 // Document ID: the player's Firebase Auth uid
 // Fields (all required, no other fields allowed):
 //   - v: int (required, == 1) - save format version
-//   - coins: int (required, 0..10,000,000 and <= 125 * stats.runs) - 금화.
-//       Coins are only earned when a run ends, at most 125 per run
-//       (5 rooms x (10 + 5 first-try) + 30 clear + 20 perfect). Purchases only lower them.
+//   - coins: int (required, 0..10,000,000 and <= 125 * stats.runs) - 금화
 //   - items: map (required) - consumables, every count an int 0..9
 //       - key (여분의 열쇠) and lens (통찰의 렌즈): required
 //       - shield (보호의 인장), revive (불사조 깃털), candle (지혜의 촛대): optional
@@ -25,7 +23,7 @@ rules_version = '2';
 //   - updatedAt: timestamp (required, == request.time; the client writes serverTimestamp())
 //
 // Collection: feedback ('의견 보내기')
-// Document ID: auto id
+// Document ID: '<uid>_<n>', where n is the sender's feedbackMeta count after this message
 // Fields (all required, no other fields allowed; create-only, read in the Firebase console):
 //   - uid: string (== request.auth.uid) - sender
 //   - category: string, one of ['bug', 'problem', 'idea', 'delete', 'etc']
@@ -34,11 +32,28 @@ rules_version = '2';
 //   - device: string (<= 300 chars) - browser/OS and screen size
 //   - createdAt: timestamp (== request.time)
 //
+// Collection: feedbackMeta (one per sender, written in the same transaction as each feedback message)
+// Document ID: the sender's uid
+// Fields (all required, no other fields allowed):
+//   - count: int - how many messages this player has sent (goes up by exactly 1 per message)
+//   - last: timestamp (== request.time) - when the last message was sent; the next one must be >= 60 s later
+//
 // No personal data (name, email, photo) is stored in users documents.
 // The game only reads and fully overwrites the signed-in player's own document.
-// It never lists or queries the collection and never deletes documents.
+// It never lists or queries the collections and never deletes documents.
 //
-// IMPORTANT: if the game's rewards, item limits or theme ids change, update this file too.
+// Anti-cheat (the game runs in the browser, so the server checks every save against the previous one):
+//   - Coins can only go up by what the new progress can pay out: 15 per new room (10 correct + 5 first try),
+//     30 per new clear and 20 per new perfect clear.
+//   - Every item or theme that appears in a save must be paid for with coins in that same save,
+//     at the shop prices below. Only admins (checked here from the signed-in Google email) get the shop for free.
+//   - New clears, perfect clears and rooms must come with new runs (at most 5 rooms per run).
+//   - A new account (the guest record moved on first sign-in) cannot hold more coins, items and themes
+//     than its runs could have paid for.
+//   Records that stay within these limits can still be made up in the browser; stopping that would need a game server.
+//
+// IMPORTANT: if the game's rewards, shop prices, item limits, theme ids or admins change, update this file too.
+//   index.html: REWARD, WARES, SKINS, ADMIN_HASHES
 // ===============================================================
 
 service cloud.firestore {
@@ -66,6 +81,19 @@ service cloud.firestore {
     // Map that has exactly the given keys (no missing, no extra)
     function hasExactKeys(data, keys) {
       return data is map && data.keys().hasAll(keys) && data.keys().hasOnly(keys);
+    }
+
+    // Admins (운영진): a Google-verified email whose SHA-256('logicmaze:' + lowercased email) is in the list.
+    // Same list as ADMIN_HASHES in index.html, so no plain email is in the public repository.
+    function isAdmin() {
+      return isAuthenticated()
+        && request.auth.token.email is string
+        && request.auth.token.email_verified == true
+        && request.auth.token.firebase.sign_in_provider == 'google.com'
+        && hashing.sha256('logicmaze:' + request.auth.token.email.lower()).toHexString().lower() in [
+          'd8700fe4292519649687c4ae9036295332c4fc001e980743556a77e56caf23eb',
+          'c56fd8778bd83c4b806cbe51b9f3d9d0e458ca85ba944d0dc9df77fa54c078d2'
+        ];
     }
 
     // ===============================================================
@@ -118,17 +146,66 @@ service cloud.firestore {
         && data.updatedAt == request.time;
     }
 
-    // Play counts only go up
-    function statsNeverDecrease(before, after) {
-      return after.runs >= before.runs
-        && after.clears >= before.clears
-        && after.perfect >= before.perfect
-        && after.rooms >= before.rooms;
+    // ===============================================================
+    // Anti-cheat: coins must match progress and purchases
+    // ===============================================================
+
+    // How many more of an item there are after the save (0 if it went down or stayed)
+    function gainedOf(after, before, name) {
+      let d = after.get(name, 0) - before.get(name, 0);
+      return d > 0 ? d : 0;
     }
 
-    // ===============================================================
-    // Rules (everything not matched below is denied)
-    // ===============================================================
+    // Coins the new items cost (shop prices: index.html WARES)
+    function itemCost(after, before) {
+      return gainedOf(after, before, 'key') * 80
+        + gainedOf(after, before, 'lens') * 50
+        + gainedOf(after, before, 'shield') * 70
+        + gainedOf(after, before, 'revive') * 120
+        + gainedOf(after, before, 'candle') * 40;
+    }
+
+    function skinPrice(after, before, id, price) {
+      return (id in after && !(id in before)) ? price : 0;
+    }
+
+    // Coins the new themes cost (shop prices: index.html SKINS; emerald is free)
+    function skinCost(after, before) {
+      return skinPrice(after, before, 'sapphire', 300)
+        + skinPrice(after, before, 'garnet', 300)
+        + skinPrice(after, before, 'obsidian', 400)
+        + skinPrice(after, before, 'amber', 400);
+    }
+
+    // Most coins a record can have earned (index.html REWARD): 15 per room, 30 per clear, 20 per perfect clear
+    function maxEarned(stats) {
+      return stats.rooms * 15 + stats.clears * 30 + stats.perfect * 20;
+    }
+
+    // New progress only goes up, and every new clear, perfect clear and room comes with a new run
+    function isNewProgress(after, before) {
+      let runs = after.runs - before.runs;
+      let clears = after.clears - before.clears;
+      let perfect = after.perfect - before.perfect;
+      let rooms = after.rooms - before.rooms;
+      return runs >= 0
+        && clears >= 0 && clears <= runs
+        && perfect >= 0 && perfect <= clears
+        && rooms >= 0 && rooms <= runs * 5;
+    }
+
+    // An update: coins go up by at most what the new progress pays, minus the price of new items and themes
+    function isFairUpdate(after, before) {
+      let cost = isAdmin() ? 0 : itemCost(after.items, before.items) + skinCost(after.skins, before.skins);
+      return isNewProgress(after.stats, before.stats)
+        && after.coins - before.coins <= maxEarned(after.stats) - maxEarned(before.stats) - cost;
+    }
+
+    // A new account: coins plus the price of every item and theme it holds fit in what its runs could earn
+    function isFairStart(data) {
+      return isAdmin()
+        || data.coins + itemCost(data.items, {}) + skinCost(data.skins, ['emerald']) <= maxEarned(data.stats);
+    }
 
     function isValidFeedback(data) {
       return hasExactKeys(data, ['uid', 'category', 'text', 'version', 'device', 'createdAt'])
@@ -140,18 +217,53 @@ service cloud.firestore {
         && data.createdAt == request.time;
     }
 
-    // 의견 보내기: signed-in players can only add their own messages; nobody can read or change them in the app
-    match /feedback/{feedbackId} {
-      allow create: if isAuthenticated() && isValidFeedback(request.resource.data);
-      allow read, update, delete: if false;
+    function isValidFeedbackMeta(data) {
+      return hasExactKeys(data, ['count', 'last'])
+        && data.count is int
+        && data.last == request.time;
     }
+
+    function feedbackMetaPath(userId) {
+      return /databases/$(database)/documents/feedbackMeta/$(userId);
+    }
+
+    // ===============================================================
+    // Rules (everything not matched below is denied)
+    // ===============================================================
 
     match /users/{userId} {
       allow read: if isOwner(userId);
-      allow create: if isOwner(userId) && isValidProfile(request.resource.data);
+      allow create: if isOwner(userId)
+        && isValidProfile(request.resource.data)
+        && isFairStart(request.resource.data);
       allow update: if isOwner(userId)
         && isValidProfile(request.resource.data)
-        && statsNeverDecrease(resource.data.stats, request.resource.data.stats);
+        && isFairUpdate(request.resource.data, resource.data);
+      allow delete: if false;
+    }
+
+    // 의견 보내기: signed-in players add their own messages, one per minute.
+    // Each message is '<uid>_<n>' and must be written together with feedbackMeta/<uid> moving to count n,
+    // so one transaction can add only one message. Nobody can read or change messages in the app.
+    match /feedback/{feedbackId} {
+      allow create: if isAuthenticated()
+        && isValidFeedback(request.resource.data)
+        && getAfter(feedbackMetaPath(request.auth.uid)).data.last == request.time
+        && feedbackId == request.auth.uid + '_' + string(getAfter(feedbackMetaPath(request.auth.uid)).data.count);
+      allow read, update, delete: if false;
+    }
+
+    match /feedbackMeta/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId)
+        && isValidFeedbackMeta(request.resource.data)
+        && request.resource.data.count == 1
+        && existsAfter(/databases/$(database)/documents/feedback/$(userId + '_1'));
+      allow update: if isOwner(userId)
+        && isValidFeedbackMeta(request.resource.data)
+        && request.resource.data.count == resource.data.count + 1
+        && request.time >= resource.data.last + duration.value(60, 's')
+        && existsAfter(/databases/$(database)/documents/feedback/$(userId + '_' + string(request.resource.data.count)));
       allow delete: if false;
     }
   }
