@@ -485,6 +485,10 @@ div.menu-row { cursor: default; }
 .work-sub { display: block; font-size: 13.5px; color: var(--mute); }
 .work-go { width: 18px; height: 18px; color: var(--brass); transition: transform .25s ease; }
 .works-note { margin: 12px 0 0; font-size: 13.5px; text-align: left; color: var(--mute); }
+.works.apps { margin-top: 18px; }
+.work.app { grid-template-columns: 48px minmax(0, 1fr) auto; border-left: 4px solid var(--app); }
+.app-icon { display: block; width: 48px; height: 48px; border-radius: 12px; box-shadow: 0 0 0 1px var(--hair); }
+.app-slow { display: block; margin-top: 4px; font-size: 12.5px; color: var(--brass); }
 @media (hover: hover) {
   .work:hover { border-color: var(--brass); background: rgba(var(--brass-rgb), 0.08); }
   .work:hover .work-go { transform: translate(2px, -2px); }
@@ -593,6 +597,7 @@ div.menu-row { cursor: default; }
       <button type="button" class="link-btn" data-go="credits">크레딧</button>
       <button type="button" class="link-btn" data-go="feedback">의견 보내기</button>
       <button type="button" class="link-btn" data-go="terms">약관 · 개인정보</button>
+      <button type="button" class="link-btn" data-go="apps">은율이의 다른 앱</button>
       <button type="button" class="install-chip" id="btn-install" data-act="install" hidden><svg aria-hidden="true"><use href="#i-install"/></svg>앱으로 설치</button>
       <span class="version" id="app-version"></span>
     </footer>
@@ -873,6 +878,33 @@ div.menu-row { cursor: default; }
   </section>
 
   <!-- 크레딧 -->
+  <!-- 은율이의 다른 앱 (아이콘은 각 앱의 파비콘 사본, 색은 파비콘에서 땄다) -->
+  <section class="screen narrow" id="screen-apps" aria-labelledby="apps-title" hidden>
+    <div class="frame pad doc">
+      <p class="eyebrow">Opera alia</p>
+      <h2 class="h1" id="apps-title" tabindex="-1" data-focus>은율이의 다른 앱</h2>
+      <p class="doc-meta">누르면 새 창에서 열립니다.</p>
+      <div class="works apps">
+        <a class="work app" href="https://egggame.onrender.com/" target="_blank" rel="noopener noreferrer" style="--app: #f0a830">
+          <img class="app-icon" src="apps/egggame.png" width="48" height="48" alt="">
+          <span><span class="work-name">계란이의 모험</span><span class="work-sub">현대 · 고대 · 미래, 세 시대의 계란이가 엄마 품을 찾아 떠나는 선택형 텍스트 어드벤처</span><span class="app-slow">무료 서버라 처음 열 때 30~40초쯤 걸릴 수 있습니다.</span></span>
+          <svg class="work-go" aria-hidden="true"><use href="#i-external"/></svg><span class="sr-only">(새 창)</span>
+        </a>
+        <a class="work app" href="https://eunyool10.github.io/FruitArcade/" target="_blank" rel="noopener noreferrer" style="--app: #f2456f">
+          <img class="app-icon" src="apps/fruitarcade.png" width="48" height="48" alt="">
+          <span><span class="work-name">상큼 과일 아케이드 존</span><span class="work-sub">과일 메모리, 수박 게임, 과일 자르기… 오늘의 미션에 도전하는 과일 미니게임 모음</span></span>
+          <svg class="work-go" aria-hidden="true"><use href="#i-external"/></svg><span class="sr-only">(새 창)</span>
+        </a>
+        <a class="work app" href="https://schoolfix.onrender.com/" target="_blank" rel="noopener noreferrer" style="--app: #3b6cf0">
+          <img class="app-icon" src="apps/schoolfix.png" width="48" height="48" alt="">
+          <span><span class="work-name">SchoolFix</span><span class="work-sub">학교의 불편한 점과 시설 안전 문제를 신고하고 함께 고쳐 가는 서비스</span><span class="app-slow">무료 서버라 처음 열 때 30~40초쯤 걸릴 수 있습니다.</span></span>
+          <svg class="work-go" aria-hidden="true"><use href="#i-external"/></svg><span class="sr-only">(새 창)</span>
+        </a>
+      </div>
+      <div class="actions"><button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button></div>
+    </div>
+  </section>
+
   <section class="screen narrow" id="screen-credits" aria-labelledby="credits-title" hidden>
     <div class="frame pad credits">
       <p class="eyebrow">Auctores</p>
@@ -925,6 +957,9 @@ const FIREBASE_VERSION = '10.12.2';
 
 // 패치노트 (맨 위가 지금 버전). 약관을 바꾸면 여기에도 적는다.
 const PATCH_NOTES = [
+  { v: '3.3.0', date: '2026년 10월 20일', items: [
+    '메뉴 아래 ‘은율이의 다른 앱’에서 계란이의 모험, 상큼 과일 아케이드 존, SchoolFix로 갈 수 있습니다.',
+  ] },
   { v: '3.2.0', date: '2026년 10월 19일', items: [
     '계정 저장을 더 튼튼하게 고쳤습니다. 저장이 끝나기 전에 창을 닫거나 연결이 끊긴 채 플레이해도, 다음에 열 때 이어서 계정에 올립니다.',
     '새 기기에서 로그인하자마자 플레이해도 그 기기의 손님 기록이 계정 기록을 덮어쓰지 않고, 새로 한 플레이만 계정 기록에 더해집니다.',
