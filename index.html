@@ -772,9 +772,13 @@ function writeLocal(slot, p) {
   try { localStorage.setItem(LS_PREFIX + slot, JSON.stringify(p)); } catch (e) { /* 저장소를 쓸 수 없는 환경 */ }
 }
 
-const state = { screen: 'menu', extra: 0, run: null };
-const account = { user: null, sync: 'local', busy: false, admin: false };
-const SYNC_TEXT = { saving: '계정에 저장하는 중…', saved: '계정에 저장됨', error: '계정 저장 실패 · 이 기기에는 저장됨', local: '' };
+const state = { screen: 'menu', extra: 0, run: null, lockUntil: 0, entering: false };
+// settled: 처음 로그인 상태 확인이 끝났는지, loaded: 계정 기록을 불러왔는지, unsynced: 불러오기 전에 이 기기에서 바뀐 기록이 있는지
+const account = { user: null, sync: 'local', busy: false, admin: false, settled: false, loaded: false, loadingGen: 0, unsynced: false };
+const SYNC_TEXT = {
+  loading: '계정 기록을 불러오는 중…', saving: '계정에 저장하는 중…', saved: '계정에 저장됨',
+  error: '계정 저장 실패 · 이 기기에는 저장됨', wait: '계정에 연결하지 못함 · 이 기기에 저장 중', local: '',
+};
 
 // 관리자(상점 상품 무료): 공개 저장소에 이메일을 그대로 두지 않도록 SHA-256('logicmaze:' + 소문자 이메일)만 둔다
 const ADMIN_HASHES = [
@@ -792,28 +796,51 @@ function costOf(price) { return account.admin ? 0 : price; }
 let profile = defaultProfile();
 let fb = null;
 let saveTimer = null;
+let inflight = 0;          // 아직 끝나지 않은 계정 저장 수
+let authGen = 0;           // 로그인 상태가 바뀔 때마다 늘려, 늦게 끝난 이전 작업이 기록을 덮지 못하게 한다
+let pendingAuth = null;    // 도전 중에 바뀐 로그인 상태 (도전이 끝나면 반영)
 
 function slotName() { return account.user ? 'u.' + account.user.uid : 'guest'; }
+function hasLocal(slot) { try { return localStorage.getItem(LS_PREFIX + slot) !== null; } catch (e) { return false; } }
+// a의 모든 기록이 b 이상이면 a가 b에서 더 나아간 기록으로 본다
+function dominates(a, b) { return Object.keys(b.stats).every(k => a.stats[k] >= b.stats[k]); }
+
 function commit() {
   writeLocal(slotName(), profile);
-  if (account.user && fb) {
-    account.sync = 'saving';
+  if (!account.user || !fb) return;
+  if (!account.loaded) {
+    // 계정 기록을 아직 못 불러왔으면 계정을 덮어쓰지 않고 이 기기에만 저장해 둔다
+    account.unsynced = true;
+    if (account.sync !== 'loading') account.sync = 'wait';
     renderAccount();
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(saveCloud, 500);
+    return;
   }
+  account.sync = 'saving';
+  renderAccount();
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveCloud, 500);
 }
 async function saveCloud() {
-  if (!account.user || !fb) return;
+  clearTimeout(saveTimer);
+  saveTimer = null;
+  if (!account.user || !fb || !account.loaded) return;
+  const gen = authGen, uid = account.user.uid;
+  let ok = true;
+  inflight += 1;
   try {
-    await fb.fsM.setDoc(fb.fsM.doc(fb.db, 'users', account.user.uid), { ...profile, updatedAt: fb.fsM.serverTimestamp() });
-    account.sync = 'saved';
+    await fb.fsM.setDoc(fb.fsM.doc(fb.db, 'users', uid), { ...profile, updatedAt: fb.fsM.serverTimestamp() });
   } catch (e) {
     console.warn('계정 저장 실패', e);
-    account.sync = 'error';
+    ok = false;
+  } finally {
+    inflight -= 1;
   }
+  if (gen !== authGen) return;
+  account.sync = !ok ? 'error' : (saveTimer || inflight) ? 'saving' : 'saved';
   renderAccount();
 }
+// 기다리고 있는 저장을 바로 보낸다 (로그아웃하거나 창을 닫을 때)
+function flushSave() { return saveTimer ? saveCloud() : Promise.resolve(); }
 
 /* ───────── 구글 로그인 ───────── */
 async function loadFirebase() {
@@ -827,79 +854,133 @@ async function loadFirebase() {
   fb = { auth: authM.getAuth(app), db: fsM.getFirestore(app), authM, fsM };
   return fb;
 }
+function settleAuth() {
+  if (account.settled) return;
+  account.settled = true;
+  renderAccount();
+}
 async function initAuth() {
-  if (!FIREBASE_CONFIG) return;
+  if (!FIREBASE_CONFIG) { settleAuth(); return; }
+  setTimeout(settleAuth, 6000);   // 로그인 서버가 응답하지 않아도 게임은 시작할 수 있게
   try {
     const f = await loadFirebase();
     f.authM.getRedirectResult(f.auth).catch(handleAuthError);
     f.authM.onAuthStateChanged(f.auth, onUser);
   } catch (e) {
     console.warn('로그인 모듈을 불러오지 못했습니다', e);
+    settleAuth();
   }
 }
-async function onUser(user) {
-  if (state.run) return;   // 도전 중에는 기록을 바꾸지 않는다 (메뉴로 돌아오면 반영)
-  if (!user) {
-    account.user = null;
-    account.admin = false;
-    account.sync = 'local';
-    profile = readLocal('guest');
-    applySkin();
-    renderMenu();
-    return;
-  }
-  account.user = { uid: user.uid, name: user.displayName || '플레이어', photo: user.photoURL || '' };
-  account.admin = !!user.emailVerified && await isAdminEmail(user.email);   // 확인된 구글 이메일만
-  account.sync = 'saving';
-  renderAccount();
-  try {
-    const ref = fb.fsM.doc(fb.db, 'users', user.uid);
-    const snap = await fb.fsM.getDoc(ref);
-    if (snap.exists()) {
-      profile = sanitize(snap.data());
-    } else {
-      // 처음 로그인하면 이 기기의 손님 기록을 계정으로 옮긴다
-      const guest = readLocal('guest');
-      profile = guest;
-      await fb.fsM.setDoc(ref, { ...profile, updatedAt: fb.fsM.serverTimestamp() });
-      writeLocal('guest', defaultProfile());
-      if (guest.coins || guest.stats.runs) toast('이 기기의 손님 기록을 계정으로 옮겼습니다.');
-    }
-    account.sync = 'saved';
-  } catch (e) {
-    console.warn('계정 기록을 불러오지 못했습니다', e);
-    profile = readLocal('u.' + user.uid);
-    account.sync = 'error';
-  }
-  writeLocal('u.' + user.uid, profile);
+// 기록이 바뀌면 지금 보고 있는 화면도 다시 그린다
+function afterProfileChange() {
   applySkin();
+  if (state.screen === 'shop') renderShop();
+  else if (state.screen === 'brief') renderBrief();
   renderMenu();
 }
-async function login() {
+async function onUser(user) {
+  if (state.run) { pendingAuth = { user }; return; }   // 도전 중에는 기록을 바꾸지 않고, 끝나면 반영
+  const gen = ++authGen;
+  clearTimeout(saveTimer);
+  saveTimer = null;
+  account.loaded = false;
+  account.unsynced = false;
+  account.admin = false;
+  if (!user) {
+    account.user = null;
+    account.sync = 'local';
+    profile = readLocal('guest');
+    afterProfileChange();
+    settleAuth();
+    return;
+  }
+  const uid = user.uid;
+  account.user = { uid, name: user.displayName || '플레이어', photo: user.photoURL || '' };
+  account.sync = 'loading';
+  // 계정 기록을 받기 전까지는 이 기기에 남은 이 계정의 기록(없으면 손님 기록)을 보여 준다
+  profile = hasLocal('u.' + uid) ? readLocal('u.' + uid) : readLocal('guest');
+  afterProfileChange();
+  const admin = !!user.emailVerified && await isAdminEmail(user.email);   // 확인된 구글 이메일만
+  if (gen !== authGen) return;
+  account.admin = admin;
+  await loadAccount(gen);
+  if (gen === authGen) settleAuth();
+}
+// 계정 기록을 불러온다. 실패하면 이 기기에 저장하며 기다렸다가, 연결되면 다시 시도한다.
+async function loadAccount(gen) {
+  if (!account.user || account.loadingGen === gen) return;
+  const uid = account.user.uid;
+  account.loadingGen = gen;
+  account.sync = 'loading';
+  renderAccount();
+  try {
+    const ref = fb.fsM.doc(fb.db, 'users', uid);
+    const snap = await fb.fsM.getDoc(ref);
+    if (gen !== authGen) return;
+    if (snap.exists()) {
+      const cloud = sanitize(snap.data());
+      if (account.unsynced && dominates(profile, cloud)) {
+        // 연결이 끊긴 동안 이 기기에서 더 나아갔다면 그 기록을 계정에 올린다
+        account.loaded = true;
+        await saveCloud();
+      } else {
+        profile = cloud;
+        account.loaded = true;
+        account.sync = 'saved';
+      }
+    } else {
+      // 처음 로그인: 이 기기의 기록을 계정으로 옮긴다
+      const moved = profile;
+      await fb.fsM.setDoc(ref, { ...moved, updatedAt: fb.fsM.serverTimestamp() });
+      writeLocal('guest', defaultProfile());
+      if (gen !== authGen) {
+        if (!account.user) { profile = readLocal('guest'); afterProfileChange(); }
+        return;
+      }
+      account.loaded = true;
+      account.sync = 'saved';
+      if (moved.coins || moved.stats.runs) toast('이 기기의 손님 기록을 계정으로 옮겼습니다.');
+    }
+    account.unsynced = false;
+  } catch (e) {
+    if (gen !== authGen) return;
+    console.warn('계정 기록을 불러오지 못했습니다', e);
+    account.sync = 'wait';
+  } finally {
+    if (account.loadingGen === gen) account.loadingGen = 0;
+  }
+  if (gen !== authGen) return;
+  writeLocal('u.' + uid, profile);
+  afterProfileChange();
+}
+function retryAccount() {
+  if (account.user && fb && !account.loaded && account.loadingGen !== authGen && !state.run) loadAccount(authGen);
+}
+function login() {
   if (!FIREBASE_CONFIG) {
     toast('구글 로그인은 연결을 준비하고 있습니다. 지금은 기록이 이 기기에 저장됩니다.');
     return;
   }
   if (account.busy) return;
-  account.busy = true;
-  renderAccount();
-  try {
-    const f = await loadFirebase();
-    const provider = new f.authM.GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: 'select_account' });
-    try {
-      await f.authM.signInWithPopup(f.auth, provider);
-    } catch (e) {
-      if (e && (e.code === 'auth/popup-blocked' || e.code === 'auth/operation-not-supported-in-this-environment')) {
-        await f.authM.signInWithRedirect(f.auth, provider);
-      } else throw e;
-    }
-  } catch (e) {
-    handleAuthError(e);
-  } finally {
-    account.busy = false;
-    renderAccount();
+  if (!fb) {
+    toast('로그인을 준비하는 중입니다. 잠시 후 다시 눌러 주세요.');
+    loadFirebase().catch(handleAuthError);
+    return;
   }
+  account.busy = true;
+  const provider = new fb.authM.GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
+  // 팝업은 누른 그 순간에 열어야 브라우저(특히 Safari)가 막지 않는다
+  fb.authM.signInWithPopup(fb.auth, provider)
+    .catch(e => {
+      if (e && (e.code === 'auth/popup-blocked' || e.code === 'auth/operation-not-supported-in-this-environment')) {
+        return fb.authM.signInWithRedirect(fb.auth, provider);
+      }
+      throw e;
+    })
+    .catch(handleAuthError)
+    .finally(() => { account.busy = false; renderAccount(); });
+  renderAccount();
 }
 function handleAuthError(e) {
   const code = (e && e.code) || '';
@@ -915,12 +996,18 @@ function handleAuthError(e) {
     : '이 환경에서는 로그인을 쓸 수 없습니다. 게임 공식 주소에서 이용해 주세요.'));
 }
 async function logout() {
-  if (!fb) return;
+  if (!fb || account.busy) return;
+  account.busy = true;
+  renderAccount();
   try {
+    await flushSave();   // 기다리던 저장을 먼저 계정에 보낸다
     await fb.authM.signOut(fb.auth);
     toast('로그아웃했습니다. 이 기기의 손님 기록으로 돌아왔습니다.');
   } catch (e) {
     toast('로그아웃하지 못했습니다. 다시 시도해 주세요.');
+  } finally {
+    account.busy = false;
+    renderAccount();
   }
 }
 
@@ -981,7 +1068,10 @@ function glint() {
   document.body.classList.add('glint');
   setTimeout(() => document.body.classList.remove('glint'), 900);
 }
+let appliedSkin = null;
 function applySkin() {
+  if (appliedSkin === profile.skin) return;   // 같은 테마면 배경 미궁을 다시 그리지 않는다
+  appliedSkin = profile.skin;
   document.body.dataset.skin = profile.skin;
   drawMaze(true);
 }
@@ -1002,6 +1092,7 @@ function navigate(to) {
   if (to === 'shop') renderShop();
   if (to === 'credits') renderCredits();
   show(to);
+  if (to === 'menu') retryAccount();   // 계정 기록을 못 불러온 상태면 메뉴로 올 때마다 다시 시도
 }
 
 function renderMenu() {
@@ -1023,12 +1114,19 @@ function renderAccount() {
       <div class="menu-row">
         <span class="ico ico-avatar" aria-hidden="true">${account.user.photo ? '<img alt="" referrerpolicy="no-referrer">' : '<svg><use href="#i-person"/></svg>'}</span>
         <span class="row-text"><span class="row-label"></span><span class="row-sub"></span></span>
-        <button type="button" class="btn btn-text btn-sm" data-act="logout">로그아웃</button>
+        <button type="button" class="btn btn-text btn-sm" data-act="logout"${account.busy ? ' disabled' : ''}>로그아웃</button>
       </div>`;
     if (account.user.photo) slot.querySelector('img').src = account.user.photo;
     slot.querySelector('.row-label').textContent = account.user.name;
     slot.querySelector('.row-sub').textContent = (account.admin ? '관리자 · ' : '') + (SYNC_TEXT[account.sync] || '');
     $('menu-who').textContent = account.user.name + ' 님';
+  } else if (FIREBASE_CONFIG && !account.settled) {
+    slot.innerHTML = `
+      <div class="menu-row">
+        <span class="ico ico-google">${GOOGLE_G}</span>
+        <span class="row-text"><span class="row-label">계정 확인 중…</span><span class="row-sub">로그인 상태를 확인하고 있습니다</span></span>
+      </div>`;
+    $('menu-who').textContent = '계정 확인 중…';
   } else {
     slot.innerHTML = `
       <button type="button" class="menu-row" data-act="login"${account.busy ? ' disabled' : ''}>
@@ -1177,7 +1275,22 @@ function buildRooms() {
   return [...t1, ...t2, pick(BANK.t3)].map(makeRoom);
 }
 
-function enterMaze() {
+async function enterMaze() {
+  if (state.run || state.entering) return;
+  if (!account.settled) {
+    // 로그인 상태를 확인하기 전에 시작하면 그 판의 기록이 손님 쪽에 쌓이므로 잠깐 기다린다
+    state.entering = true;
+    const btn = document.querySelector('[data-act="enter"]');
+    const label = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = '계정 확인 중…';
+    const until = Date.now() + 5000;
+    while (!account.settled && Date.now() < until) await new Promise(r => setTimeout(r, 100));
+    btn.disabled = false;
+    btn.textContent = label;
+    state.entering = false;
+    if (state.screen !== 'brief' || state.run) return;   // 기다리는 동안 다른 화면으로 갔으면 시작하지 않는다
+  }
   const extra = Math.max(0, Math.min(state.extra, profile.items.key, MAX_EXTRA_KEYS));
   if (extra) {
     profile.items.key -= extra;
@@ -1217,6 +1330,8 @@ function renderRoom() {
   const run = state.run;
   const room = run.rooms[run.idx];
   run.locked = false;
+  // 앞 화면의 버튼을 연달아 누른 손가락이 새 방의 보기를 바로 누르지 않도록 잠깐 입력을 막는다
+  state.lockUntil = Date.now() + 450;
   renderHud();
   $('domain').textContent = room.domain;
   $('domain').hidden = !room.domain;
@@ -1248,7 +1363,7 @@ function revealTag(b) { b.querySelector('.tag').hidden = false; }
 
 function answer(btn, opt) {
   const run = state.run;
-  if (!run || run.locked || btn.disabled) return;
+  if (!run || run.locked || btn.disabled || Date.now() < state.lockUntil) return;
   const room = run.rooms[run.idx];
   btn.disabled = true;   // 같은 오답을 다시 눌러 열쇠를 또 잃지 않도록
   revealTag(btn);
@@ -1369,7 +1484,7 @@ function updateLens() {
 }
 function useLens() {
   const run = state.run;
-  if (!run || run.locked) return;
+  if (!run || run.locked || Date.now() < state.lockUntil) return;
   const room = run.rooms[run.idx];
   const targets = run.buttons.filter(({ b, opt }) => !opt.correct && !b.disabled);
   if (room.lensUsed || profile.items.lens <= 0 || !targets.length) return;
@@ -1391,8 +1506,15 @@ function resetAbandon() {
   btn.textContent = '포기하기';
 }
 function onAbandon() {
+  const run = state.run;
+  if (!run || Date.now() < state.lockUntil) return;
   const btn = $('btn-abandon');
-  if (btn.dataset.armed === '1') { resetAbandon(); finishRun('abandon'); return; }
+  if (btn.dataset.armed === '1') {
+    resetAbandon();
+    // 이미 열쇠를 다 잃었거나 마지막 문까지 열었다면 그 결과로 끝낸다
+    finishRun(run.hp <= 0 ? 'fail' : run.cleared === run.rooms.length ? 'clear' : 'abandon');
+    return;
+  }
   btn.dataset.armed = '1';
   btn.textContent = '한 번 더 누르면 미궁을 나갑니다';
   clearTimeout(btn._timer);
@@ -1452,6 +1574,11 @@ function finishRun(kind) {
 
   state.run = null;
   show('result');
+  if (pendingAuth) {   // 도전 중에 바뀐 로그인 상태를 이제 반영
+    const p = pendingAuth;
+    pendingAuth = null;
+    onUser(p.user);
+  }
 }
 
 /* ───────── 이벤트 ───────── */
@@ -1472,6 +1599,11 @@ document.addEventListener('click', e => {
     case 'equip': equip(act.dataset.id); break;
   }
 });
+
+// 계정 저장: 다시 연결되면 불러오기를 재시도하고, 창을 닫거나 숨길 때는 기다리던 저장을 바로 보낸다
+window.addEventListener('online', retryAccount);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushSave(); });
+window.addEventListener('pagehide', () => { flushSave(); });
 
 let resizeTimer = null;
 window.addEventListener('resize', () => {
