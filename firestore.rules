@@ -13,10 +13,12 @@ rules_version = '2';
 //   - coins: int (required, 0..10,000,000 and <= 125 * stats.runs) - 금화.
 //       Coins are only earned when a run ends, at most 125 per run
 //       (5 rooms x (10 + 5 first-try) + 30 clear + 20 perfect). Purchases only lower them.
-//   - items: map (required, exactly { key, lens }) - consumables
-//       - key: int 0..9 (여분의 열쇠), lens: int 0..9 (통찰의 렌즈)
-//   - skins: list<string> (required, 1..3 unique items from ['emerald', 'sapphire', 'garnet'],
-//       always contains 'emerald') - owned themes
+//   - items: map (required) - consumables, every count an int 0..9
+//       - key (여분의 열쇠) and lens (통찰의 렌즈): required
+//       - shield (보호의 인장), revive (불사조 깃털), candle (지혜의 촛대): optional
+//         (saves from before these items existed have only key and lens)
+//   - skins: list<string> (required, 1..5 unique items from
+//       ['emerald', 'sapphire', 'garnet', 'obsidian', 'amber'], always contains 'emerald') - owned themes
 //   - skin: string (required, one of skins) - equipped theme
 //   - stats: map (required, exactly { runs, clears, perfect, rooms }) - ints,
 //       0 <= perfect <= clears <= runs <= 10,000,000 and rooms <= 5 * runs; never decrease
@@ -60,10 +62,20 @@ service cloud.firestore {
     // Domain Validators (used by both create and update)
     // ===============================================================
 
+    // Optional count: absent, or an int 0..9
+    function isOptionalCount(items, name) {
+      return !(name in items) || isIntInRange(items[name], 0, 9);
+    }
+
     function isValidItems(items) {
-      return hasExactKeys(items, ['key', 'lens'])
+      return items is map
+        && items.keys().hasAll(['key', 'lens'])
+        && items.keys().hasOnly(['key', 'lens', 'shield', 'revive', 'candle'])
         && isIntInRange(items.key, 0, 9)
-        && isIntInRange(items.lens, 0, 9);
+        && isIntInRange(items.lens, 0, 9)
+        && isOptionalCount(items, 'shield')
+        && isOptionalCount(items, 'revive')
+        && isOptionalCount(items, 'candle');
     }
 
     function isValidStats(stats) {
@@ -77,9 +89,9 @@ service cloud.firestore {
     function isValidSkins(data) {
       return data.skins is list
         && data.skins.size() >= 1
-        && data.skins.size() <= 3
+        && data.skins.size() <= 5
         && data.skins.toSet().size() == data.skins.size()
-        && data.skins.hasOnly(['emerald', 'sapphire', 'garnet'])
+        && data.skins.hasOnly(['emerald', 'sapphire', 'garnet', 'obsidian', 'amber'])
         && 'emerald' in data.skins
         && data.skin is string
         && data.skin in data.skins;

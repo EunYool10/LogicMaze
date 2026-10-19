@@ -52,6 +52,18 @@ body[data-skin="garnet"] {
   --bone: #f3e9e4; --bone-2: #d4c4bd; --mute: #a08f89;
   --hair: rgba(213, 160, 136, 0.25); --hair-strong: rgba(213, 160, 136, 0.5); --on-brass: #1f0f0b;
 }
+body[data-skin="obsidian"] {
+  --ink: #08080a; --vault: #121215; --vault-rgb: 18, 18, 21; --vault-2: #18181c;
+  --brass: #d8c08a; --brass-rgb: 216, 192, 138; --brass-hi: #f4e6c0; --brass-lo: #8c7748;
+  --bone: #f4f1ea; --bone-2: #cfcabd; --mute: #96928a;
+  --hair: rgba(216, 192, 138, 0.22); --hair-strong: rgba(216, 192, 138, 0.46); --on-brass: #17130a;
+}
+body[data-skin="amber"] {
+  --ink: #120c06; --vault: #1c140b; --vault-rgb: 28, 20, 11; --vault-2: #241a0f;
+  --brass: #e0a24a; --brass-rgb: 224, 162, 74; --brass-hi: #f6d39a; --brass-lo: #9a6524;
+  --bone: #f6ecdc; --bone-2: #d8c8b0; --mute: #a3927b;
+  --hair: rgba(224, 162, 74, 0.24); --hair-strong: rgba(224, 162, 74, 0.5); --on-brass: #1e1205;
+}
 
 *, *::before, *::after { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -280,6 +292,13 @@ div.menu-row { cursor: default; }
 .stepper button:disabled { opacity: 0.3; cursor: not-allowed; }
 .stepper output { min-width: 30px; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
 .auto-note { font-size: 13px; color: var(--mute); }
+.toggle {
+  min-width: 88px; min-height: 42px; padding: 8px 12px; cursor: pointer;
+  font-size: 14px; font-weight: 600; color: var(--bone-2); background: none; border: 1px solid var(--hair-strong);
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+.toggle[aria-pressed="true"] { color: var(--on-brass); background: linear-gradient(180deg, var(--brass-hi), var(--brass)); border-color: transparent; }
+.toggle:disabled { opacity: 0.35; cursor: not-allowed; }
 .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
 .actions > .btn { flex: 1 1 180px; max-width: 340px; }
 
@@ -309,7 +328,14 @@ div.menu-row { cursor: default; }
 .keyhole.is-open { color: var(--verdigris); filter: drop-shadow(0 0 10px rgba(124, 196, 168, 0.5)); }
 .keyhole.is-open .core { transform: rotate(90deg); }
 .domain { margin: 12px 0 0; font-family: var(--serif); font-size: 14.5px; color: var(--brass-hi); }
-.prop { margin: 10px 0 0; font-family: var(--serif); font-weight: 700; font-size: clamp(21px, 3.9vw, 28px); line-height: 1.55; letter-spacing: -0.01em; text-wrap: pretty; }
+.prop { margin: 10px 0 0; font-family: var(--serif); font-weight: 700; font-size: clamp(21px, 3.9vw, 28px); line-height: 1.55; letter-spacing: -0.01em; text-wrap: pretty; white-space: pre-line; }
+.hint {
+  display: flex; align-items: flex-start; gap: 10px; margin: 16px 0 0; padding: 10px 14px;
+  font-size: 14.5px; color: var(--brass-hi); border: 1px dashed var(--hair-strong); white-space: pre-line;
+}
+.hint svg { width: 18px; height: 18px; flex: none; margin-top: 2px; color: var(--brass); }
+.charms { display: flex; gap: 3px; }
+.charms svg { width: 22px; height: 22px; color: var(--verdigris); }
 .prompt { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 30px 0 14px; color: var(--bone-2); }
 .prompt b { font-family: var(--serif); color: var(--bone); }
 
@@ -448,6 +474,9 @@ div.menu-row { cursor: default; }
   <symbol id="i-key" viewBox="0 0 24 24"><circle cx="7" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M11.2 12h10M17 12v3.2M20.2 12v2.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
   <symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="5.4" fill="none" stroke="currentColor" stroke-width="1" opacity=".7"/></symbol>
   <symbol id="i-lens" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v5.2c0 4.3 2.9 8 7 9.3 4.1-1.3 7-5 7-9.3V6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m9 12 2 2 4-4.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-revive" viewBox="0 0 24 24"><path d="M19.5 4C12 4 7.5 9 7.5 16v4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M19.5 4c0 7.5-4.5 12-12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M15 8.5h-3.5M12.5 11.5H9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-candle" viewBox="0 0 24 24"><path d="M8 21h8M10 21v-9h4v9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 9.5c-1.7-1.5-1.7-3.6 0-5.8 1.7 2.2 1.7 4.3 0 5.8Z" fill="currentColor"/></symbol>
   <symbol id="i-door" viewBox="0 0 24 24"><path d="M6 21V10a6 6 0 0 1 12 0v11" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 21h17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="14.6" cy="14.6" r="1.1" fill="currentColor"/></symbol>
   <symbol id="i-scroll" viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="17" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
   <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 20c1.2-3.6 4-5.4 7-5.4s5.8 1.8 7 5.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
@@ -487,7 +516,7 @@ div.menu-row { cursor: default; }
         <div class="menu-list">
           <button type="button" class="menu-row" data-go="shop">
             <span class="ico" aria-hidden="true"><svg><use href="#i-coin"/></svg></span>
-            <span class="row-text"><span class="row-label">상점</span><span class="row-sub">금화로 열쇠와 렌즈, 테마를 삽니다</span></span>
+            <span class="row-text"><span class="row-label">상점</span><span class="row-sub">금화로 도전에 쓸 물건과 테마를 삽니다</span></span>
             <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
           </button>
           <button type="button" class="menu-row" data-go="credits">
@@ -510,7 +539,7 @@ div.menu-row { cursor: default; }
       <p class="story">당신은 꼬여 있는 명제 원리로 작동하는 미궁에 갇혔습니다. 문을 열려면 방마다 제시되는 원래 명제의 <b>대우(Contrapositive)</b>를 올바르게 직관해, 참인 논리 열쇠를 맞춰야 합니다.</p>
       <dl class="rules">
         <div><dt>열쇠</dt><dd>3개로 시작합니다. 틀릴 때마다 하나를 잃고, 모두 잃으면 미궁에 갇힙니다.</dd></div>
-        <div><dt>방</dt><dd>모두 다섯 개입니다. 뒤로 갈수록 ‘그리고’, ‘또는’이 섞인 명제가 나옵니다. 문제는 매번 무작위로 바뀝니다.</dd></div>
+        <div><dt>방</dt><dd>모두 다섯 개입니다. 대우를 찾는 방을 중심으로 역·이 찾기, 부정, 필요·충분조건, 반례 방이 섞여 나오고, 마지막 방은 ‘그리고’·‘또는’이 섞인 명제입니다. 문제는 매번 무작위로 바뀝니다.</dd></div>
         <div><dt>금화</dt><dd>정답 10 · 첫 시도 +5 · 탈출 +30 · 열쇠를 하나도 잃지 않으면 +20</dd></div>
       </dl>
       <h3 class="h3">가져갈 물건</h3>
@@ -530,6 +559,7 @@ div.menu-row { cursor: default; }
         <ol class="doors" id="doors" aria-label="진행 상황"></ol>
       </div>
       <div class="hud-right">
+        <div class="charms" id="charms"></div>
         <div class="keys" id="keys"></div>
         <span class="purse" id="run-purse"></span>
       </div>
@@ -537,7 +567,7 @@ div.menu-row { cursor: default; }
 
     <article class="frame plaque">
       <div class="plaque-head">
-        <p class="eyebrow">원래 명제 · <span class="mono">p → q</span></p>
+        <p class="eyebrow" id="room-eyebrow">원래 명제 · <span class="mono">p → q</span></p>
         <svg class="keyhole" id="keyhole" viewBox="0 0 48 48" aria-hidden="true">
           <circle cx="24" cy="24" r="22.5" fill="none" stroke="currentColor" stroke-width="1"/>
           <circle cx="24" cy="24" r="17.5" fill="none" stroke="currentColor" stroke-width=".6" opacity=".55"/>
@@ -546,10 +576,11 @@ div.menu-row { cursor: default; }
       </div>
       <p class="domain" id="domain" hidden></p>
       <p class="prop" id="prop"></p>
+      <p class="hint" id="hint" hidden><svg aria-hidden="true"><use href="#i-candle"/></svg><span id="hint-text"></span></p>
     </article>
 
-    <p class="prompt"><span>이 명제의 <b>대우</b>를 고르세요</span> <code class="chip">~q → ~p</code></p>
-    <div class="choices" id="choices" role="group" aria-label="대우 후보" tabindex="-1"></div>
+    <p class="prompt"><span id="prompt-text">이 명제의 <b>대우</b>를 고르세요</span> <code class="chip" id="prompt-chip">~q → ~p</code></p>
+    <div class="choices" id="choices" role="group" aria-label="보기" tabindex="-1"></div>
     <div class="tools">
       <button type="button" class="btn btn-ghost btn-sm" id="btn-lens" data-act="lens">
         <svg aria-hidden="true"><use href="#i-lens"/></svg>통찰의 렌즈 <span class="lens-count" id="lens-count">0</span>
@@ -602,7 +633,7 @@ div.menu-row { cursor: default; }
       <h2 class="h1" id="credits-title" tabindex="-1" data-focus>크레딧</h2>
       <div class="roll">
         <div><span class="role-name">기획 · 메인개발</span><span class="role-people">은율</span></div>
-        <div><span class="role-name">출제 범위</span><span class="role-people small">고등학교 수학 「명제」 — 역 · 이 · 대우, 드모르간 법칙</span></div>
+        <div><span class="role-name">출제 범위</span><span class="role-people small">고등학교 수학 「명제」 — 역 · 이 · 대우, 부정, 필요·충분조건, 반례, 드모르간 법칙</span></div>
       </div>
       <h3 class="section-label">숫자로 보면</h3>
       <dl class="numbers" id="credit-numbers"></dl>
@@ -639,20 +670,27 @@ const DEMORGAN = '‘그리고’를 부정하면 ‘또는’이, ‘또는’�
 
 // 보기의 정체: 대우만 원래 명제와 참·거짓이 언제나 같다
 const TYPES = {
-  contra: { name: '대우', form: '~q → ~p', desc: '가정과 결론을 맞바꾸고 둘 다 부정한 문장입니다. 원래 명제와 참·거짓이 언제나 같습니다.' },
-  converse: { name: '역', form: 'q → p', desc: '가정과 결론의 자리만 맞바꾼 문장입니다. 원래 명제가 참이어도 역은 거짓일 수 있습니다.' },
-  inverse: { name: '이', form: '~p → ~q', desc: '가정과 결론을 부정하기만 한 문장입니다. 원래 명제가 참이어도 이는 거짓일 수 있습니다.' },
-  bad: { name: '잘못된 부정', form: '', desc: '자리는 대우처럼 바꿨지만 부정을 잘못했습니다. ' + DEMORGAN },
+  contra: { name: '대우', obj: '를', form: '~q → ~p', make: '대우는 가정과 결론을 맞바꾸고 둘 다 부정합니다.', desc: '가정과 결론을 맞바꾸고 둘 다 부정한 문장입니다. 원래 명제와 참·거짓이 언제나 같습니다.' },
+  converse: { name: '역', obj: '을', form: 'q → p', make: '역은 가정과 결론의 자리만 맞바꿉니다.', desc: '가정과 결론의 자리만 맞바꾼 문장입니다. 원래 명제가 참이어도 역은 거짓일 수 있습니다.' },
+  inverse: { name: '이', obj: '를', form: '~p → ~q', make: '이는 가정과 결론을 그대로 두고 둘 다 부정합니다.', desc: '가정과 결론을 부정하기만 한 문장입니다. 원래 명제가 참이어도 이는 거짓일 수 있습니다.' },
+  bad: { name: '잘못된 부정', obj: '을', form: '', make: '', desc: '자리는 대우처럼 바꿨지만 부정을 잘못했습니다. ' + DEMORGAN },
 };
 
+// 상점 물건. obj: 목적격 조사, carry: 입장 전에 골라 가져가는 물건 (한 도전에 하나씩)
 const WARES = {
-  key: { name: '여분의 열쇠', price: 80, max: 9, desc: '다음 도전에 열쇠를 하나 더 가져갑니다. 한 번에 2개까지 쓸 수 있습니다.' },
-  lens: { name: '통찰의 렌즈', price: 50, max: 9, desc: '방 안에서 쓰면 오답 하나를 지워 줍니다. 방마다 한 번 쓸 수 있습니다.' },
+  key: { name: '여분의 열쇠', obj: '를', price: 80, max: 9, desc: '다음 도전에 열쇠를 하나 더 가져갑니다. 한 번에 2개까지 쓸 수 있습니다.' },
+  lens: { name: '통찰의 렌즈', obj: '를', price: 50, max: 9, desc: '방 안에서 쓰면 오답 하나를 지워 줍니다. 방마다 한 번 쓸 수 있습니다.' },
+  shield: { name: '보호의 인장', obj: '을', price: 70, max: 9, carry: true, note: '첫 실수 한 번 막기', desc: '가져간 도전에서 처음 틀렸을 때 한 번, 열쇠를 잃지 않게 막아 줍니다.' },
+  revive: { name: '불사조 깃털', obj: '을', price: 120, max: 9, carry: true, note: '열쇠를 다 잃으면 한 번 부활', desc: '가져간 도전에서 열쇠를 모두 잃으면 한 번 되살아나 열쇠 하나로 이어 갑니다.' },
+  candle: { name: '지혜의 촛대', obj: '를', price: 40, max: 9, carry: true, note: '방마다 실마리', desc: '가져간 도전 동안 방마다 실마리를 밝혀 줍니다. 원래 명제의 가정과 결론을 나눠 보여 주는 식입니다.' },
 };
+const CARRY = Object.keys(WARES).filter(id => WARES[id].carry);
 const SKINS = {
   emerald: { name: '에메랄드 금고', price: 0, desc: '짙은 녹색 가죽과 황동 장식. 미궁의 기본 테마입니다.', swatch: ['#0a100e', '#15201c', '#c9a35b'] },
   sapphire: { name: '사파이어 천문대', price: 300, desc: '한밤의 남색 위에 은빛 계기판을 얹었습니다.', swatch: ['#080c14', '#131b2a', '#b7c2d6'] },
   garnet: { name: '가넷 서고', price: 300, desc: '오래된 적갈색 서고와 로즈골드 장식.', swatch: ['#110a0b', '#221519', '#d5a088'] },
+  obsidian: { name: '흑요석 전당', price: 400, desc: '검은 흑요석 벽에 샴페인 금빛 장식을 둘렀습니다.', swatch: ['#08080a', '#18181c', '#d8c08a'] },
+  amber: { name: '호박 공방', price: 400, desc: '호박색 등불 아래의 오래된 시계 공방.', swatch: ['#120c06', '#241a0f', '#e0a24a'] },
 };
 
 /* ───────── 문제 은행 ─────────
@@ -672,6 +710,13 @@ const BANK = {
     { p: '두 각이 맞꼭지각이면, 두 각의 크기는 같다.', c: '두 각의 크기가 같지 않으면, 두 각은 맞꼭지각이 아니다.', v: '두 각의 크기가 같으면, 두 각은 맞꼭지각이다.', i: '두 각이 맞꼭지각이 아니면, 두 각의 크기는 같지 않다.' },
     { p: '물이 끓고 있으면, 물이 뜨겁다.', c: '물이 뜨겁지 않으면, 물이 끓고 있지 않다.', v: '물이 뜨거우면, 물이 끓고 있다.', i: '물이 끓고 있지 않으면, 물이 뜨겁지 않다.' },
     { p: '금속이면, 전기가 통한다.', c: '전기가 통하지 않으면, 금속이 아니다.', v: '전기가 통하면, 금속이다.', i: '금속이 아니면, 전기가 통하지 않는다.' },
+    { p: '사과이면, 과일이다.', c: '과일이 아니면, 사과가 아니다.', v: '과일이면, 사과이다.', i: '사과가 아니면, 과일이 아니다.' },
+    { p: '펭귄이면, 새이다.', c: '새가 아니면, 펭귄이 아니다.', v: '새이면, 펭귄이다.', i: '펭귄이 아니면, 새가 아니다.' },
+    { p: '부산에 가면, 바다를 볼 수 있다.', c: '바다를 볼 수 없으면, 부산에 가지 않은 것이다.', v: '바다를 볼 수 있으면, 부산에 간 것이다.', i: '부산에 가지 않으면, 바다를 볼 수 없다.' },
+    { p: '얼음이 녹으면, 물이 된다.', c: '물이 되지 않으면, 얼음이 녹지 않은 것이다.', v: '물이 되면, 얼음이 녹은 것이다.', i: '얼음이 녹지 않으면, 물이 되지 않는다.' },
+    { p: '버스 카드에 잔액이 없으면, 버스를 탈 수 없다.', c: '버스를 탈 수 있으면, 버스 카드에 잔액이 있다.', v: '버스를 탈 수 없으면, 버스 카드에 잔액이 없다.', i: '버스 카드에 잔액이 있으면, 버스를 탈 수 있다.', n: '결론이 부정문이면 대우의 가정은 긍정문이 됩니다(부정의 부정).' },
+    { p: '평행사변형이면, 사각형이다.', c: '사각형이 아니면, 평행사변형이 아니다.', v: '사각형이면, 평행사변형이다.', i: '평행사변형이 아니면, 사각형이 아니다.' },
+    { p: '전등 스위치가 꺼져 있으면, 전등이 켜지지 않는다.', c: '전등이 켜지면, 전등 스위치가 꺼져 있지 않다.', v: '전등이 켜지지 않으면, 전등 스위치가 꺼져 있다.', i: '전등 스위치가 꺼져 있지 않으면, 전등이 켜진다.', n: '결론이 부정문이면 대우의 가정은 긍정문이 됩니다(부정의 부정).' },
   ],
   t2: [
     { d: '자연수 n에 대하여', p: 'n이 4의 배수이면, n은 짝수이다.', c: 'n이 짝수가 아니면, n은 4의 배수가 아니다.', v: 'n이 짝수이면, n은 4의 배수이다.', i: 'n이 4의 배수가 아니면, n은 짝수가 아니다.' },
@@ -684,6 +729,13 @@ const BANK = {
     { d: '정수 n에 대하여', p: 'n이 짝수이면, n²도 짝수이다.', c: 'n²이 짝수가 아니면, n도 짝수가 아니다.', v: 'n²이 짝수이면, n도 짝수이다.', i: 'n이 짝수가 아니면, n²도 짝수가 아니다.' },
     { d: '두 집합 A ⊂ B일 때', p: 'x ∈ A이면, x ∈ B이다.', c: 'x ∉ B이면, x ∉ A이다.', v: 'x ∈ B이면, x ∈ A이다.', i: 'x ∉ A이면, x ∉ B이다.' },
     { d: '자연수 n에 대하여', p: 'n이 10의 배수이면, n의 일의 자리 숫자는 0이다.', c: 'n의 일의 자리 숫자가 0이 아니면, n은 10의 배수가 아니다.', v: 'n의 일의 자리 숫자가 0이면, n은 10의 배수이다.', i: 'n이 10의 배수가 아니면, n의 일의 자리 숫자는 0이 아니다.' },
+    { d: '실수 x에 대하여', p: 'x > 1이면, x² > 1이다.', c: 'x² ≤ 1이면, x ≤ 1이다.', v: 'x² > 1이면, x > 1이다.', i: 'x ≤ 1이면, x² ≤ 1이다.', n: '‘>’의 부정은 ‘≤’입니다.' },
+    { d: '평면 위의 서로 다른 두 직선에 대하여', p: '두 직선이 평행하면, 두 직선은 만나지 않는다.', c: '두 직선이 만나면, 두 직선은 평행하지 않다.', v: '두 직선이 만나지 않으면, 두 직선은 평행하다.', i: '두 직선이 평행하지 않으면, 두 직선은 만난다.' },
+    { d: '정수 n에 대하여', p: 'n이 홀수이면, n²도 홀수이다.', c: 'n²이 홀수가 아니면, n도 홀수가 아니다.', v: 'n²이 홀수이면, n도 홀수이다.', i: 'n이 홀수가 아니면, n²도 홀수가 아니다.' },
+    { p: '물체에 힘이 작용하지 않으면, 물체의 운동 상태는 변하지 않는다.', c: '물체의 운동 상태가 변하면, 물체에 힘이 작용한 것이다.', v: '물체의 운동 상태가 변하지 않으면, 물체에 힘이 작용하지 않은 것이다.', i: '물체에 힘이 작용하면, 물체의 운동 상태가 변한다.', n: '결론이 부정문이면 대우의 가정은 긍정문이 됩니다(부정의 부정).' },
+    { d: '두 집합 A, B에 대하여', p: 'A ⊂ B이면, A ∩ B = A이다.', c: 'A ∩ B ≠ A이면, A ⊄ B이다.', v: 'A ∩ B = A이면, A ⊂ B이다.', i: 'A ⊄ B이면, A ∩ B ≠ A이다.' },
+    { d: '자연수 n에 대하여', p: 'n이 소수이면, n의 약수는 2개이다.', c: 'n의 약수가 2개가 아니면, n은 소수가 아니다.', v: 'n의 약수가 2개이면, n은 소수이다.', i: 'n이 소수가 아니면, n의 약수는 2개가 아니다.' },
+    { d: '이차방정식 ax² + bx + c = 0 (a ≠ 0)에 대하여', p: 'b² − 4ac < 0이면, 실근이 없다.', c: '실근이 있으면, b² − 4ac ≥ 0이다.', v: '실근이 없으면, b² − 4ac < 0이다.', i: 'b² − 4ac ≥ 0이면, 실근이 있다.', n: '‘실근이 없다’의 부정은 ‘실근이 있다’, ‘<’의 부정은 ‘≥’입니다.' },
   ],
   t3: [
     { p: '날씨가 덥고 습하면, 불쾌지수가 높다.', c: '불쾌지수가 높지 않으면, 날씨가 덥지 않거나 습하지 않은 것이다.', v: '불쾌지수가 높으면, 날씨가 덥고 습한 것이다.', i: '날씨가 덥지 않거나 습하지 않으면, 불쾌지수가 높지 않다.', b: '불쾌지수가 높지 않으면, 날씨가 덥지 않고 습하지 않은 것이다.' },
@@ -693,6 +745,64 @@ const BANK = {
     { d: '실수 x에 대하여', p: 'x² = 1이면, x = 1이거나 x = −1이다.', c: 'x ≠ 1이고 x ≠ −1이면, x² ≠ 1이다.', v: 'x = 1이거나 x = −1이면, x² = 1이다.', i: 'x² ≠ 1이면, x ≠ 1이고 x ≠ −1이다.', b: 'x ≠ 1이거나 x ≠ −1이면, x² ≠ 1이다.' },
     { p: '주말이고 날씨가 맑으면, 공원에 간다.', c: '공원에 가지 않으면, 주말이 아니거나 날씨가 맑지 않은 것이다.', v: '공원에 가면, 주말이고 날씨가 맑은 것이다.', i: '주말이 아니거나 날씨가 맑지 않으면, 공원에 가지 않는다.', b: '공원에 가지 않으면, 주말이 아니고 날씨도 맑지 않은 것이다.' },
     { p: '출석률이 80% 이상이고 시험 점수가 60점 이상이면, 과목을 이수한다.', c: '과목을 이수하지 못하면, 출석률이 80% 미만이거나 시험 점수가 60점 미만이다.', v: '과목을 이수하면, 출석률이 80% 이상이고 시험 점수가 60점 이상이다.', i: '출석률이 80% 미만이거나 시험 점수가 60점 미만이면, 과목을 이수하지 못한다.', b: '과목을 이수하지 못하면, 출석률이 80% 미만이고 시험 점수도 60점 미만이다.', n: '‘이상’의 부정은 ‘미만’입니다.' },
+    { d: '실수 a, b에 대하여', p: 'a > 0이고 b > 0이면, a + b > 0이다.', c: 'a + b ≤ 0이면, a ≤ 0이거나 b ≤ 0이다.', v: 'a + b > 0이면, a > 0이고 b > 0이다.', i: 'a ≤ 0이거나 b ≤ 0이면, a + b ≤ 0이다.', b: 'a + b ≤ 0이면, a ≤ 0이고 b ≤ 0이다.' },
+    { d: '정수 n에 대하여', p: 'n이 4의 배수이거나 6의 배수이면, n은 짝수이다.', c: 'n이 짝수가 아니면, n은 4의 배수가 아니고 6의 배수도 아니다.', v: 'n이 짝수이면, n은 4의 배수이거나 6의 배수이다.', i: 'n이 4의 배수가 아니고 6의 배수도 아니면, n은 짝수가 아니다.', b: 'n이 짝수가 아니면, n은 4의 배수가 아니거나 6의 배수가 아니다.' },
+    { p: '비가 오거나 눈이 오면, 운동회를 미룬다.', c: '운동회를 미루지 않으면, 비가 오지 않고 눈도 오지 않은 것이다.', v: '운동회를 미루면, 비가 오거나 눈이 온 것이다.', i: '비가 오지 않고 눈도 오지 않으면, 운동회를 미루지 않는다.', b: '운동회를 미루지 않으면, 비가 오지 않거나 눈이 오지 않은 것이다.' },
+    { p: '입장권이 있고 신분증이 있으면, 입장할 수 있다.', c: '입장할 수 없으면, 입장권이 없거나 신분증이 없는 것이다.', v: '입장할 수 있으면, 입장권이 있고 신분증이 있는 것이다.', i: '입장권이 없거나 신분증이 없으면, 입장할 수 없다.', b: '입장할 수 없으면, 입장권도 없고 신분증도 없는 것이다.' },
+  ],
+  // 부정: neg가 정답, w는 오답과 그 해설
+  neg: [
+    { p: '모든 학생은 안경을 썼다.', neg: '안경을 쓰지 않은 학생이 있다.', n: '‘모든 ~이다’의 부정은 ‘~이 아닌 것이 있다’입니다.', w: [
+      { t: '모든 학생은 안경을 쓰지 않았다.', tag: '전부 반대로', why: '‘모든’을 그대로 두고 결론만 뒤집으면 지나치게 강한 주장이 됩니다. ‘모든 ~이다’의 부정은 ‘~이 아닌 것이 있다’입니다.' },
+      { t: '안경을 쓴 학생이 있다.', tag: '부정 아님', why: '원래 명제와 함께 참일 수 있으므로 부정이 아닙니다. 부정은 원래 명제와 참·거짓이 정반대여야 합니다.' }] },
+    { p: '어떤 자연수는 짝수이다.', neg: '모든 자연수는 짝수가 아니다.', n: '‘어떤 ~이다’의 부정은 ‘모든 ~이 아니다’입니다.', w: [
+      { t: '어떤 자연수는 짝수가 아니다.', tag: '부정 아님', why: '원래 명제와 함께 참일 수 있으므로 부정이 아닙니다. ‘어떤 ~이다’의 부정은 ‘모든 ~이 아니다’입니다.' },
+      { t: '모든 자연수는 짝수이다.', tag: '강해진 주장', why: '‘어떤’을 ‘모든’으로 바꾸기만 하면 부정이 되지 않습니다. 결론도 함께 부정해야 합니다.' }] },
+    { d: '실수 x, y에 대하여', p: 'x > 0이고 y > 0이다.', neg: 'x ≤ 0이거나 y ≤ 0이다.', n: DEMORGAN + ' ‘>’의 부정은 ‘≤’입니다.', w: [
+      { t: 'x ≤ 0이고 y ≤ 0이다.', tag: '드모르간 위반', why: '‘그리고’를 그대로 두었습니다. ' + DEMORGAN },
+      { t: 'x < 0이거나 y < 0이다.', tag: '부등호 실수', why: '‘>’의 부정은 ‘≤’입니다. ‘<’로 바꾸면 0인 경우가 빠집니다.' }] },
+    { d: '실수 x에 대하여', p: 'x = 1이거나 x = 2이다.', neg: 'x ≠ 1이고 x ≠ 2이다.', n: DEMORGAN, w: [
+      { t: 'x ≠ 1이거나 x ≠ 2이다.', tag: '드모르간 위반', why: '‘또는’을 그대로 두었습니다. ' + DEMORGAN },
+      { t: 'x = 1이고 x = 2이다.', tag: '부정 아님', why: '등호를 그대로 둔 채 ‘또는’만 ‘그리고’로 바꾸면 부정이 아닙니다. 각 조건도 함께 부정해야 합니다.' }] },
+    { p: '모든 실수 x에 대하여 x² ≥ 0이다.', neg: '어떤 실수 x에 대하여 x² < 0이다.', n: '‘모든’의 부정은 ‘어떤’, ‘≥’의 부정은 ‘<’입니다.', w: [
+      { t: '모든 실수 x에 대하여 x² < 0이다.', tag: '전부 반대로', why: '‘모든’을 ‘어떤’으로 바꾸지 않았습니다. ‘모든 ~이다’의 부정은 ‘어떤 것은 ~이 아니다’입니다.' },
+      { t: '어떤 실수 x에 대하여 x² ≤ 0이다.', tag: '부등호 실수', why: '‘≥’의 부정은 ‘<’입니다. ‘≤’는 0을 포함하므로 원래 명제와 함께 참이 될 수 있습니다.' }] },
+    { p: '어떤 실수 x에 대하여 x² = 2이다.', neg: '모든 실수 x에 대하여 x² ≠ 2이다.', n: '‘어떤’의 부정은 ‘모든’, ‘=’의 부정은 ‘≠’입니다.', w: [
+      { t: '어떤 실수 x에 대하여 x² ≠ 2이다.', tag: '부정 아님', why: '‘어떤’을 ‘모든’으로 바꾸지 않았습니다. 원래 명제와 함께 참일 수 있습니다.' },
+      { t: '모든 실수 x에 대하여 x² = 2이다.', tag: '강해진 주장', why: '‘어떤’을 ‘모든’으로 바꾸면서 결론도 함께 부정해야 합니다.' }] },
+    { p: '날씨가 덥고 습하다.', neg: '날씨가 덥지 않거나 습하지 않다.', n: DEMORGAN, w: [
+      { t: '날씨가 덥지 않고 습하지 않다.', tag: '드모르간 위반', why: '‘그리고’를 그대로 두었습니다. ' + DEMORGAN },
+      { t: '날씨가 춥고 건조하다.', tag: '반대말', why: '‘덥지 않다’는 ‘춥다’와 같지 않습니다. 부정은 반대말이 아니라 ‘~이 아니다’로 만듭니다.' }] },
+    { p: '이 반 학생은 모두 수학을 좋아한다.', neg: '이 반에는 수학을 좋아하지 않는 학생이 있다.', n: '‘모두 ~이다’의 부정은 ‘~이 아닌 것이 있다’입니다.', w: [
+      { t: '이 반 학생은 모두 수학을 싫어한다.', tag: '반대말', why: '‘좋아하지 않는다’는 ‘싫어한다’와 같지 않고, ‘모두’도 그대로 두었습니다.' },
+      { t: '이 반에는 수학을 좋아하는 학생이 있다.', tag: '부정 아님', why: '원래 명제와 함께 참일 수 있으므로 부정이 아닙니다.' }] },
+    { p: '모든 정사각형은 직사각형이다.', neg: '직사각형이 아닌 정사각형이 있다.', n: '‘모든 ~이다’의 부정은 ‘~이 아닌 것이 있다’입니다.', w: [
+      { t: '모든 정사각형은 직사각형이 아니다.', tag: '전부 반대로', why: '‘모든’을 그대로 두고 결론만 뒤집었습니다. 부정은 ‘직사각형이 아닌 정사각형이 있다’입니다.' },
+      { t: '모든 직사각형은 정사각형이다.', tag: '자리 바꾸기', why: '주어와 술어의 자리를 바꾼 것은 부정이 아닙니다.' }] },
+    { d: '자연수 n에 대하여', p: 'n은 2의 배수이거나 3의 배수이다.', neg: 'n은 2의 배수도 아니고 3의 배수도 아니다.', n: DEMORGAN, w: [
+      { t: 'n은 2의 배수가 아니거나 3의 배수가 아니다.', tag: '드모르간 위반', why: '‘또는’을 그대로 두었습니다. ' + DEMORGAN },
+      { t: 'n은 6의 배수가 아니다.', tag: '다른 조건', why: '‘2의 배수이거나 3의 배수’는 ‘6의 배수’와 다른 조건입니다. 예를 들어 4는 6의 배수가 아니지만 2의 배수입니다.' }] },
+  ],
+  // 필요·충분조건: ans는 suf(충분) / nec(필요) / both(필요충분), n은 해설
+  cond: [
+    { d: '실수 x에 대하여', p: 'x = 2', q: 'x² = 4', ans: 'suf', n: 'x = 2이면 x² = 4이므로 p ⇒ q는 참입니다. 하지만 x = −2이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.' },
+    { d: '실수 x에 대하여', p: 'x² = 4', q: 'x = 2', ans: 'nec', n: 'x = 2이면 x² = 4이므로 q ⇒ p는 참입니다. 하지만 x = −2이면 p는 참, q는 거짓이므로 p ⇒ q는 거짓입니다.' },
+    { d: '자연수 n에 대하여', p: 'n은 4의 배수', q: 'n은 짝수', ans: 'suf', n: '4의 배수는 모두 짝수이므로 p ⇒ q는 참입니다. 하지만 n = 6이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.' },
+    { d: '자연수 n에 대하여', p: 'n은 짝수', q: 'n은 2의 배수', ans: 'both', n: '짝수와 2의 배수는 같은 뜻이므로 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+    { d: '사각형에 대하여', p: '정사각형이다', q: '마름모이다', ans: 'suf', n: '정사각형은 모두 마름모이므로 p ⇒ q는 참입니다. 하지만 정사각형이 아닌 마름모가 있으므로 q ⇒ p는 거짓입니다.' },
+    { d: '사각형에 대하여', p: '직사각형이다', q: '정사각형이다', ans: 'nec', n: '정사각형은 모두 직사각형이므로 q ⇒ p는 참입니다. 하지만 정사각형이 아닌 직사각형이 있으므로 p ⇒ q는 거짓입니다.' },
+    { d: '삼각형에 대하여', p: '세 변의 길이가 같다', q: '세 각의 크기가 같다', ans: 'both', n: '두 조건 모두 정삼각형이라는 뜻이므로 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+    { d: '실수 x, y에 대하여', p: 'x = 0이고 y = 0', q: 'xy = 0', ans: 'suf', n: 'x = 0이고 y = 0이면 xy = 0이므로 p ⇒ q는 참입니다. 하지만 x = 0, y = 1이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.' },
+    { d: '실수 x, y에 대하여', p: 'x = 0이거나 y = 0', q: 'xy = 0', ans: 'both', n: 'xy = 0이면 x = 0이거나 y = 0이고, 그 반대도 성립하므로 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+    { d: '실수 x에 대하여', p: '|x| = 3', q: 'x = 3이거나 x = −3', ans: 'both', n: '절댓값이 3인 수는 3과 −3뿐이므로 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+    { d: '두 집합 A, B에 대하여', p: 'A ⊂ B', q: 'A ∩ B = A', ans: 'both', n: 'A ⊂ B이면 A ∩ B = A이고, A ∩ B = A이면 A의 모든 원소가 B에 속하므로 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+    { d: '정수 n에 대하여', p: 'n²이 짝수', q: 'n이 짝수', ans: 'both', n: 'n이 짝수이면 n²도 짝수이고, n²이 짝수이면 n도 짝수이므로(대우: n이 홀수이면 n²도 홀수) p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+  ],
+  // 반례: ce가 반례(가정 ○ 결론 ×), ok는 가정과 결론을 모두 만족, out은 가정을 만족하지 않음
+  counter: [
+    { id: 'prime', d: '자연수 n에 대하여', p: 'n이 소수이면, n은 홀수이다.', ce: 'n = 2', ok: 'n = 3', out: 'n = 9' },
+    { id: 'lt', d: '실수 x에 대하여', p: 'x < 1이면, x² < 1이다.', ce: 'x = −2', ok: 'x = 0', out: 'x = 3' },
+    { id: 'ab', d: '실수 a, b에 대하여', p: 'a² = b²이면, a = b이다.', ce: 'a = 2, b = −2', ok: 'a = 2, b = 2', out: 'a = 1, b = 2' },
   ],
 };
 
@@ -713,6 +823,46 @@ const GENERATORS = [
     return { d: '실수 x에 대하여', p: `x = ${a}이면, x² = ${sq}이다.`, c: `x² ≠ ${sq}이면, x ≠ ${a}이다.`, v: `x² = ${sq}이면, x = ${a}이다.`, i: `x ≠ ${a}이면, x² ≠ ${sq}이다.` };
   },
 ];
+// 숫자를 바꿔 만드는 필요·충분조건 문제
+const COND_GENS = [
+  () => {
+    const a = randInt(0, 5), b = a + randInt(2, 5), m = a + 1;   // a < m < b
+    return Math.random() < 0.5
+      ? { d: '실수 x에 대하여', p: `x > ${b}`, q: `x > ${a}`, ans: 'suf', n: `x > ${b}인 수는 모두 x > ${a}이므로 p ⇒ q는 참입니다. 하지만 x = ${m}이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.` }
+      : { d: '실수 x에 대하여', p: `x > ${a}`, q: `x > ${b}`, ans: 'nec', n: `x > ${b}인 수는 모두 x > ${a}이므로 q ⇒ p는 참입니다. 하지만 x = ${m}이면 p는 참, q는 거짓이므로 p ⇒ q는 거짓입니다.` };
+  },
+  () => {
+    const k = pick([2, 3, 4, 5]), big = k * pick([2, 3]);
+    return Math.random() < 0.5
+      ? { d: '자연수 n에 대하여', p: `n은 ${big}의 배수`, q: `n은 ${k}의 배수`, ans: 'suf', n: `${big}의 배수는 모두 ${k}의 배수이므로 p ⇒ q는 참입니다. 하지만 n = ${k}이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.` }
+      : { d: '자연수 n에 대하여', p: `n은 ${k}의 배수`, q: `n은 ${big}의 배수`, ans: 'nec', n: `${big}의 배수는 모두 ${k}의 배수이므로 q ⇒ p는 참입니다. 하지만 n = ${k}이면 p는 참, q는 거짓이므로 p ⇒ q는 거짓입니다.` };
+  },
+];
+// 숫자를 바꿔 만드는 반례 문제
+const COUNTER_GENS = [
+  () => { const a = randInt(2, 9); return { id: 'sq', a, d: '실수 x에 대하여', p: `x² = ${a * a}이면, x = ${a}이다.`, ce: `x = −${a}`, ok: `x = ${a}`, out: `x = ${a * a}` }; },
+  () => { const a = randInt(1, 6); return { id: 'gt', a, d: '실수 x에 대하여', p: `x² > ${a * a}이면, x > ${a}이다.`, ce: `x = −${a + 1}`, ok: `x = ${a + 1}`, out: 'x = 0' }; },
+  () => { const k = pick([2, 3, 4, 5]), m = pick([2, 3]); return { id: 'mul', k, m, d: '자연수 n에 대하여', p: `n이 ${k}의 배수이면, n은 ${k * m}의 배수이다.`, ce: `n = ${k}`, ok: `n = ${k * m}`, out: `n = ${k + 1}` }; },
+];
+
+// 방 종류마다 명판 제목, 질문, 논리식, 복습 노트 이름
+const KINDS = {
+  contra: { eyebrow: '원래 명제 · <span class="mono">p → q</span>', prompt: '이 명제의 <b>대우</b>를 고르세요', chip: '~q → ~p', label: '대우' },
+  converse: { eyebrow: '원래 명제 · <span class="mono">p → q</span>', prompt: '이 명제의 <b>역</b>을 고르세요', chip: 'q → p', label: '역' },
+  inverse: { eyebrow: '원래 명제 · <span class="mono">p → q</span>', prompt: '이 명제의 <b>이</b>를 고르세요', chip: '~p → ~q', label: '이' },
+  neg: { eyebrow: '명제 · <span class="mono">p</span>', prompt: '이 명제의 <b>부정</b>을 고르세요', chip: '~p', label: '부정' },
+  cond: { eyebrow: '두 조건 · <span class="mono">p, q</span>', prompt: 'p는 q이기 위한 <b>어떤 조건</b>인가요?', chip: 'p ⇒ q · q ⇒ p', label: '조건' },
+  counter: { eyebrow: '원래 명제 · <span class="mono">p → q</span>', prompt: '이 명제가 거짓임을 보이는 <b>반례</b>를 고르세요', chip: '가정 ○ · 결론 ×', label: '반례' },
+};
+const COND_LABEL = { suf: '충분조건', nec: '필요조건', both: '필요충분조건' };
+const COND_TAG = { suf: 'p ⇒ q만 참', nec: 'q ⇒ p만 참', both: 'p ⇔ q' };
+const COND_WHY = {
+  suf: '충분조건이 되려면 p ⇒ q만 참이어야 합니다.',
+  nec: '필요조건이 되려면 q ⇒ p만 참이어야 합니다.',
+  both: '필요충분조건이 되려면 p ⇒ q와 q ⇒ p가 모두 참이어야 합니다.',
+};
+const NEG_HINT = '‘모든’ ↔ ‘어떤’, ‘그리고’ ↔ ‘또는’, ‘>’ ↔ ‘≤’, ‘=’ ↔ ‘≠’처럼 바꾸면 부정이 됩니다.';
+const COND_HINT = 'p ⇒ q만 참이면 충분조건, q ⇒ p만 참이면 필요조건, 둘 다 참이면 필요충분조건입니다.';
 
 /* ───────── 유틸 ───────── */
 const $ = id => document.getElementById(id);
@@ -749,14 +899,15 @@ function toast(msg) {
 /* ───────── 기록 (손님은 이 기기, 로그인하면 계정에도 저장) ───────── */
 const LS_PREFIX = 'logicmaze.v2.';
 function defaultProfile() {
-  return { v: 1, coins: 0, items: { key: 0, lens: 0 }, skins: ['emerald'], skin: 'emerald', stats: { runs: 0, clears: 0, perfect: 0, rooms: 0 } };
+  const items = Object.fromEntries(Object.keys(WARES).map(id => [id, 0]));
+  return { v: 1, coins: 0, items, skins: ['emerald'], skin: 'emerald', stats: { runs: 0, clears: 0, perfect: 0, rooms: 0 } };
 }
 function sanitize(p) {
   const d = defaultProfile();
   if (!p || typeof p !== 'object') return d;
   const int = (x, max) => Math.max(0, Math.min(max, Math.floor(Number(x) || 0)));
   d.coins = int(p.coins, 10000000);
-  if (p.items && typeof p.items === 'object') { d.items.key = int(p.items.key, WARES.key.max); d.items.lens = int(p.items.lens, WARES.lens.max); }
+  if (p.items && typeof p.items === 'object') for (const id of Object.keys(WARES)) d.items[id] = int(p.items[id], WARES[id].max);
   if (Array.isArray(p.skins)) d.skins = Array.from(new Set(['emerald', ...p.skins.filter(s => SKINS[s])]));
   d.skin = SKINS[p.skin] && d.skins.includes(p.skin) ? p.skin : 'emerald';
   if (p.stats && typeof p.stats === 'object') for (const k of Object.keys(d.stats)) d.stats[k] = int(p.stats[k], 10000000);
@@ -772,7 +923,7 @@ function writeLocal(slot, p) {
   try { localStorage.setItem(LS_PREFIX + slot, JSON.stringify(p)); } catch (e) { /* 저장소를 쓸 수 없는 환경 */ }
 }
 
-const state = { screen: 'menu', extra: 0, run: null, lockUntil: 0, entering: false };
+const state = { screen: 'menu', extra: 0, take: { shield: false, revive: false, candle: false }, run: null, lockUntil: 0, entering: false };
 // settled: 처음 로그인 상태 확인이 끝났는지, loaded: 계정 기록을 불러왔는지, unsynced: 불러오기 전에 이 기기에서 바뀐 기록이 있는지
 const account = { user: null, sync: 'local', busy: false, admin: false, settled: false, loaded: false, loadingGen: 0, unsynced: false };
 const SYNC_TEXT = {
@@ -1145,6 +1296,16 @@ function renderBrief() {
   const owned = profile.items.key;
   state.extra = Math.max(0, Math.min(state.extra, owned, MAX_EXTRA_KEYS));
   const max = Math.min(owned, MAX_EXTRA_KEYS);
+  for (const id of CARRY) if (profile.items[id] <= 0) state.take[id] = false;
+  const carryRows = CARRY.map(id => {
+    const w = WARES[id], n = profile.items[id], on = !!state.take[id];
+    return `
+    <div class="loadout-row">
+      <svg aria-hidden="true"><use href="#i-${id}"/></svg>
+      <div><b>${w.name}</b><small>보유 ${n}개 · ${w.note}</small></div>
+      <button type="button" class="toggle" data-act="take" data-id="${id}" aria-pressed="${on}"${n ? '' : ' disabled'}>${on ? '가져감' : '두고 감'}</button>
+    </div>`;
+  }).join('');
   $('loadout').innerHTML = `
     <div class="loadout-row">
       <svg aria-hidden="true"><use href="#i-key"/></svg>
@@ -1154,7 +1315,7 @@ function renderBrief() {
         <output aria-live="polite">${state.extra}</output>
         <button type="button" data-act="extra-up" aria-label="여분의 열쇠 하나 더 가져가기"${state.extra >= max ? ' disabled' : ''}>+</button>
       </div>
-    </div>
+    </div>${carryRows}
     <div class="loadout-row">
       <svg aria-hidden="true"><use href="#i-lens"/></svg>
       <div><b>통찰의 렌즈</b><small>보유 ${profile.items.lens}개 · 방 안에서 사용</small></div>
@@ -1218,8 +1379,8 @@ function buy(id) {
     profile.items[id] += 1;
     commit();
     toast(account.admin
-      ? `관리자 권한으로 ${w.name}를 무료로 받았습니다. 보유 ${profile.items[id]}개`
-      : `${w.name}를 샀습니다. 보유 ${profile.items[id]}개`);
+      ? `관리자 권한으로 ${w.name}${w.obj} 무료로 받았습니다. 보유 ${profile.items[id]}개`
+      : `${w.name}${w.obj} 샀습니다. 보유 ${profile.items[id]}개`);
   } else if (SKINS[id]) {
     const s = SKINS[id];
     const cost = costOf(s.price);
@@ -1243,36 +1404,88 @@ function equip(id) {
 }
 
 function renderCredits() {
-  const handmade = BANK.t1.length + BANK.t2.length + BANK.t3.length;
+  const handmade = ['t1', 't2', 't3', 'neg', 'cond', 'counter'].reduce((s, k) => s + BANK[k].length, 0);
+  const generated = GENERATORS.length + COND_GENS.length + COUNTER_GENS.length;
   $('credit-numbers').innerHTML = [
-    ['직접 쓴 문제', handmade + '문항'], ['자동 생성 문제', GENERATORS.length + '종'], ['방', '5개'], ['테마', Object.keys(SKINS).length + '종'],
+    ['직접 쓴 문제', handmade + '문항'], ['자동 생성 문제', generated + '종'], ['문제 유형', Object.keys(KINDS).length + '종'], ['테마', Object.keys(SKINS).length + '종'],
   ].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
 }
 
-/* ───────── 도전 ───────── */
-function makeRoom(item) {
+/* ───────── 방 만들기 ───────── */
+function tagOf(type) { const t = TYPES[type]; return t.form ? `${t.name} · ${t.form}` : t.name; }
+function formOf(type) { const t = TYPES[type]; return t.form ? `(${t.form.replace(/ /g, ' ')})` : ''; }
+// 촛대 실마리: 원래 명제를 처음 나오는 쉼표에서 가정과 결론으로 나눈다
+function splitHint(p) {
+  const at = p.indexOf(', ');
+  return at > 0 ? `가정 p: ${p.slice(0, at)}\n결론 q: ${p.slice(at + 2)}` : '';
+}
+function newRoom(kind, item, answer, note, options, extra) {
+  return Object.assign({
+    kind, domain: item.d || '', prop: `“${item.p}”`, answer, note,
+    hint: kind === 'neg' ? NEG_HINT : kind === 'cond' ? COND_HINT : splitHint(item.p),
+    options, status: null, wrongHere: 0, lensUsed: false,
+  }, extra || {});
+}
+function contraRoom(item) {
   const wrong = item.b
     ? [{ text: item.b, type: 'bad' }, pick([{ text: item.v, type: 'converse' }, { text: item.i, type: 'inverse' }])]
     : [{ text: item.v, type: 'converse' }, { text: item.i, type: 'inverse' }];
-  const notes = [];
+  const notes = [TYPES.contra.desc];
   if (item.b) notes.push(DEMORGAN);
   if (item.n) notes.push(item.n);
-  return {
-    domain: item.d || '',
-    prop: item.p,
-    answer: item.c,
-    note: notes.join(' '),
-    options: shuffle([{ text: item.c, type: 'contra', correct: true }, ...wrong.map(w => ({ ...w, correct: false }))]),
-    status: null,
-    wrongHere: 0,
-    lensUsed: false,
-  };
+  return newRoom('contra', item, item.c, notes.join(' '), shuffle([
+    { text: item.c, correct: true, tag: tagOf('contra') },
+    ...wrong.map(w => ({ text: w.text, correct: false, tag: tagOf(w.type), why: `고른 문장은 ‘${TYPES[w.type].name}’${formOf(w.type)}입니다. ${TYPES[w.type].desc}` })),
+  ]));
 }
+// 역·이 찾기: 같은 명제에서 대우 대신 역(converse)이나 이(inverse)를 고른다
+function mirrorRoom(item, target) {
+  const t = TYPES[target];
+  const text = { contra: item.c, converse: item.v, inverse: item.i };
+  const topic = t.obj === '을' ? '은' : '는';
+  return newRoom(target, item, text[target],
+    `${t.make} 원래 명제가 참이어도 ${t.name}${topic} 거짓일 수 있습니다. 참·거짓이 언제나 같은 것은 대우뿐입니다.`,
+    shuffle(['contra', 'converse', 'inverse'].map(type => (type === target
+      ? { text: text[type], correct: true, tag: tagOf(type) }
+      : { text: text[type], correct: false, tag: tagOf(type), why: `고른 문장은 ‘${TYPES[type].name}’${formOf(type)}입니다. 이번 방은 ‘${t.name}’${t.obj} 찾는 방입니다. ${t.make}` }))));
+}
+function negRoom(item) {
+  return newRoom('neg', item, item.neg, '부정은 원래 명제와 참·거짓이 정반대입니다. ' + item.n, shuffle([
+    { text: item.neg, correct: true, tag: '올바른 부정' },
+    ...item.w.map(w => ({ text: w.t, correct: false, tag: w.tag, why: w.why })),
+  ]));
+}
+function condRoom(item) {
+  // 보기 순서는 충분 · 필요 · 필요충분으로 고정
+  return newRoom('cond', item, COND_LABEL[item.ans], item.n,
+    ['suf', 'nec', 'both'].map(k => ({ text: COND_LABEL[k], correct: k === item.ans, tag: COND_TAG[k], why: `${COND_WHY[k]} ${item.n}` })),
+    { prop: `p: ${item.p}\nq: ${item.q}` });
+}
+function counterRoom(item) {
+  return newRoom('counter', item, item.ce, '반례는 가정은 만족하지만 결론은 만족하지 않는 예입니다. 반례가 하나라도 있으면 명제는 거짓입니다.', shuffle([
+    { text: item.ce, correct: true, tag: '가정 ○ · 결론 ×' },
+    { text: item.ok, correct: false, tag: '가정 ○ · 결론 ○', why: '이 값은 가정과 결론을 모두 만족하므로 명제가 성립하는 예입니다. 반례는 가정은 만족하지만 결론은 만족하지 않아야 합니다.' },
+    { text: item.out, correct: false, tag: '가정 ×', why: '이 값은 가정을 만족하지 않습니다. 가정을 만족하지 않는 값으로는 명제가 거짓임을 보일 수 없습니다.' },
+  ]));
+}
+// 방 Ⅰ: 대우, Ⅱ: 대우 또는 역·이 찾기, Ⅲ·Ⅳ: 수학 대우와 특별한 방(조건·반례·부정)을 무작위 순서로, Ⅴ: ‘그리고’·‘또는’이 섞인 대우
 function buildRooms() {
-  const t1 = shuffle(BANK.t1).slice(0, 2);
-  const t2pool = shuffle(BANK.t2), gens = shuffle(GENERATORS);
-  const t2 = [0, 1].map(k => (Math.random() < 0.5 ? gens[k]() : t2pool[k]));
-  return [...t1, ...t2, pick(BANK.t3)].map(makeRoom);
+  const t1 = shuffle(BANK.t1);
+  const r2 = Math.random() < 0.5 ? contraRoom(t1[1]) : mirrorRoom(t1[1], pick(['converse', 'inverse']));
+  const r3 = contraRoom(Math.random() < 0.5 ? pick(GENERATORS)() : pick(BANK.t2));
+  const special = pick(['cond', 'counter', 'neg']);
+  const r4 = special === 'cond' ? condRoom(Math.random() < 0.5 ? pick(COND_GENS)() : pick(BANK.cond))
+    : special === 'counter' ? counterRoom(Math.random() < 0.5 ? pick(COUNTER_GENS)() : pick(BANK.counter))
+    : negRoom(pick(BANK.neg));
+  const [m1, m2] = shuffle([r3, r4]);
+  return [contraRoom(t1[0]), r2, m1, m2, contraRoom(pick(BANK.t3))];
+}
+
+/* ───────── 도전 ───────── */
+function toggleTake(id) {
+  if (!CARRY.includes(id) || profile.items[id] <= 0) return;
+  state.take[id] = !state.take[id];
+  renderBrief();
 }
 
 async function enterMaze() {
@@ -1292,14 +1505,20 @@ async function enterMaze() {
     if (state.screen !== 'brief' || state.run) return;   // 기다리는 동안 다른 화면으로 갔으면 시작하지 않는다
   }
   const extra = Math.max(0, Math.min(state.extra, profile.items.key, MAX_EXTRA_KEYS));
-  if (extra) {
-    profile.items.key -= extra;
-    commit();
+  profile.items.key -= extra;
+  // 가져가기로 고른 물건을 하나씩 꺼낸다
+  const carried = {};
+  for (const id of CARRY) {
+    carried[id] = !!state.take[id] && profile.items[id] > 0;
+    if (carried[id]) profile.items[id] -= 1;
   }
+  if (extra || CARRY.some(id => carried[id])) commit();
   state.extra = Math.min(state.extra, profile.items.key);
+  for (const id of CARRY) state.take[id] = state.take[id] && profile.items[id] > 0;   // 남은 게 있으면 다음에도 챙긴다
   state.run = {
     rooms: buildRooms(), idx: 0, hp: BASE_KEYS + extra, maxHp: BASE_KEYS + extra,
     wrong: 0, cleared: 0, earned: { correct: 0, firstTry: 0 }, locked: false, buttons: [], over: false,
+    shield: carried.shield, revive: carried.revive, candle: carried.candle,
   };
   renderRoom();
   show('game');
@@ -1314,6 +1533,9 @@ function renderHud(hit) {
     const label = r.status === 'ok' ? '통과' : r.status === 'fail' ? '실패' : k === run.idx ? '지금 방' : '남은 방';
     return `<li class="${cls}" aria-label="방 ${ROMAN[k]} ${label}"></li>`;
   }).join('');
+  const charms = CARRY.filter(id => run[id]);
+  $('charms').innerHTML = charms.map(id => `<svg aria-hidden="true"><use href="#i-${id}"/></svg>`).join('') +
+    (charms.length ? `<span class="sr-only">지닌 물건: ${charms.map(id => WARES[id].name).join(', ')}</span>` : '');
   const keys = $('keys');
   keys.innerHTML = Array.from({ length: run.maxHp }, (_, k) =>
     `<svg class="${k < run.hp ? '' : 'is-lost'}" aria-hidden="true"><use href="#i-key"/></svg>`).join('') +
@@ -1333,9 +1555,15 @@ function renderRoom() {
   // 앞 화면의 버튼을 연달아 누른 손가락이 새 방의 보기를 바로 누르지 않도록 잠깐 입력을 막는다
   state.lockUntil = Date.now() + 450;
   renderHud();
+  const kind = KINDS[room.kind];
+  $('room-eyebrow').innerHTML = kind.eyebrow;
+  $('prompt-text').innerHTML = kind.prompt;
+  $('prompt-chip').textContent = kind.chip;
   $('domain').textContent = room.domain;
   $('domain').hidden = !room.domain;
-  $('prop').textContent = `“${room.prop}”`;
+  $('prop').textContent = room.prop;
+  $('hint-text').textContent = room.hint;
+  $('hint').hidden = !(run.candle && room.hint);
   $('keyhole').classList.remove('is-open');
 
   const box = $('choices');
@@ -1346,8 +1574,7 @@ function renderRoom() {
     b.className = 'choice';
     b.innerHTML = `<span class="seal" aria-hidden="true">${SEALS[k]}</span><span class="choice-body"><span class="choice-text"></span><span class="tag" hidden></span></span>`;
     b.querySelector('.choice-text').textContent = opt.text;
-    const t = TYPES[opt.type];
-    b.querySelector('.tag').textContent = t.form ? `${t.name} · ${t.form}` : t.name;
+    b.querySelector('.tag').textContent = opt.tag;
     b.addEventListener('click', () => answer(b, opt));
     box.appendChild(b);
     return { b, opt };
@@ -1384,21 +1611,31 @@ function answer(btn, opt) {
     showVerdict({
       kind: 'ok', mark: 'Apertum',
       title: '정답! 논리 회로가 일치하여 잠금 장치가 해제되었습니다.',
-      desc: TYPES.contra.desc + (room.note ? ' ' + room.note : ''),
+      desc: room.note,
       reward: REWARD.correct + (first ? REWARD.firstTry : 0),
       bonus: first,
       action: last ? '미궁 탈출하기' : '다음 방으로',
       onAction: last ? () => finishRun('clear') : nextRoom,
     });
   } else {
-    run.hp -= 1;
     run.wrong += 1;
     room.wrongHere += 1;
     btn.classList.add('is-wrong');
-    renderHud(true);
-    const t = TYPES[opt.type];
-    const form = t.form ? `(${t.form.replace(/ /g, ' ')})` : '';
-    const why = `고른 문장은 ‘${t.name}’${form}입니다. ${t.desc}`;
+    // 보호의 인장은 첫 실수를 막고, 불사조 깃털은 열쇠를 모두 잃었을 때 하나를 되살린다
+    let charm = '';
+    if (run.shield) {
+      run.shield = false;
+      charm = '보호의 인장이 깨지며 열쇠를 지켜 주었습니다. ';
+    } else {
+      run.hp -= 1;
+      if (run.hp <= 0 && run.revive) {
+        run.revive = false;
+        run.hp = 1;
+        charm = '불사조 깃털이 타올라 열쇠 하나가 되살아났습니다. ';
+      }
+    }
+    renderHud(!charm.startsWith('보호'));
+    const why = charm + opt.why;
     if (run.hp <= 0) {
       run.locked = true;
       room.status = 'fail';
@@ -1412,7 +1649,7 @@ function answer(btn, opt) {
       showVerdict({
         kind: 'bad', mark: 'Clausum',
         title: '오답! 잘못된 조건 논리로 기계 시스템이 오작동했습니다.',
-        desc: why + ' 열쇠를 모두 잃었습니다. 점선으로 표시된 보기가 올바른 대우입니다.',
+        desc: why + ` 열쇠를 모두 잃었습니다. 점선으로 표시된 보기가 정답(${KINDS[room.kind].label})입니다.`,
         action: '결과 보기',
         onAction: () => finishRun('fail'),
       });
@@ -1564,8 +1801,8 @@ function finishRun(kind) {
   run.rooms.forEach((r, k) => {
     if (!r.status) return;
     const li = document.createElement('li');
-    li.innerHTML = `<div class="r-head"><span>방 ${ROMAN[k]}</span><span class="${r.status === 'ok' ? 'r-ok' : 'r-fail'}">${r.status === 'ok' ? '통과' : '실패'}</span></div><p class="r-prop"></p><p class="r-ans"><b>대우</b> <span></span></p>`;
-    li.querySelector('.r-prop').textContent = (r.domain ? r.domain + ', ' : '') + r.prop;
+    li.innerHTML = `<div class="r-head"><span>방 ${ROMAN[k]}</span><span class="${r.status === 'ok' ? 'r-ok' : 'r-fail'}">${r.status === 'ok' ? '통과' : '실패'}</span></div><p class="r-prop"></p><p class="r-ans"><b>${KINDS[r.kind].label}</b> <span></span></p>`;
+    li.querySelector('.r-prop').textContent = (r.domain ? r.domain + ', ' : '') + r.prop.replace(/\n/g, ' · ');
     li.querySelector('.r-ans span').textContent = r.answer;
     review.appendChild(li);
   });
@@ -1593,6 +1830,7 @@ document.addEventListener('click', e => {
     case 'enter': enterMaze(); break;
     case 'extra-down': state.extra = Math.max(0, state.extra - 1); renderBrief(); break;
     case 'extra-up': state.extra = Math.min(state.extra + 1, profile.items.key, MAX_EXTRA_KEYS); renderBrief(); break;
+    case 'take': toggleTake(act.dataset.id); break;
     case 'lens': useLens(); break;
     case 'abandon': onAbandon(); break;
     case 'buy': buy(act.dataset.id); break;
