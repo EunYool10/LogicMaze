@@ -38,9 +38,33 @@ rules_version = '2';
 //   - count: int - how many messages this player has sent (goes up by exactly 1 per message)
 //   - last: timestamp (== request.time) - when the last message was sent; the next one must be >= 60 s later
 //
-// No personal data (name, email, photo) is stored in users documents.
-// The game only reads and fully overwrites the signed-in player's own document.
-// It never lists or queries the collections and never deletes documents.
+// Collection: players ('친구' public profile, only for players who turned the friend feature on)
+// Document ID: the player's uid
+// Fields (all required, no other fields allowed):
+//   - code: string - friend code, 6 chars from [A-HJ-NP-Z2-9]; never changes
+//   - name: string - name the player chose, 2..12 chars of Korean/Latin letters, digits, space . _ - (no leading/trailing space)
+//   - skin: string (== users/<uid>.skin) - equipped theme
+//   - stats: map (== users/<uid>.stats) - so friends see the same checked progress
+//   - updatedAt: timestamp (== request.time)
+// Any signed-in player can get one by uid (friends' list, requests); nobody can list the collection.
+//
+// Collection: codes (friend code → uid)
+// Document ID: the code
+// Fields: uid (string, == creator) only. Created in the same batch as the players document that holds the code.
+// Any signed-in player can get one (to find a friend by code); nobody can list or change them.
+//
+// Collection: friendships
+// Document ID: '<smaller uid>_<larger uid>'
+// Fields:
+//   - users: list<string> - exactly [smaller uid, larger uid]
+//   - from: string - who sent the request (one of users)
+//   - status: 'pending' | 'accepted'
+//   - createdAt: timestamp (== request.time at creation)
+//   - acceptedAt: timestamp - only when accepted (== request.time)
+// The sender creates it as pending (both players must have a players document); only the other player can accept;
+// either player can delete it (decline, cancel, unfriend). Players list their own with where('users', 'array-contains', uid).
+//
+// No email or Google profile is stored anywhere. users documents are read and fully overwritten only by their owner.
 //
 // Anti-cheat (the game runs in the browser, so the server checks every save against the previous one):
 //   - Coins can only go up by what the new progress can pay out: 15 per new room (10 correct + 5 first try),
@@ -92,7 +116,9 @@ service cloud.firestore {
         && request.auth.token.firebase.sign_in_provider == 'google.com'
         && hashing.sha256('logicmaze:' + request.auth.token.email.lower()).toHexString().lower() in [
           'd8700fe4292519649687c4ae9036295332c4fc001e980743556a77e56caf23eb',
-          'c56fd8778bd83c4b806cbe51b9f3d9d0e458ca85ba944d0dc9df77fa54c078d2'
+          'c56fd8778bd83c4b806cbe51b9f3d9d0e458ca85ba944d0dc9df77fa54c078d2',
+          '5b21363f857ade65a51184dc9e6e6d687066cdb6e9f96c2adf2c3b85fbceeda8',
+          'c2126cd1388f157c732a458ffcd78813a7098394a6ae6887e77c1c4bbcbd2337'
         ];
     }
 
@@ -228,6 +254,44 @@ service cloud.firestore {
     }
 
     // ===============================================================
+    // Friends (친구)
+    // ===============================================================
+
+    function playerPath(userId) {
+      return /databases/$(database)/documents/players/$(userId);
+    }
+
+    function codePath(code) {
+      return /databases/$(database)/documents/codes/$(code);
+    }
+
+    // Public profile: skin and stats must match the checked users document, so friends see real progress
+    function isValidPlayer(userId, data) {
+      let user = get(/databases/$(database)/documents/users/$(userId)).data;
+      return hasExactKeys(data, ['code', 'name', 'skin', 'stats', 'updatedAt'])
+        && data.code is string && data.code.matches('[A-HJ-NP-Z2-9]{6}')
+        && data.name is string
+        && data.name.matches('[가-힣ㄱ-ㅣA-Za-z0-9._-][가-힣ㄱ-ㅣA-Za-z0-9 ._-]{0,10}[가-힣ㄱ-ㅣA-Za-z0-9._-]')
+        && data.skin == user.skin
+        && data.stats == user.stats
+        && data.updatedAt == request.time;
+    }
+
+    function isValidFriendRequest(pairId, data) {
+      return hasExactKeys(data, ['users', 'from', 'status', 'createdAt'])
+        && data.users is list && data.users.size() == 2
+        && data.users[0] is string && data.users[1] is string
+        && data.users[0] < data.users[1]
+        && pairId == data.users[0] + '_' + data.users[1]
+        && data.from == request.auth.uid
+        && request.auth.uid in data.users
+        && data.status == 'pending'
+        && data.createdAt == request.time
+        && exists(playerPath(data.users[0]))
+        && exists(playerPath(data.users[1]));
+    }
+
+    // ===============================================================
     // Rules (everything not matched below is denied)
     // ===============================================================
 
@@ -265,6 +329,47 @@ service cloud.firestore {
         && request.time >= resource.data.last + duration.value(60, 's')
         && existsAfter(/databases/$(database)/documents/feedback/$(userId + '_' + string(request.resource.data.count)));
       allow delete: if false;
+    }
+
+    // 친구: public profile. Created together with its friend code; the code never changes.
+    match /players/{userId} {
+      allow get: if isAuthenticated();
+      allow list: if false;
+      allow create: if isOwner(userId)
+        && isValidPlayer(userId, request.resource.data)
+        && getAfter(codePath(request.resource.data.code)).data.uid == userId;
+      allow update: if isOwner(userId)
+        && isValidPlayer(userId, request.resource.data)
+        && request.resource.data.code == resource.data.code;
+      allow delete: if isOwner(userId);
+    }
+
+    // Friend code → uid. An existing code cannot be overwritten (that is an update), so a clash makes the batch fail.
+    match /codes/{code} {
+      allow get: if isAuthenticated();
+      allow list, update: if false;
+      allow create: if isAuthenticated()
+        && hasExactKeys(request.resource.data, ['uid'])
+        && request.resource.data.uid == request.auth.uid
+        && code.matches('[A-HJ-NP-Z2-9]{6}')
+        && getAfter(playerPath(request.auth.uid)).data.code == code;
+      allow delete: if isAuthenticated() && resource.data.uid == request.auth.uid;
+    }
+
+    match /friendships/{pairId} {
+      // A single document (even a missing one) can be read by either player in the pair id
+      allow get: if isAuthenticated() && request.auth.uid in pairId.split('_');
+      allow list: if isAuthenticated() && request.auth.uid in resource.data.users;
+      allow create: if isAuthenticated() && isValidFriendRequest(pairId, request.resource.data);
+      // Only the player who received the request accepts it, and only status and acceptedAt change
+      allow update: if isAuthenticated()
+        && resource.data.status == 'pending'
+        && request.auth.uid in resource.data.users
+        && request.auth.uid != resource.data.from
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'acceptedAt'])
+        && request.resource.data.status == 'accepted'
+        && request.resource.data.acceptedAt == request.time;
+      allow delete: if isAuthenticated() && request.auth.uid in resource.data.users;
     }
   }
 }

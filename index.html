@@ -496,6 +496,85 @@ div.menu-row { cursor: default; }
 .thanks { margin: 32px 0 0; font-family: var(--serif); font-size: 19px; font-weight: 700; color: var(--brass-hi); }
 .credits .actions { justify-content: center; }
 
+/* ───────── 메뉴 바로 가기 · 알림 숫자 ───────── */
+.quick { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.quick .btn { min-height: 58px; padding: 10px 14px; justify-content: flex-start; text-align: left; }
+.quick .btn b { display: block; font-family: var(--serif); font-size: 16px; line-height: 1.35; }
+.quick .btn small { display: block; font-size: 12px; font-weight: 500; letter-spacing: 0; color: var(--mute); }
+.badge {
+  display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 7px; margin-left: 8px; border-radius: 999px;
+  font-family: var(--sans); font-size: 12.5px; font-weight: 700; line-height: 1; letter-spacing: 0; color: var(--on-brass); background: var(--brass-hi); vertical-align: 2px;
+}
+.unit-tag { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 10px 0 0; font-size: 13px; color: var(--mute); }
+.unit-tag b { padding: 1px 9px; border: 1px solid var(--hair-strong); border-radius: 999px; font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--brass-hi); }
+.tally { font-family: var(--serif); font-weight: 700; color: var(--brass-hi); font-variant-numeric: tabular-nums; }
+
+/* ───────── 유형별 연습 ───────── */
+.drill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin-top: 24px; }
+.drill {
+  display: grid; gap: 6px; align-content: start; padding: 18px 20px; text-align: left; cursor: pointer;
+  color: var(--bone); background: rgba(var(--vault-rgb), 0.7); border: 1px solid var(--hair); border-radius: 2px;
+  transition: border-color .25s ease, background-color .25s ease, transform .2s ease;
+}
+.drill b { font-family: var(--serif); font-size: 19px; }
+.drill small { font-size: 14px; color: var(--bone-2); }
+.drill .chip { justify-self: start; margin-top: 4px; font-size: 12.5px; }
+@media (hover: hover) { .drill:hover { border-color: var(--brass); background: rgba(var(--brass-rgb), 0.08); transform: translateY(-1px); } }
+
+/* ───────── 오답 노트 ───────── */
+.notes { display: grid; gap: 12px; margin-top: 24px; }
+.note { padding: 20px 22px; }
+.note-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; font-size: 12.5px; color: var(--mute); }
+.note-head .chip { font-size: 12px; }
+.note-d { margin: 12px 0 0; font-family: var(--serif); font-size: 14px; color: var(--brass-hi); }
+.note-p { margin: 4px 0 0; font-family: var(--serif); font-weight: 700; font-size: 17px; line-height: 1.6; white-space: pre-line; }
+.note-dl { margin: 12px 0 0; }
+.note-row { display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 10px; padding: 8px 0; border-top: 1px solid var(--hair); font-size: 15px; }
+.note-row dt { padding-top: 1px; font-size: 13px; font-weight: 700; }
+.note-row dd { margin: 0; color: var(--bone); }
+.note-row.bad dt { color: var(--oxblood); }
+.note-row.good dt { color: var(--verdigris); }
+.note-why { display: block; margin-top: 4px; font-size: 13.5px; color: var(--mute); }
+.note-foot { display: flex; justify-content: flex-end; margin-top: 4px; }
+.empty { margin: 24px 0 0; padding: 28px 20px; text-align: center; color: var(--mute); border: 1px dashed var(--hair-strong); }
+
+/* ───────── 친구 ───────── */
+.input {
+  width: 100%; min-height: 50px; padding: 12px 14px; font: inherit; font-size: 16px; color: var(--bone);
+  background: rgba(var(--vault-rgb), 0.7); border: 1px solid var(--hair-strong); border-radius: 2px;
+}
+.input:focus { outline: none; border-color: var(--brass); box-shadow: 0 0 0 3px rgba(var(--brass-rgb), 0.18); }
+.input.code { font-family: var(--mono); letter-spacing: 0.24em; text-transform: uppercase; }
+.input.code::placeholder { letter-spacing: 0.02em; text-transform: none; }
+.field-row { display: flex; gap: 10px; }
+.field-row .input { flex: 1; min-width: 0; }
+.field-row .btn { flex: none; }
+.friends-intro { margin-top: 22px; }
+.me-card { display: grid; gap: 16px; margin-top: 22px; padding: clamp(20px, 3.6vw, 30px); }
+.me-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; }
+.me-name { display: block; font-family: var(--serif); font-size: 22px; font-weight: 700; overflow-wrap: anywhere; }
+.code-box { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+.code-big { font-family: var(--mono); font-size: clamp(26px, 6vw, 34px); font-weight: 500; letter-spacing: 0.2em; color: var(--brass-hi); }
+.code-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.friend-list { display: grid; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--hair); }
+.friend { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 14px 4px; border-bottom: 1px solid var(--hair); }
+.friend.is-me { background: linear-gradient(90deg, rgba(var(--brass-rgb), 0.12), transparent 80%); }
+.rank { font-family: var(--latin); font-size: 22px; font-weight: 700; text-align: center; color: var(--brass); font-variant-numeric: tabular-nums; }
+.rank svg { width: 20px; height: 20px; vertical-align: -4px; }
+.f-name { display: flex; align-items: center; gap: 8px; min-width: 0; font-family: var(--serif); font-size: 17px; font-weight: 700; }
+.f-name > span:not(.me-chip) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dot { width: 10px; height: 10px; flex: none; border-radius: 50%; background: var(--brass); box-shadow: 0 0 0 1px var(--hair-strong); }
+.f-sub { display: block; font-size: 13px; color: var(--mute); font-variant-numeric: tabular-nums; }
+.f-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+.me-chip { flex: none; padding: 0 8px; font-family: var(--sans); font-size: 11.5px; font-weight: 700; line-height: 1.7; color: var(--on-brass); background: var(--brass); border-radius: 999px; }
+.list-note { margin: 10px 0 0; font-size: 13.5px; color: var(--mute); }
+@media (max-width: 480px) {
+  .friend { grid-template-columns: 28px minmax(0, 1fr); }
+  .f-actions { grid-column: 2; justify-content: flex-start; }
+  .field-row { flex-wrap: wrap; }
+  .field-row .btn { flex: 1 1 100%; }
+}
+
 /* ───────── 알림 ───────── */
 .toasts {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: grid; justify-items: center; gap: 8px; pointer-events: none;
@@ -543,6 +622,9 @@ div.menu-row { cursor: default; }
   <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
   <symbol id="i-install" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v7M9 11.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6.5C10 5 7.5 4.5 4 4.8v13.4c3.5-.3 6 .2 8 1.7 2-1.5 4.5-2 8-1.7V4.8c-3.5-.3-6 .2-8 1.7Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 6.5v13.4" stroke="currentColor" stroke-width="1.5"/></symbol>
+  <symbol id="i-friends" viewBox="0 0 24 24"><circle cx="9" cy="9" r="3.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 19c.9-3.2 3.2-4.8 6-4.8s5.1 1.6 6 4.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="16.5" cy="8" r="2.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M16.8 13.2c2.2.2 3.7 1.6 4.4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
   <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 1 0 0 17c1.2 0 1.8-.8 1.6-1.8-.3-1.3.5-2.3 1.8-2.3H18a2.5 2.5 0 0 0 2.5-2.6A8.6 8.6 0 0 0 12 3.5Z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="11" r="1.2" fill="currentColor"/><circle cx="11.5" cy="7.8" r="1.2" fill="currentColor"/><circle cx="15.5" cy="9" r="1.2" fill="currentColor"/></symbol>
 </svg>
 
@@ -575,7 +657,16 @@ div.menu-row { cursor: default; }
           <svg aria-hidden="true"><use href="#i-door"/></svg>
           <span><b>시작하기</b><small>다섯 개의 방 · 열쇠 3개로 시작</small></span>
         </button>
+        <div class="quick">
+          <button type="button" class="btn btn-ghost" data-go="practice"><svg aria-hidden="true"><use href="#i-target"/></svg><span><b>유형별 연습</b><small>열쇠 걱정 없이 연습</small></span></button>
+          <button type="button" class="btn btn-ghost" data-go="notes"><svg aria-hidden="true"><use href="#i-book"/></svg><span><b>오답 노트</b><small>틀린 문제 다시 보기</small></span></button>
+        </div>
         <div class="menu-list">
+          <button type="button" class="menu-row" data-go="friends">
+            <span class="ico" aria-hidden="true"><svg><use href="#i-friends"/></svg></span>
+            <span class="row-text"><span class="row-label">친구<span class="badge" id="friend-badge" hidden></span></span><span class="row-sub">친구 코드로 친구를 맺고 탈출 기록을 겨룹니다</span></span>
+            <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
+          </button>
           <button type="button" class="menu-row" data-go="shop">
             <span class="ico" aria-hidden="true"><svg><use href="#i-coin"/></svg></span>
             <span class="row-text"><span class="row-label">상점</span><span class="row-sub">금화로 도전에 쓸 물건과 테마를 삽니다</span></span>
@@ -624,7 +715,25 @@ div.menu-row { cursor: default; }
           <div><dt>부정</dt><dd>‘모든’ ↔ ‘어떤’, ‘그리고’ ↔ ‘또는’처럼 바꿔 명제의 부정을 고릅니다.</dd></div>
           <div><dt>필요·충분조건</dt><dd>p ⇒ q만 참이면 충분조건, q ⇒ p만 참이면 필요조건, 둘 다 참이면 필요충분조건입니다.</dd></div>
           <div><dt>반례</dt><dd>가정은 만족하지만 결론은 만족하지 않는 예를 고릅니다. 반례가 하나라도 있으면 명제는 거짓입니다.</dd></div>
+          <div><dt>참 · 거짓</dt><dd>세 명제 가운데 참인 것 하나를 고릅니다. ‘모든’이 들어간 명제는 반례 하나로 거짓이 됩니다.</dd></div>
+          <div><dt>진리집합</dt><dd>전체집합 U에서 조건을 참이 되게 하는 원소를 모은 집합을 고릅니다. ~p는 여집합, ‘그리고’는 교집합, ‘또는’은 합집합입니다.</dd></div>
         </dl>
+      </section>
+      <section class="doc-sec">
+        <h3>연습과 오답 노트</h3>
+        <ul>
+          <li>유형별 연습에서는 고른 유형의 문제만 계속 나옵니다. 열쇠를 잃지 않고, 금화와 기록은 쌓이지 않습니다.</li>
+          <li>미궁이나 연습에서 틀린 문제는 해설과 함께 오답 노트에 모입니다. 오답 노트는 이 기기에만 저장됩니다.</li>
+          <li>방에서 키보드의 1 · 2 · 3으로 보기를 고를 수 있습니다.</li>
+        </ul>
+      </section>
+      <section class="doc-sec">
+        <h3>친구</h3>
+        <ul>
+          <li>Google 계정으로 로그인한 뒤 친구 기능을 켜면 6자리 친구 코드가 생깁니다.</li>
+          <li>친구 코드를 넣거나 초대 링크를 열어 친구 신청을 보내고, 상대가 수락하면 친구가 됩니다.</li>
+          <li>친구 순위에서 서로의 탈출 · 완벽 탈출 · 지나온 방 수를 볼 수 있습니다. 금화와 물건은 보이지 않습니다.</li>
+        </ul>
       </section>
       <section class="doc-sec">
         <h3>금화와 물건</h3>
@@ -645,7 +754,8 @@ div.menu-row { cursor: default; }
       <section class="doc-sec">
         <h3>알아 두세요</h3>
         <ul>
-          <li>문제는 고등학교 1학년 공통수학 「집합과 명제」 범위에서 나옵니다. 교육과정에서 다루지 않는 명제의 ‘이’는 나오지 않습니다.</li>
+          <li>모든 방은 「집합과 명제」의 명제 문제이고, 명제에 담긴 수학은 고등학교 1학년 공통수학1 · 공통수학2에 나오는 내용만 씁니다. 방마다 그 내용이 나온 단원을 보여 줍니다.</li>
+          <li>교육과정에서 다루지 않는 명제의 ‘이’는 나오지 않습니다.</li>
           <li>무료로 운영하는 게임이라 내용이 바뀌거나 잠시 멈출 수 있습니다. 새 버전이 나오면 새로고침하면 됩니다.</li>
           <li>문제에 오류가 있거나 궁금한 점이 있으면 ‘의견 보내기’로 알려 주세요.</li>
         </ul>
@@ -702,7 +812,7 @@ div.menu-row { cursor: default; }
     <div class="frame pad doc">
       <p class="eyebrow">Leges</p>
       <h2 class="h1" id="terms-title" tabindex="-1" data-focus>이용약관 · 개인정보 처리방침</h2>
-      <p class="doc-meta">시행일 2026년 10월 19일 · 로그인하면 아래 내용에 동의하는 것으로 봅니다. 로그인하지 않아도 모든 기능을 쓸 수 있습니다.</p>
+      <p class="doc-meta">시행일 2026년 10월 25일 · 로그인하면 아래 내용에 동의하는 것으로 봅니다. 로그인하지 않아도 모든 기능을 쓸 수 있습니다.</p>
       <section class="doc-sec">
         <h3>1. 어떤 서비스인가요</h3>
         <ul>
@@ -724,13 +834,15 @@ div.menu-row { cursor: default; }
           <li>로그인하면: Google 계정의 고유 번호, 이메일, 이름, 프로필 사진 주소를 계정 확인과 화면 표시에 씁니다. 이메일은 관리자 계정인지 확인할 때만 쓰고 게임 기록에 넣지 않습니다.</li>
           <li>게임 기록: 금화, 가진 물건과 테마, 판 수 · 탈출 · 완벽 탈출 · 지나온 방 수, 마지막 저장 시각.</li>
           <li>의견 보내기: 보낸 내용과 종류, 계정 고유 번호, 게임 버전, 기기 정보(브라우저 · 운영체제 종류, 화면 크기), 보낸 시각. 1분에 한 번만 보낼 수 있게 보낸 횟수와 마지막으로 보낸 시각도 저장합니다.</li>
-          <li>로그인하지 않으면 모든 기록은 이 기기의 브라우저 저장소에만 있습니다. 광고 추적 쿠키는 쓰지 않습니다.</li>
+          <li>친구 기능을 켜면: 직접 정한 이름, 친구 코드, 쓰고 있는 테마, 판 수 · 탈출 · 완벽 탈출 · 지나온 방 수, 주고받은 친구 신청과 친구 목록.</li>
+          <li>로그인하지 않으면 모든 기록은 이 기기의 브라우저 저장소에만 있습니다. 오답 노트는 로그인해도 이 기기에만 저장합니다. 광고 추적 쿠키는 쓰지 않습니다.</li>
         </ul>
       </section>
       <section class="doc-sec">
         <h3>4. 다른 사람에게 보이는 정보</h3>
         <ul>
-          <li>다른 사람에게 공개되는 정보는 없습니다. 내 기록은 나만 읽고 쓸 수 있고, 보낸 의견은 운영진만 봅니다.</li>
+          <li>친구 기능을 켜지 않으면 다른 사람에게 공개되는 정보는 없습니다. 내 계정 기록은 나만 읽고 쓸 수 있고, 보낸 의견은 운영진만 봅니다.</li>
+          <li>친구 기능을 켜면 직접 정한 이름, 친구 코드, 테마, 판 수 · 탈출 · 완벽 탈출 · 지나온 방 수가 로그인한 다른 플레이어에게 보일 수 있습니다(내 친구 코드를 알거나 나와 친구 신청을 주고받은 사람). 이메일, Google 이름과 사진, 금화와 물건은 보이지 않습니다.</li>
         </ul>
       </section>
       <section class="doc-sec">
@@ -747,6 +859,7 @@ div.menu-row { cursor: default; }
         <ul>
           <li>클라우드 기록은 계정을 쓰는 동안 보관합니다.</li>
           <li>이 기기의 기록은 브라우저 데이터를 지우면 함께 지워집니다.</li>
+          <li>친구 화면에서 ‘친구 기능 끄기’를 누르면 공개 프로필, 친구 코드, 친구 목록과 친구 신청이 바로 지워집니다.</li>
           <li>계정 기록을 모두 지우고 싶다면 ‘의견 보내기’에서 ‘계정 기록 삭제 요청’을 보내 주세요. 확인한 뒤 지워 드립니다.</li>
         </ul>
       </section>
@@ -755,13 +868,14 @@ div.menu-row { cursor: default; }
         <ul>
           <li>금화나 기록 조작, 버그 악용, 데이터베이스를 직접 건드리는 행동은 하면 안 됩니다.</li>
           <li>계정에 저장할 때마다 서버가 금화 · 물건 · 플레이 기록이 서로 맞는지 확인하고, 맞지 않는 기록은 저장하지 않습니다.</li>
-          <li>이상한 기록은 운영진이 지울 수 있습니다.</li>
+          <li>친구에게 보이는 이름에 욕설, 남을 불쾌하게 하는 말, 개인정보를 쓰면 안 됩니다.</li>
+          <li>이상한 기록이나 이름은 운영진이 지울 수 있습니다.</li>
         </ul>
       </section>
       <section class="doc-sec">
         <h3>8. 운영진</h3>
         <ul>
-          <li>운영진 계정은 확인과 테스트를 위해 상점 물건을 무료로 받을 수 있습니다.</li>
+          <li>운영진 계정은 확인과 테스트를 위해 금화가 무한이며, 상점 물건을 금화를 쓰지 않고 받을 수 있습니다.</li>
         </ul>
       </section>
       <section class="doc-sec">
@@ -790,7 +904,7 @@ div.menu-row { cursor: default; }
       <p class="story">당신은 꼬여 있는 명제 원리로 작동하는 미궁에 갇혔습니다. 문을 열려면 방마다 제시되는 원래 명제의 <b>대우(Contrapositive)</b>를 올바르게 직관해, 참인 논리 열쇠를 맞춰야 합니다.</p>
       <dl class="rules">
         <div><dt>열쇠</dt><dd>3개로 시작합니다. 틀릴 때마다 하나를 잃고, 모두 잃으면 미궁에 갇힙니다.</dd></div>
-        <div><dt>방</dt><dd>모두 다섯 개입니다. 대우를 찾는 방을 중심으로 역 찾기, 부정, 필요·충분조건, 반례 방이 섞여 나오고, 마지막 방은 ‘그리고’·‘또는’이 섞인 명제입니다. 문제는 매번 무작위로 바뀝니다.</dd></div>
+        <div><dt>방</dt><dd>모두 다섯 개입니다. 대우를 찾는 방을 중심으로 역 찾기, 부정, 필요·충분조건, 반례, 참·거짓, 진리집합 방이 섞여 나오고, 마지막 방은 ‘그리고’·‘또는’이 섞인 명제입니다. 문제는 매번 무작위로 바뀝니다.</dd></div>
         <div><dt>금화</dt><dd>정답 10 · 첫 시도 +5 · 탈출 +30 · 열쇠를 하나도 잃지 않으면 +20</dd></div>
       </dl>
       <h3 class="h3">가져갈 물건</h3>
@@ -813,6 +927,7 @@ div.menu-row { cursor: default; }
         <div class="charms" id="charms"></div>
         <div class="keys" id="keys"></div>
         <span class="purse" id="run-purse"></span>
+        <span class="tally" id="tally" hidden></span>
       </div>
     </div>
 
@@ -825,6 +940,7 @@ div.menu-row { cursor: default; }
           <g class="core"><circle cx="24" cy="20.5" r="4.6" fill="currentColor"/><path d="M21.6 23.5h4.8l1.6 9.5h-8Z" fill="currentColor"/></g>
         </svg>
       </div>
+      <p class="unit-tag" id="unit-tag"></p>
       <p class="domain" id="domain" hidden></p>
       <p class="prop" id="prop"></p>
       <p class="hint" id="hint" hidden><svg aria-hidden="true"><use href="#i-candle"/></svg><span id="hint-text"></span></p>
@@ -835,6 +951,9 @@ div.menu-row { cursor: default; }
     <div class="tools">
       <button type="button" class="btn btn-ghost btn-sm" id="btn-lens" data-act="lens">
         <svg aria-hidden="true"><use href="#i-lens"/></svg>통찰의 렌즈 <span class="lens-count" id="lens-count">0</span>
+      </button>
+      <button type="button" class="btn btn-ghost btn-sm" id="btn-hint" data-act="hint" hidden>
+        <svg aria-hidden="true"><use href="#i-candle"/></svg>실마리 보기
       </button>
       <button type="button" class="btn btn-text btn-sm" id="btn-abandon" data-act="abandon">포기하기</button>
     </div>
@@ -869,11 +988,52 @@ div.menu-row { cursor: default; }
       </div>
       <span class="purse big" id="shop-purse"></span>
     </div>
-    <p class="admin-note" id="admin-note" hidden>관리자 계정입니다. 상점의 모든 상품을 무료로 받을 수 있습니다.</p>
+    <p class="admin-note" id="admin-note" hidden>운영자 계정입니다. 금화가 무한이라 무엇을 사도 금화가 줄지 않습니다. 물건은 종류마다 9개까지 가질 수 있습니다.</p>
     <h3 class="section-label">소모품</h3>
     <div class="wares" id="wares-items"></div>
     <h3 class="section-label">테마</h3>
     <div class="wares" id="wares-skins"></div>
+    <div class="actions"><button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button></div>
+  </section>
+
+  <!-- 유형별 연습 -->
+  <section class="screen medium" id="screen-practice" aria-labelledby="practice-title" hidden>
+    <div class="page-head">
+      <div>
+        <p class="eyebrow">Exercitatio</p>
+        <h2 class="h1" id="practice-title" tabindex="-1" data-focus>유형별 연습</h2>
+      </div>
+    </div>
+    <p class="story">고른 유형의 문제만 계속 나옵니다. 연습에서는 열쇠를 잃지 않고, 금화와 기록도 쌓이지 않습니다. 실마리는 언제든 볼 수 있고, 틀린 문제는 오답 노트에 모입니다.</p>
+    <div class="drill-grid" id="drill-grid"></div>
+    <div class="actions"><button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button></div>
+  </section>
+
+  <!-- 오답 노트 -->
+  <section class="screen narrow" id="screen-notes" aria-labelledby="notes-title" hidden>
+    <div class="page-head">
+      <div>
+        <p class="eyebrow">Errata</p>
+        <h2 class="h1" id="notes-title" tabindex="-1" data-focus>오답 노트</h2>
+      </div>
+    </div>
+    <p class="doc-meta" id="notes-meta"></p>
+    <div class="notes" id="notes-list"></div>
+    <div class="actions">
+      <button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button>
+      <button type="button" class="btn btn-text" id="btn-clear-notes" data-act="clear-notes">모두 지우기</button>
+    </div>
+  </section>
+
+  <!-- 친구 -->
+  <section class="screen narrow" id="screen-friends" aria-labelledby="friends-title" hidden>
+    <div class="page-head">
+      <div>
+        <p class="eyebrow">Sodales</p>
+        <h2 class="h1" id="friends-title" tabindex="-1" data-focus>친구</h2>
+      </div>
+    </div>
+    <div id="friends-body"></div>
     <div class="actions"><button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button></div>
   </section>
 
@@ -957,6 +1117,17 @@ const FIREBASE_VERSION = '10.12.2';
 
 // 패치노트 (맨 위가 지금 버전). 약관을 바꾸면 여기에도 적는다.
 const PATCH_NOTES = [
+  { v: '4.0.0', date: '2026년 10월 25일', items: [
+    '문제를 모두 검토해 고등학교 1학년 공통수학에 나오는 내용만 남겼습니다. 날씨 · 동물 · 과학처럼 수학이 아닌 명제는 빼고, 다항식 · 방정식과 부등식 · 경우의 수 · 행렬 · 도형의 방정식 · 집합과 명제 · 함수와 그래프의 내용으로 명제 문제를 새로 만들었습니다.',
+    '방마다 문제에 담긴 내용이 나온 단원(공통수학1 · 공통수학2)을 보여 줍니다.',
+    '새 방: 참인 명제 고르기, 진리집합 찾기.',
+    '유형별 연습: 열쇠와 금화 걱정 없이 원하는 유형만 골라 풀 수 있습니다.',
+    '오답 노트: 틀린 문제와 해설을 모아 다시 볼 수 있습니다.',
+    '친구: 친구 코드나 초대 링크로 친구를 맺고, 친구들과 탈출 기록 순위를 볼 수 있습니다.',
+    '운영자 계정은 금화가 무한입니다.',
+    '방에서 키보드 1 · 2 · 3으로 보기를 고를 수 있고, 같은 문제가 연달아 나오지 않습니다.',
+    '약관의 ‘모으는 정보와 쓰는 곳’, ‘다른 사람에게 보이는 정보’, ‘보관 기간과 지우기’, ‘공정한 플레이’, ‘운영진’을 고쳤습니다.',
+  ] },
   { v: '3.3.0', date: '2026년 10월 20일', items: [
     '메뉴 아래 ‘은율이의 다른 앱’에서 계란이의 모험, 상큼 과일 아케이드 존, SchoolFix로 갈 수 있습니다.',
   ] },
@@ -1024,133 +1195,238 @@ const SKINS = {
 };
 
 /* ───────── 문제 은행 ─────────
-   p: 원래 명제, c: 대우(정답), v: 역, i: 이, b: 잘못된 부정(복합 명제만), d: 변수의 범위, n: 덧붙일 해설
-   방 Ⅰ·Ⅱ는 t1, 방 Ⅲ·Ⅳ는 t2(자동 생성 문제 포함), 방 Ⅴ는 t3에서 무작위로 뽑는다. */
+   모든 방은 「집합과 명제」의 명제 문제이고, 명제에 담긴 수학은 고1 공통수학1 · 공통수학2에 나오는 내용만 쓴다.
+   u: 내용이 나온 단원(UNITS), p: 원래 명제, c: 대우(정답), v: 역, b: 잘못된 부정(복합 명제만), d: 변수의 범위, n: 덧붙일 해설
+   p · c · v는 가정과 결론 사이에만 ', '를 둔다 (촛대 실마리와 ‘한쪽만 부정’ 보기를 이 쉼표에서 나눠 만든다).
+   방 Ⅰ·Ⅱ는 t1, 방 Ⅲ·Ⅳ의 대우 방은 t2(자동 생성 문제 포함), 방 Ⅴ는 t3에서 뽑는다. */
+const UNITS = {
+  poly: { book: '공통수학1', name: '다항식' },
+  eq: { book: '공통수학1', name: '방정식과 부등식' },
+  count: { book: '공통수학1', name: '경우의 수' },
+  matrix: { book: '공통수학1', name: '행렬' },
+  geo: { book: '공통수학2', name: '도형의 방정식' },
+  set: { book: '공통수학2', name: '집합과 명제' },
+  func: { book: '공통수학2', name: '함수와 그래프' },
+};
+const MATRIX_AB = 'A는 (1, 1) 성분만 1, B는 (2, 2) 성분만 1이고 나머지 성분이 모두 0이면 AB = O이지만 A ≠ O입니다.';
 const BANK = {
   t1: [
-    { p: '비가 오면, 땅이 젖는다.', c: '땅이 젖지 않으면, 비가 오지 않은 것이다.', v: '땅이 젖으면, 비가 온 것이다.' },
-    { p: '어떤 사람이 마피아라면, 그 사람은 거짓말을 한다.', c: '어떤 사람이 거짓말을 하지 않는다면, 그 사람은 마피아가 아니다.', v: '어떤 사람이 거짓말을 한다면, 그 사람은 마피아이다.' },
-    { p: '정삼각형이면, 이등변삼각형이다.', c: '이등변삼각형이 아니면, 정삼각형이 아니다.', v: '이등변삼각형이면, 정삼각형이다.' },
-    { p: '정사각형이면, 직사각형이다.', c: '직사각형이 아니면, 정사각형이 아니다.', v: '직사각형이면, 정사각형이다.' },
-    { p: '서울에 살면, 한국에 산다.', c: '한국에 살지 않으면, 서울에 살지 않는다.', v: '한국에 살면, 서울에 산다.' },
-    { p: '고양이라면, 포유류이다.', c: '포유류가 아니라면, 고양이가 아니다.', v: '포유류라면, 고양이이다.' },
-    { p: '시험에 합격했다면, 시험을 쳤다.', c: '시험을 치지 않았다면, 시험에 합격하지 않았다.', v: '시험을 쳤다면, 시험에 합격했다.' },
-    { p: '해가 지면, 하늘이 어두워진다.', c: '하늘이 어두워지지 않으면, 해가 지지 않은 것이다.', v: '하늘이 어두워지면, 해가 진 것이다.' },
-    { p: '휴대폰 배터리가 0%이면, 휴대폰이 켜지지 않는다.', c: '휴대폰이 켜지면, 배터리가 0%가 아니다.', v: '휴대폰이 켜지지 않으면, 배터리가 0%이다.', n: '결론이 부정문이면 대우의 가정은 긍정문이 됩니다(부정의 부정).' },
-    { p: '두 각이 맞꼭지각이면, 두 각의 크기는 같다.', c: '두 각의 크기가 같지 않으면, 두 각은 맞꼭지각이 아니다.', v: '두 각의 크기가 같으면, 두 각은 맞꼭지각이다.' },
-    { p: '물이 끓고 있으면, 물이 뜨겁다.', c: '물이 뜨겁지 않으면, 물이 끓고 있지 않다.', v: '물이 뜨거우면, 물이 끓고 있다.' },
-    { p: '금속이면, 전기가 통한다.', c: '전기가 통하지 않으면, 금속이 아니다.', v: '전기가 통하면, 금속이다.' },
-    { p: '사과이면, 과일이다.', c: '과일이 아니면, 사과가 아니다.', v: '과일이면, 사과이다.' },
-    { p: '펭귄이면, 새이다.', c: '새가 아니면, 펭귄이 아니다.', v: '새이면, 펭귄이다.' },
-    { p: '부산에 가면, 바다를 볼 수 있다.', c: '바다를 볼 수 없으면, 부산에 가지 않은 것이다.', v: '바다를 볼 수 있으면, 부산에 간 것이다.' },
-    { p: '얼음이 녹으면, 물이 된다.', c: '물이 되지 않으면, 얼음이 녹지 않은 것이다.', v: '물이 되면, 얼음이 녹은 것이다.' },
-    { p: '버스 카드에 잔액이 없으면, 버스를 탈 수 없다.', c: '버스를 탈 수 있으면, 버스 카드에 잔액이 있다.', v: '버스를 탈 수 없으면, 버스 카드에 잔액이 없다.', n: '결론이 부정문이면 대우의 가정은 긍정문이 됩니다(부정의 부정).' },
-    { p: '평행사변형이면, 사각형이다.', c: '사각형이 아니면, 평행사변형이 아니다.', v: '사각형이면, 평행사변형이다.' },
-    { p: '전등 스위치가 꺼져 있으면, 전등이 켜지지 않는다.', c: '전등이 켜지면, 전등 스위치가 꺼져 있지 않다.', v: '전등이 켜지지 않으면, 전등 스위치가 꺼져 있다.', n: '결론이 부정문이면 대우의 가정은 긍정문이 됩니다(부정의 부정).' },
+    { u: 'set', d: '자연수 n에 대하여', p: 'n이 4의 배수이면, n은 2의 배수이다.', c: 'n이 2의 배수가 아니면, n은 4의 배수가 아니다.', v: 'n이 2의 배수이면, n은 4의 배수이다.' },
+    { u: 'set', d: '자연수 n에 대하여', p: 'n이 6의 약수이면, n은 12의 약수이다.', c: 'n이 12의 약수가 아니면, n은 6의 약수가 아니다.', v: 'n이 12의 약수이면, n은 6의 약수이다.' },
+    { u: 'set', d: '삼각형에 대하여', p: '정삼각형이면, 이등변삼각형이다.', c: '이등변삼각형이 아니면, 정삼각형이 아니다.', v: '이등변삼각형이면, 정삼각형이다.' },
+    { u: 'set', d: '사각형에 대하여', p: '정사각형이면, 직사각형이다.', c: '직사각형이 아니면, 정사각형이 아니다.', v: '직사각형이면, 정사각형이다.' },
+    { u: 'set', d: '전체집합 U의 원소 x와 두 부분집합 A, B에 대하여', p: 'x ∈ A ∩ B이면, x ∈ A이다.', c: 'x ∉ A이면, x ∉ A ∩ B이다.', v: 'x ∈ A이면, x ∈ A ∩ B이다.' },
+    { u: 'set', d: '전체집합 U의 원소 x와 두 부분집합 A, B에 대하여', p: 'x ∈ A이면, x ∈ A ∪ B이다.', c: 'x ∉ A ∪ B이면, x ∉ A이다.', v: 'x ∈ A ∪ B이면, x ∈ A이다.' },
+    { u: 'set', d: '두 집합 A, B에 대하여', p: 'A = B이면, A ⊂ B이다.', c: 'A ⊄ B이면, A ≠ B이다.', v: 'A ⊂ B이면, A = B이다.' },
+    { u: 'eq', d: '실수 a, b에 대하여', p: 'a = 0이면, ab = 0이다.', c: 'ab ≠ 0이면, a ≠ 0이다.', v: 'ab = 0이면, a = 0이다.' },
+    { u: 'eq', d: '실수 x에 대하여', p: 'x = 1이면, x² − 3x + 2 = 0이다.', c: 'x² − 3x + 2 ≠ 0이면, x ≠ 1이다.', v: 'x² − 3x + 2 = 0이면, x = 1이다.' },
+    { u: 'eq', d: '복소수 z에 대하여', p: 'z가 실수이면, z²은 실수이다.', c: 'z²이 실수가 아니면, z는 실수가 아니다.', v: 'z²이 실수이면, z는 실수이다.', n: '역은 거짓입니다. z = i이면 z² = −1은 실수이지만 z는 실수가 아닙니다.' },
+    { u: 'eq', d: '실수 x에 대하여', p: 'x > 3이면, x² > 9이다.', c: 'x² ≤ 9이면, x ≤ 3이다.', v: 'x² > 9이면, x > 3이다.', n: '‘>’의 부정은 ‘≤’입니다.' },
+    { u: 'poly', d: '다항식 P(x)에 대하여', p: 'P(x)가 x − 1로 나누어떨어지면, P(1) = 0이다.', c: 'P(1) ≠ 0이면, P(x)는 x − 1로 나누어떨어지지 않는다.', v: 'P(1) = 0이면, P(x)는 x − 1로 나누어떨어진다.', n: '인수정리에 따라 이 명제와 역은 모두 참입니다.' },
+    { u: 'poly', d: '다항식 P(x)에 대하여', p: 'P(x)를 x − 2로 나눈 나머지가 3이면, P(2) = 3이다.', c: 'P(2) ≠ 3이면, P(x)를 x − 2로 나눈 나머지는 3이 아니다.', v: 'P(2) = 3이면, P(x)를 x − 2로 나눈 나머지는 3이다.', n: '나머지정리에 따라 이 명제와 역은 모두 참입니다.' },
+    { u: 'func', d: '함수 f와 정의역의 두 원소 a, b에 대하여', p: 'a = b이면, f(a) = f(b)이다.', c: 'f(a) ≠ f(b)이면, a ≠ b이다.', v: 'f(a) = f(b)이면, a = b이다.', n: '역 ‘f(a) = f(b)이면 a = b이다’가 언제나 참인 함수가 일대일함수입니다.' },
+    { u: 'func', d: '함수 f: X → Y에 대하여', p: 'f가 일대일대응이면, f의 역함수가 존재한다.', c: 'f의 역함수가 존재하지 않으면, f는 일대일대응이 아니다.', v: 'f의 역함수가 존재하면, f는 일대일대응이다.' },
+    { u: 'geo', d: '좌표평면 위의 점 P(a, b)에 대하여', p: '점 P가 제1사분면 위에 있으면, ab > 0이다.', c: 'ab ≤ 0이면, 점 P는 제1사분면 위에 있지 않다.', v: 'ab > 0이면, 점 P는 제1사분면 위에 있다.', n: '역은 거짓입니다. 점 (−1, −2)는 ab > 0이지만 제3사분면 위의 점입니다.' },
+    { u: 'geo', d: '좌표평면 위의 점 P(a, b)에 대하여', p: '점 P가 x축 위에 있으면, b = 0이다.', c: 'b ≠ 0이면, 점 P는 x축 위에 있지 않다.', v: 'b = 0이면, 점 P는 x축 위에 있다.' },
+    { u: 'count', d: '자연수 n에 대하여', p: 'n = 3이면, n! = 6이다.', c: 'n! ≠ 6이면, n ≠ 3이다.', v: 'n! = 6이면, n = 3이다.' },
+    { u: 'matrix', d: '같은 꼴의 두 행렬 A, B에 대하여 (O는 영행렬)', p: 'A = B이면, A − B = O이다.', c: 'A − B ≠ O이면, A ≠ B이다.', v: 'A − B = O이면, A = B이다.' },
   ],
   t2: [
-    { d: '자연수 n에 대하여', p: 'n이 4의 배수이면, n은 짝수이다.', c: 'n이 짝수가 아니면, n은 4의 배수가 아니다.', v: 'n이 짝수이면, n은 4의 배수이다.' },
-    { p: '두 삼각형이 합동이면, 두 삼각형의 넓이는 같다.', c: '두 삼각형의 넓이가 같지 않으면, 두 삼각형은 합동이 아니다.', v: '두 삼각형의 넓이가 같으면, 두 삼각형은 합동이다.' },
-    { p: '식물이 광합성을 하면, 산소를 내놓는다.', c: '식물이 산소를 내놓지 않으면, 광합성을 하지 않은 것이다.', v: '식물이 산소를 내놓으면, 광합성을 한 것이다.' },
-    { d: '실수 a, b에 대하여', p: 'a = b이면, a² = b²이다.', c: 'a² ≠ b²이면, a ≠ b이다.', v: 'a² = b²이면, a = b이다.' },
-    { d: '사각형에 대하여', p: '정사각형이면, 두 대각선의 길이가 같다.', c: '두 대각선의 길이가 같지 않으면, 정사각형이 아니다.', v: '두 대각선의 길이가 같으면, 정사각형이다.' },
-    { d: '삼각형에 대하여', p: '직각삼각형이면, 90°인 각이 있다.', c: '90°인 각이 없으면, 직각삼각형이 아니다.', v: '90°인 각이 있으면, 직각삼각형이다.', n: '‘90°인 각이 있다’의 부정은 ‘90°인 각이 없다’입니다.' },
-    { d: '실수 x에 대하여', p: 'x² < 1이면, x < 1이다.', c: 'x ≥ 1이면, x² ≥ 1이다.', v: 'x < 1이면, x² < 1이다.', n: '‘<’의 부정은 ‘≥’입니다.' },
-    { d: '정수 n에 대하여', p: 'n이 짝수이면, n²도 짝수이다.', c: 'n²이 짝수가 아니면, n도 짝수가 아니다.', v: 'n²이 짝수이면, n도 짝수이다.' },
-    { d: '두 집합 A ⊂ B일 때', p: 'x ∈ A이면, x ∈ B이다.', c: 'x ∉ B이면, x ∉ A이다.', v: 'x ∈ B이면, x ∈ A이다.' },
-    { d: '자연수 n에 대하여', p: 'n이 10의 배수이면, n의 일의 자리 숫자는 0이다.', c: 'n의 일의 자리 숫자가 0이 아니면, n은 10의 배수가 아니다.', v: 'n의 일의 자리 숫자가 0이면, n은 10의 배수이다.' },
-    { d: '실수 x에 대하여', p: 'x > 1이면, x² > 1이다.', c: 'x² ≤ 1이면, x ≤ 1이다.', v: 'x² > 1이면, x > 1이다.', n: '‘>’의 부정은 ‘≤’입니다.' },
-    { d: '평면 위의 서로 다른 두 직선에 대하여', p: '두 직선이 평행하면, 두 직선은 만나지 않는다.', c: '두 직선이 만나면, 두 직선은 평행하지 않다.', v: '두 직선이 만나지 않으면, 두 직선은 평행하다.' },
-    { d: '정수 n에 대하여', p: 'n이 홀수이면, n²도 홀수이다.', c: 'n²이 홀수가 아니면, n도 홀수가 아니다.', v: 'n²이 홀수이면, n도 홀수이다.' },
-    { p: '물체에 힘이 작용하지 않으면, 물체의 운동 상태는 변하지 않는다.', c: '물체의 운동 상태가 변하면, 물체에 힘이 작용한 것이다.', v: '물체의 운동 상태가 변하지 않으면, 물체에 힘이 작용하지 않은 것이다.', n: '결론이 부정문이면 대우의 가정은 긍정문이 됩니다(부정의 부정).' },
-    { d: '두 집합 A, B에 대하여', p: 'A ⊂ B이면, A ∩ B = A이다.', c: 'A ∩ B ≠ A이면, A ⊄ B이다.', v: 'A ∩ B = A이면, A ⊂ B이다.' },
-    { d: '자연수 n에 대하여', p: 'n이 소수이면, n의 약수는 2개이다.', c: 'n의 약수가 2개가 아니면, n은 소수가 아니다.', v: 'n의 약수가 2개이면, n은 소수이다.' },
-    { d: '이차방정식 ax² + bx + c = 0 (a ≠ 0)에 대하여', p: 'b² − 4ac < 0이면, 실근이 없다.', c: '실근이 있으면, b² − 4ac ≥ 0이다.', v: '실근이 없으면, b² − 4ac < 0이다.', n: '‘실근이 없다’의 부정은 ‘실근이 있다’, ‘<’의 부정은 ‘≥’입니다.' },
+    { u: 'set', d: '정수 n에 대하여', p: 'n²이 짝수이면, n은 짝수이다.', c: 'n이 짝수가 아니면, n²은 짝수가 아니다.', v: 'n이 짝수이면, n²은 짝수이다.', n: '정수에서 ‘짝수가 아니다’는 ‘홀수이다’와 같으므로, 대우 ‘n이 홀수이면 n²도 홀수이다’를 보이면 원래 명제가 증명됩니다(대우를 이용한 증명).' },
+    { u: 'set', d: '실수 a, b에 대하여', p: 'a = b이면, a² = b²이다.', c: 'a² ≠ b²이면, a ≠ b이다.', v: 'a² = b²이면, a = b이다.' },
+    { u: 'set', d: '두 집합 A, B에 대하여', p: 'A ⊂ B이면, A ∩ B = A이다.', c: 'A ∩ B ≠ A이면, A ⊄ B이다.', v: 'A ∩ B = A이면, A ⊂ B이다.' },
+    { u: 'set', d: '두 집합 A, B에 대하여', p: 'A ⊂ B이면, A ∪ B = B이다.', c: 'A ∪ B ≠ B이면, A ⊄ B이다.', v: 'A ∪ B = B이면, A ⊂ B이다.' },
+    { u: 'set', d: '전체집합 U의 두 부분집합 A, B에 대하여', p: 'A ⊂ B이면, Bᶜ ⊂ Aᶜ이다.', c: 'Bᶜ ⊄ Aᶜ이면, A ⊄ B이다.', v: 'Bᶜ ⊂ Aᶜ이면, A ⊂ B이다.' },
+    { u: 'set', d: '두 집합 A, B에 대하여', p: 'A − B = ∅이면, A ⊂ B이다.', c: 'A ⊄ B이면, A − B ≠ ∅이다.', v: 'A ⊂ B이면, A − B = ∅이다.' },
+    { u: 'eq', d: '실수 x에 대하여', p: 'x² < 1이면, x < 1이다.', c: 'x ≥ 1이면, x² ≥ 1이다.', v: 'x < 1이면, x² < 1이다.', n: '‘<’의 부정은 ‘≥’입니다.' },
+    { u: 'eq', d: '실수 x에 대하여', p: 'x² − 4x + 3 < 0이면, x > 0이다.', c: 'x ≤ 0이면, x² − 4x + 3 ≥ 0이다.', v: 'x > 0이면, x² − 4x + 3 < 0이다.', n: 'x² − 4x + 3 < 0의 해는 1 < x < 3이므로 원래 명제는 참이지만, x = 5이면 역은 성립하지 않습니다.' },
+    { u: 'eq', d: '계수가 실수인 이차방정식 ax² + bx + c = 0 (a ≠ 0)에 대하여', p: 'b² − 4ac < 0이면, 실근이 없다.', c: '실근이 있으면, b² − 4ac ≥ 0이다.', v: '실근이 없으면, b² − 4ac < 0이다.', n: '‘실근이 없다’의 부정은 ‘실근이 있다’, ‘<’의 부정은 ‘≥’입니다.' },
+    { u: 'eq', d: '계수가 실수인 이차방정식 ax² + bx + c = 0 (a ≠ 0)에 대하여', p: 'ac < 0이면, 서로 다른 두 실근을 갖는다.', c: '서로 다른 두 실근을 갖지 않으면, ac ≥ 0이다.', v: '서로 다른 두 실근을 가지면, ac < 0이다.', n: 'ac < 0이면 판별식 b² − 4ac가 0보다 커서 원래 명제는 참입니다. 하지만 x² − 3x + 2 = 0처럼 ac > 0이어도 서로 다른 두 실근을 가질 수 있어 역은 거짓입니다.' },
+    { u: 'eq', d: '복소수 z에 대하여 (z̄는 z의 켤레복소수)', p: 'z가 실수이면, z = z̄이다.', c: 'z ≠ z̄이면, z는 실수가 아니다.', v: 'z = z̄이면, z는 실수이다.' },
+    { u: 'func', d: '실수 x에 대하여', p: 'x ≥ 1이면, √(x − 1)은 실수이다.', c: '√(x − 1)이 실수가 아니면, x < 1이다.', v: '√(x − 1)이 실수이면, x ≥ 1이다.', n: '‘≥’의 부정은 ‘<’입니다. x < 1이면 근호 안이 음수가 되어 √(x − 1)은 허수입니다.' },
+    { u: 'func', d: '집합 X에서 집합 Y로의 함수 f에 대하여', p: 'f가 일대일대응이면, f의 치역과 공역이 같다.', c: 'f의 치역과 공역이 같지 않으면, f는 일대일대응이 아니다.', v: 'f의 치역과 공역이 같으면, f는 일대일대응이다.', n: '역은 거짓입니다. X = {1, 2, 3}, Y = {1, 2}이고 f(1) = 1, f(2) = 2, f(3) = 2이면 치역과 공역이 같지만 일대일대응이 아닙니다.' },
+    { u: 'matrix', d: '두 이차정사각행렬 A, B에 대하여 (O는 영행렬)', p: 'A = O이면, AB = O이다.', c: 'AB ≠ O이면, A ≠ O이다.', v: 'AB = O이면, A = O이다.', n: '역은 거짓입니다. ' + MATRIX_AB },
+    { u: 'geo', d: '좌표평면 위의 두 직선 y = mx + a, y = nx + b에 대하여', p: 'mn = −1이면, 두 직선은 서로 수직이다.', c: '두 직선이 서로 수직이 아니면, mn ≠ −1이다.', v: '두 직선이 서로 수직이면, mn = −1이다.' },
+    { u: 'geo', d: '좌표평면 위의 두 직선 y = mx + a, y = nx + b에 대하여', p: '두 직선이 서로 평행하면, m = n이다.', c: 'm ≠ n이면, 두 직선은 서로 평행하지 않다.', v: 'm = n이면, 두 직선은 서로 평행하다.', n: '역은 거짓입니다. m = n이어도 a = b이면 두 직선은 평행하지 않고 일치합니다.' },
+    { u: 'geo', d: '반지름의 길이가 r인 원과 직선 l에 대하여 (h는 원의 중심과 l 사이의 거리)', p: 'h < r이면, 원과 l은 서로 다른 두 점에서 만난다.', c: '원과 l이 서로 다른 두 점에서 만나지 않으면, h ≥ r이다.', v: '원과 l이 서로 다른 두 점에서 만나면, h < r이다.' },
+    { u: 'count', d: '2 이상의 자연수 n에 대하여', p: 'ₙP₂ = 20이면, n = 5이다.', c: 'n ≠ 5이면, ₙP₂ ≠ 20이다.', v: 'n = 5이면, ₙP₂ = 20이다.', n: 'ₙP₂ = n(n − 1) = 20을 만족하는 자연수는 n = 5뿐이므로 이 명제와 역은 모두 참입니다.' },
   ],
   t3: [
-    { p: '날씨가 덥고 습하면, 불쾌지수가 높다.', c: '불쾌지수가 높지 않으면, 날씨가 덥지 않거나 습하지 않은 것이다.', v: '불쾌지수가 높으면, 날씨가 덥고 습한 것이다.', b: '불쾌지수가 높지 않으면, 날씨가 덥지 않고 습하지 않은 것이다.' },
-    { d: '실수 x, y에 대하여', p: 'x > 0이고 y > 0이면, xy > 0이다.', c: 'xy ≤ 0이면, x ≤ 0이거나 y ≤ 0이다.', v: 'xy > 0이면, x > 0이고 y > 0이다.', b: 'xy ≤ 0이면, x ≤ 0이고 y ≤ 0이다.' },
-    { d: '정수 n에 대하여', p: 'n이 2의 배수이고 3의 배수이면, n은 6의 배수이다.', c: 'n이 6의 배수가 아니면, n은 2의 배수가 아니거나 3의 배수가 아니다.', v: 'n이 6의 배수이면, n은 2의 배수이고 3의 배수이다.', b: 'n이 6의 배수가 아니면, n은 2의 배수가 아니고 3의 배수도 아니다.' },
-    { d: '실수 x에 대하여', p: 'x = 1이거나 x = 2이면, x² − 3x + 2 = 0이다.', c: 'x² − 3x + 2 ≠ 0이면, x ≠ 1이고 x ≠ 2이다.', v: 'x² − 3x + 2 = 0이면, x = 1이거나 x = 2이다.', b: 'x² − 3x + 2 ≠ 0이면, x ≠ 1이거나 x ≠ 2이다.' },
-    { d: '실수 x에 대하여', p: 'x² = 1이면, x = 1이거나 x = −1이다.', c: 'x ≠ 1이고 x ≠ −1이면, x² ≠ 1이다.', v: 'x = 1이거나 x = −1이면, x² = 1이다.', b: 'x ≠ 1이거나 x ≠ −1이면, x² ≠ 1이다.' },
-    { p: '주말이고 날씨가 맑으면, 공원에 간다.', c: '공원에 가지 않으면, 주말이 아니거나 날씨가 맑지 않은 것이다.', v: '공원에 가면, 주말이고 날씨가 맑은 것이다.', b: '공원에 가지 않으면, 주말이 아니고 날씨도 맑지 않은 것이다.' },
-    { p: '출석률이 80% 이상이고 시험 점수가 60점 이상이면, 과목을 이수한다.', c: '과목을 이수하지 못하면, 출석률이 80% 미만이거나 시험 점수가 60점 미만이다.', v: '과목을 이수하면, 출석률이 80% 이상이고 시험 점수가 60점 이상이다.', b: '과목을 이수하지 못하면, 출석률이 80% 미만이고 시험 점수도 60점 미만이다.', n: '‘이상’의 부정은 ‘미만’입니다.' },
-    { d: '실수 a, b에 대하여', p: 'a > 0이고 b > 0이면, a + b > 0이다.', c: 'a + b ≤ 0이면, a ≤ 0이거나 b ≤ 0이다.', v: 'a + b > 0이면, a > 0이고 b > 0이다.', b: 'a + b ≤ 0이면, a ≤ 0이고 b ≤ 0이다.' },
-    { d: '정수 n에 대하여', p: 'n이 4의 배수이거나 6의 배수이면, n은 짝수이다.', c: 'n이 짝수가 아니면, n은 4의 배수가 아니고 6의 배수도 아니다.', v: 'n이 짝수이면, n은 4의 배수이거나 6의 배수이다.', b: 'n이 짝수가 아니면, n은 4의 배수가 아니거나 6의 배수가 아니다.' },
-    { p: '비가 오거나 눈이 오면, 운동회를 미룬다.', c: '운동회를 미루지 않으면, 비가 오지 않고 눈도 오지 않은 것이다.', v: '운동회를 미루면, 비가 오거나 눈이 온 것이다.', b: '운동회를 미루지 않으면, 비가 오지 않거나 눈이 오지 않은 것이다.' },
-    { p: '입장권이 있고 신분증이 있으면, 입장할 수 있다.', c: '입장할 수 없으면, 입장권이 없거나 신분증이 없는 것이다.', v: '입장할 수 있으면, 입장권이 있고 신분증이 있는 것이다.', b: '입장할 수 없으면, 입장권도 없고 신분증도 없는 것이다.' },
+    { u: 'eq', d: '실수 x, y에 대하여', p: 'x > 0이고 y > 0이면, xy > 0이다.', c: 'xy ≤ 0이면, x ≤ 0이거나 y ≤ 0이다.', v: 'xy > 0이면, x > 0이고 y > 0이다.', b: 'xy ≤ 0이면, x ≤ 0이고 y ≤ 0이다.' },
+    { u: 'set', d: '정수 n에 대하여', p: 'n이 2의 배수이고 3의 배수이면, n은 6의 배수이다.', c: 'n이 6의 배수가 아니면, n은 2의 배수가 아니거나 3의 배수가 아니다.', v: 'n이 6의 배수이면, n은 2의 배수이고 3의 배수이다.', b: 'n이 6의 배수가 아니면, n은 2의 배수가 아니고 3의 배수도 아니다.' },
+    { u: 'eq', d: '실수 x에 대하여', p: 'x = 1이거나 x = 2이면, x² − 3x + 2 = 0이다.', c: 'x² − 3x + 2 ≠ 0이면, x ≠ 1이고 x ≠ 2이다.', v: 'x² − 3x + 2 = 0이면, x = 1이거나 x = 2이다.', b: 'x² − 3x + 2 ≠ 0이면, x ≠ 1이거나 x ≠ 2이다.' },
+    { u: 'eq', d: '실수 x에 대하여', p: 'x² = 1이면, x = 1이거나 x = −1이다.', c: 'x ≠ 1이고 x ≠ −1이면, x² ≠ 1이다.', v: 'x = 1이거나 x = −1이면, x² = 1이다.', b: 'x ≠ 1이거나 x ≠ −1이면, x² ≠ 1이다.' },
+    { u: 'eq', d: '실수 a, b에 대하여', p: 'a > 0이고 b > 0이면, a + b > 0이다.', c: 'a + b ≤ 0이면, a ≤ 0이거나 b ≤ 0이다.', v: 'a + b > 0이면, a > 0이고 b > 0이다.', b: 'a + b ≤ 0이면, a ≤ 0이고 b ≤ 0이다.' },
+    { u: 'set', d: '정수 n에 대하여', p: 'n이 4의 배수이거나 6의 배수이면, n은 짝수이다.', c: 'n이 짝수가 아니면, n은 4의 배수가 아니고 6의 배수도 아니다.', v: 'n이 짝수이면, n은 4의 배수이거나 6의 배수이다.', b: 'n이 짝수가 아니면, n은 4의 배수가 아니거나 6의 배수가 아니다.' },
+    { u: 'eq', d: '실수 a, b에 대하여 (i는 허수단위)', p: 'a + bi = 0이면, a = 0이고 b = 0이다.', c: 'a ≠ 0이거나 b ≠ 0이면, a + bi ≠ 0이다.', v: 'a = 0이고 b = 0이면, a + bi = 0이다.', b: 'a ≠ 0이고 b ≠ 0이면, a + bi ≠ 0이다.', n: '복소수가 서로 같을 조건(실수부분끼리, 허수부분끼리 같다)에 따라 원래 명제와 역은 모두 참입니다.' },
+    { u: 'eq', d: '실수 a, b에 대하여', p: 'a² + b² = 0이면, a = 0이고 b = 0이다.', c: 'a ≠ 0이거나 b ≠ 0이면, a² + b² ≠ 0이다.', v: 'a = 0이고 b = 0이면, a² + b² = 0이다.', b: 'a ≠ 0이고 b ≠ 0이면, a² + b² ≠ 0이다.' },
+    { u: 'poly', d: '실수 a, b에 대하여', p: 'ax + b = 0이 x에 대한 항등식이면, a = 0이고 b = 0이다.', c: 'a ≠ 0이거나 b ≠ 0이면, ax + b = 0은 x에 대한 항등식이 아니다.', v: 'a = 0이고 b = 0이면, ax + b = 0은 x에 대한 항등식이다.', b: 'a ≠ 0이고 b ≠ 0이면, ax + b = 0은 x에 대한 항등식이 아니다.' },
+    { u: 'set', d: '두 집합 A, B와 원소 x에 대하여', p: 'x ∈ A ∩ B이면, x ∈ A이고 x ∈ B이다.', c: 'x ∉ A이거나 x ∉ B이면, x ∉ A ∩ B이다.', v: 'x ∈ A이고 x ∈ B이면, x ∈ A ∩ B이다.', b: 'x ∉ A이고 x ∉ B이면, x ∉ A ∩ B이다.' },
+    { u: 'set', d: '두 집합 A, B와 원소 x에 대하여', p: 'x ∈ A ∪ B이면, x ∈ A이거나 x ∈ B이다.', c: 'x ∉ A이고 x ∉ B이면, x ∉ A ∪ B이다.', v: 'x ∈ A이거나 x ∈ B이면, x ∈ A ∪ B이다.', b: 'x ∉ A이거나 x ∉ B이면, x ∉ A ∪ B이다.' },
+    { u: 'geo', d: '좌표평면 위의 점 P(a, b)에 대하여', p: 'a > 0이고 b > 0이면, 점 P는 제1사분면 위에 있다.', c: '점 P가 제1사분면 위에 있지 않으면, a ≤ 0이거나 b ≤ 0이다.', v: '점 P가 제1사분면 위에 있으면, a > 0이고 b > 0이다.', b: '점 P가 제1사분면 위에 있지 않으면, a ≤ 0이고 b ≤ 0이다.' },
+    { u: 'matrix', d: '두 이차정사각행렬 A, B에 대하여 (O는 영행렬)', p: 'A = O이거나 B = O이면, AB = O이다.', c: 'AB ≠ O이면, A ≠ O이고 B ≠ O이다.', v: 'AB = O이면, A = O이거나 B = O이다.', b: 'AB ≠ O이면, A ≠ O이거나 B ≠ O이다.', n: '역은 거짓입니다. 실수와 달리 행렬은 A ≠ O, B ≠ O인데도 AB = O일 수 있습니다.' },
+    { u: 'func', d: '함수 f(x) = x²과 실수 a, b에 대하여', p: 'a = b이거나 a = −b이면, f(a) = f(b)이다.', c: 'f(a) ≠ f(b)이면, a ≠ b이고 a ≠ −b이다.', v: 'f(a) = f(b)이면, a = b이거나 a = −b이다.', b: 'f(a) ≠ f(b)이면, a ≠ b이거나 a ≠ −b이다.' },
   ],
   // 부정: neg가 정답, w는 오답과 그 해설
   neg: [
-    { p: '모든 학생은 안경을 썼다.', neg: '안경을 쓰지 않은 학생이 있다.', n: '‘모든 ~이다’의 부정은 ‘~이 아닌 것이 있다’입니다.', w: [
-      { t: '모든 학생은 안경을 쓰지 않았다.', tag: '전부 반대로', why: '‘모든’을 그대로 두고 결론만 뒤집으면 지나치게 강한 주장이 됩니다. ‘모든 ~이다’의 부정은 ‘~이 아닌 것이 있다’입니다.' },
-      { t: '안경을 쓴 학생이 있다.', tag: '부정 아님', why: '원래 명제와 함께 참일 수 있으므로 부정이 아닙니다. 부정은 원래 명제와 참·거짓이 정반대여야 합니다.' }] },
-    { p: '어떤 자연수는 짝수이다.', neg: '모든 자연수는 짝수가 아니다.', n: '‘어떤 ~이다’의 부정은 ‘모든 ~이 아니다’입니다.', w: [
+    { u: 'set', p: '어떤 자연수는 짝수이다.', neg: '모든 자연수는 짝수가 아니다.', n: '‘어떤 ~이다’의 부정은 ‘모든 ~이 아니다’입니다.', w: [
       { t: '어떤 자연수는 짝수가 아니다.', tag: '부정 아님', why: '원래 명제와 함께 참일 수 있으므로 부정이 아닙니다. ‘어떤 ~이다’의 부정은 ‘모든 ~이 아니다’입니다.' },
       { t: '모든 자연수는 짝수이다.', tag: '강해진 주장', why: '‘어떤’을 ‘모든’으로 바꾸기만 하면 부정이 되지 않습니다. 결론도 함께 부정해야 합니다.' }] },
-    { d: '실수 x, y에 대하여', p: 'x > 0이고 y > 0이다.', neg: 'x ≤ 0이거나 y ≤ 0이다.', n: DEMORGAN + ' ‘>’의 부정은 ‘≤’입니다.', w: [
+    { u: 'eq', d: '실수 x, y에 대하여', p: 'x > 0이고 y > 0이다.', neg: 'x ≤ 0이거나 y ≤ 0이다.', n: DEMORGAN + ' ‘>’의 부정은 ‘≤’입니다.', w: [
       { t: 'x ≤ 0이고 y ≤ 0이다.', tag: '드모르간 위반', why: '‘그리고’를 그대로 두었습니다. ' + DEMORGAN },
       { t: 'x < 0이거나 y < 0이다.', tag: '부등호 실수', why: '‘>’의 부정은 ‘≤’입니다. ‘<’로 바꾸면 0인 경우가 빠집니다.' }] },
-    { d: '실수 x에 대하여', p: 'x = 1이거나 x = 2이다.', neg: 'x ≠ 1이고 x ≠ 2이다.', n: DEMORGAN, w: [
+    { u: 'eq', d: '실수 x에 대하여', p: 'x = 1이거나 x = 2이다.', neg: 'x ≠ 1이고 x ≠ 2이다.', n: DEMORGAN, w: [
       { t: 'x ≠ 1이거나 x ≠ 2이다.', tag: '드모르간 위반', why: '‘또는’을 그대로 두었습니다. ' + DEMORGAN },
       { t: 'x = 1이고 x = 2이다.', tag: '부정 아님', why: '등호를 그대로 둔 채 ‘또는’만 ‘그리고’로 바꾸면 부정이 아닙니다. 각 조건도 함께 부정해야 합니다.' }] },
-    { p: '모든 실수 x에 대하여 x² ≥ 0이다.', neg: '어떤 실수 x에 대하여 x² < 0이다.', n: '‘모든’의 부정은 ‘어떤’, ‘≥’의 부정은 ‘<’입니다.', w: [
+    { u: 'set', p: '모든 실수 x에 대하여 x² ≥ 0이다.', neg: '어떤 실수 x에 대하여 x² < 0이다.', n: '‘모든’의 부정은 ‘어떤’, ‘≥’의 부정은 ‘<’입니다.', w: [
       { t: '모든 실수 x에 대하여 x² < 0이다.', tag: '전부 반대로', why: '‘모든’을 ‘어떤’으로 바꾸지 않았습니다. ‘모든 ~이다’의 부정은 ‘어떤 것은 ~이 아니다’입니다.' },
       { t: '어떤 실수 x에 대하여 x² ≤ 0이다.', tag: '부등호 실수', why: '‘≥’의 부정은 ‘<’입니다. ‘≤’는 0을 포함하므로 원래 명제와 함께 참이 될 수 있습니다.' }] },
-    { p: '어떤 실수 x에 대하여 x² = 2이다.', neg: '모든 실수 x에 대하여 x² ≠ 2이다.', n: '‘어떤’의 부정은 ‘모든’, ‘=’의 부정은 ‘≠’입니다.', w: [
+    { u: 'set', p: '어떤 실수 x에 대하여 x² = 2이다.', neg: '모든 실수 x에 대하여 x² ≠ 2이다.', n: '‘어떤’의 부정은 ‘모든’, ‘=’의 부정은 ‘≠’입니다.', w: [
       { t: '어떤 실수 x에 대하여 x² ≠ 2이다.', tag: '부정 아님', why: '‘어떤’을 ‘모든’으로 바꾸지 않았습니다. 원래 명제와 함께 참일 수 있습니다.' },
       { t: '모든 실수 x에 대하여 x² = 2이다.', tag: '강해진 주장', why: '‘어떤’을 ‘모든’으로 바꾸면서 결론도 함께 부정해야 합니다.' }] },
-    { p: '날씨가 덥고 습하다.', neg: '날씨가 덥지 않거나 습하지 않다.', n: DEMORGAN, w: [
-      { t: '날씨가 덥지 않고 습하지 않다.', tag: '드모르간 위반', why: '‘그리고’를 그대로 두었습니다. ' + DEMORGAN },
-      { t: '날씨가 춥고 건조하다.', tag: '반대말', why: '‘덥지 않다’는 ‘춥다’와 같지 않습니다. 부정은 반대말이 아니라 ‘~이 아니다’로 만듭니다.' }] },
-    { p: '이 반 학생은 모두 수학을 좋아한다.', neg: '이 반에는 수학을 좋아하지 않는 학생이 있다.', n: '‘모두 ~이다’의 부정은 ‘~이 아닌 것이 있다’입니다.', w: [
-      { t: '이 반 학생은 모두 수학을 싫어한다.', tag: '반대말', why: '‘좋아하지 않는다’는 ‘싫어한다’와 같지 않고, ‘모두’도 그대로 두었습니다.' },
-      { t: '이 반에는 수학을 좋아하는 학생이 있다.', tag: '부정 아님', why: '원래 명제와 함께 참일 수 있으므로 부정이 아닙니다.' }] },
-    { p: '모든 정사각형은 직사각형이다.', neg: '직사각형이 아닌 정사각형이 있다.', n: '‘모든 ~이다’의 부정은 ‘~이 아닌 것이 있다’입니다.', w: [
+    { u: 'set', p: '모든 정사각형은 직사각형이다.', neg: '직사각형이 아닌 정사각형이 있다.', n: '‘모든 ~이다’의 부정은 ‘~이 아닌 것이 있다’입니다.', w: [
       { t: '모든 정사각형은 직사각형이 아니다.', tag: '전부 반대로', why: '‘모든’을 그대로 두고 결론만 뒤집었습니다. 부정은 ‘직사각형이 아닌 정사각형이 있다’입니다.' },
       { t: '모든 직사각형은 정사각형이다.', tag: '자리 바꾸기', why: '주어와 술어의 자리를 바꾼 것은 부정이 아닙니다.' }] },
-    { d: '자연수 n에 대하여', p: 'n은 2의 배수이거나 3의 배수이다.', neg: 'n은 2의 배수도 아니고 3의 배수도 아니다.', n: DEMORGAN, w: [
+    { u: 'set', d: '자연수 n에 대하여', p: 'n은 2의 배수이거나 3의 배수이다.', neg: 'n은 2의 배수도 아니고 3의 배수도 아니다.', n: DEMORGAN, w: [
       { t: 'n은 2의 배수가 아니거나 3의 배수가 아니다.', tag: '드모르간 위반', why: '‘또는’을 그대로 두었습니다. ' + DEMORGAN },
       { t: 'n은 6의 배수가 아니다.', tag: '다른 조건', why: '‘2의 배수이거나 3의 배수’는 ‘6의 배수’와 다른 조건입니다. 예를 들어 4는 6의 배수가 아니지만 2의 배수입니다.' }] },
+    { u: 'eq', p: '모든 실수 x에 대하여 x² + 1 > 0이다.', neg: '어떤 실수 x에 대하여 x² + 1 ≤ 0이다.', n: '‘모든’의 부정은 ‘어떤’, ‘>’의 부정은 ‘≤’입니다.', w: [
+      { t: '모든 실수 x에 대하여 x² + 1 ≤ 0이다.', tag: '전부 반대로', why: '‘모든’을 ‘어떤’으로 바꾸지 않았습니다. ‘모든 ~이다’의 부정은 ‘어떤 것은 ~이 아니다’입니다.' },
+      { t: '어떤 실수 x에 대하여 x² + 1 < 0이다.', tag: '부등호 실수', why: '‘>’의 부정은 ‘≤’입니다. ‘<’로 바꾸면 x² + 1 = 0인 경우가 빠집니다.' }] },
+    { u: 'eq', p: '어떤 실수 x에 대하여 x² − 2x + 1 ≤ 0이다.', neg: '모든 실수 x에 대하여 x² − 2x + 1 > 0이다.', n: '‘어떤’의 부정은 ‘모든’, ‘≤’의 부정은 ‘>’입니다.', w: [
+      { t: '어떤 실수 x에 대하여 x² − 2x + 1 > 0이다.', tag: '부정 아님', why: '‘어떤’을 ‘모든’으로 바꾸지 않았습니다. x = 1과 x = 0을 보면 두 명제가 함께 참일 수 있습니다.' },
+      { t: '모든 실수 x에 대하여 x² − 2x + 1 ≥ 0이다.', tag: '부등호 실수', why: '‘≤’의 부정은 ‘>’입니다. ‘≥’는 등호를 포함하므로 원래 명제와 함께 참이 될 수 있습니다.' }] },
+    { u: 'set', d: '두 집합 A, B와 원소 x에 대하여', p: 'x ∈ A이고 x ∈ B이다.', neg: 'x ∉ A이거나 x ∉ B이다.', n: DEMORGAN, w: [
+      { t: 'x ∉ A이고 x ∉ B이다.', tag: '드모르간 위반', why: '‘그리고’를 그대로 두었습니다. ' + DEMORGAN },
+      { t: 'x ∈ A이거나 x ∈ B이다.', tag: '부정 아님', why: '‘그리고’만 ‘또는’으로 바꾸고 각 조건은 부정하지 않았습니다. 각 조건도 함께 부정해야 합니다.' }] },
+    { u: 'eq', d: '실수 x에 대하여', p: '1 < x ≤ 3이다.', neg: 'x ≤ 1이거나 x > 3이다.', n: '‘1 < x ≤ 3’은 ‘x > 1이고 x ≤ 3’이라는 뜻입니다. ' + DEMORGAN, w: [
+      { t: 'x ≤ 1이고 x > 3이다.', tag: '드모르간 위반', why: '‘1 < x ≤ 3’은 ‘x > 1이고 x ≤ 3’이므로, 부정할 때는 ‘그리고’를 ‘또는’으로 바꿔야 합니다.' },
+      { t: 'x < 1이거나 x ≥ 3이다.', tag: '부등호 실수', why: '‘>’의 부정은 ‘≤’, ‘≤’의 부정은 ‘>’입니다. 이 문장은 x = 1을 빠뜨리고 원래 조건을 만족하는 x = 3을 넣었습니다.' }] },
+    { u: 'matrix', d: '행렬 A에 대하여', p: 'A의 모든 성분은 0이다.', neg: 'A의 성분 중에는 0이 아닌 것이 있다.', n: '‘모든 ~이다’의 부정은 ‘~이 아닌 것이 있다’입니다. 곧 A = O의 부정은 A ≠ O입니다.', w: [
+      { t: 'A의 모든 성분은 0이 아니다.', tag: '전부 반대로', why: '‘모든’을 그대로 두고 결론만 뒤집으면 지나치게 강한 주장이 됩니다. 성분 하나만 0이 아니어도 A ≠ O입니다.' },
+      { t: 'A의 성분 중에는 0인 것이 있다.', tag: '부정 아님', why: '원래 명제와 함께 참일 수 있으므로 부정이 아닙니다.' }] },
+    { u: 'geo', d: '좌표평면 위의 점 P(a, b)에 대하여', p: 'a > 0이고 b < 0이다.', neg: 'a ≤ 0이거나 b ≥ 0이다.', n: DEMORGAN + ' ‘>’의 부정은 ‘≤’, ‘<’의 부정은 ‘≥’입니다.', w: [
+      { t: 'a ≤ 0이고 b ≥ 0이다.', tag: '드모르간 위반', why: '‘그리고’를 그대로 두었습니다. ' + DEMORGAN },
+      { t: 'a < 0이거나 b > 0이다.', tag: '부등호 실수', why: '‘>’의 부정은 ‘≤’, ‘<’의 부정은 ‘≥’입니다. 이 문장은 a = 0이나 b = 0인 경우를 빠뜨립니다.' }] },
   ],
   // 필요·충분조건: ans는 suf(충분) / nec(필요) / both(필요충분), n은 해설
   cond: [
-    { d: '실수 x에 대하여', p: 'x = 2', q: 'x² = 4', ans: 'suf', n: 'x = 2이면 x² = 4이므로 p ⇒ q는 참입니다. 하지만 x = −2이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.' },
-    { d: '실수 x에 대하여', p: 'x² = 4', q: 'x = 2', ans: 'nec', n: 'x = 2이면 x² = 4이므로 q ⇒ p는 참입니다. 하지만 x = −2이면 p는 참, q는 거짓이므로 p ⇒ q는 거짓입니다.' },
-    { d: '자연수 n에 대하여', p: 'n은 4의 배수', q: 'n은 짝수', ans: 'suf', n: '4의 배수는 모두 짝수이므로 p ⇒ q는 참입니다. 하지만 n = 6이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.' },
-    { d: '자연수 n에 대하여', p: 'n은 짝수', q: 'n은 2의 배수', ans: 'both', n: '짝수와 2의 배수는 같은 뜻이므로 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
-    { d: '사각형에 대하여', p: '정사각형이다', q: '마름모이다', ans: 'suf', n: '정사각형은 모두 마름모이므로 p ⇒ q는 참입니다. 하지만 정사각형이 아닌 마름모가 있으므로 q ⇒ p는 거짓입니다.' },
-    { d: '사각형에 대하여', p: '직사각형이다', q: '정사각형이다', ans: 'nec', n: '정사각형은 모두 직사각형이므로 q ⇒ p는 참입니다. 하지만 정사각형이 아닌 직사각형이 있으므로 p ⇒ q는 거짓입니다.' },
-    { d: '삼각형에 대하여', p: '세 변의 길이가 같다', q: '세 각의 크기가 같다', ans: 'both', n: '두 조건 모두 정삼각형이라는 뜻이므로 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
-    { d: '실수 x, y에 대하여', p: 'x = 0이고 y = 0', q: 'xy = 0', ans: 'suf', n: 'x = 0이고 y = 0이면 xy = 0이므로 p ⇒ q는 참입니다. 하지만 x = 0, y = 1이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.' },
-    { d: '실수 x, y에 대하여', p: 'x = 0이거나 y = 0', q: 'xy = 0', ans: 'both', n: 'xy = 0이면 x = 0이거나 y = 0이고, 그 반대도 성립하므로 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
-    { d: '실수 x에 대하여', p: '|x| = 3', q: 'x = 3이거나 x = −3', ans: 'both', n: '절댓값이 3인 수는 3과 −3뿐이므로 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
-    { d: '두 집합 A, B에 대하여', p: 'A ⊂ B', q: 'A ∩ B = A', ans: 'both', n: 'A ⊂ B이면 A ∩ B = A이고, A ∩ B = A이면 A의 모든 원소가 B에 속하므로 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
-    { d: '정수 n에 대하여', p: 'n²이 짝수', q: 'n이 짝수', ans: 'both', n: 'n이 짝수이면 n²도 짝수이고, n²이 짝수이면 n도 짝수이므로(대우: n이 홀수이면 n²도 홀수) p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+    { u: 'eq', d: '실수 x에 대하여', p: 'x = 2', q: 'x² = 4', ans: 'suf', n: 'x = 2이면 x² = 4이므로 p ⇒ q는 참입니다. 하지만 x = −2이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.' },
+    { u: 'eq', d: '실수 x에 대하여', p: 'x² = 4', q: 'x = 2', ans: 'nec', n: 'x = 2이면 x² = 4이므로 q ⇒ p는 참입니다. 하지만 x = −2이면 p는 참, q는 거짓이므로 p ⇒ q는 거짓입니다.' },
+    { u: 'set', d: '자연수 n에 대하여', p: 'n은 4의 배수', q: 'n은 짝수', ans: 'suf', n: '4의 배수는 모두 짝수이므로 p ⇒ q는 참입니다. 하지만 n = 6이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.' },
+    { u: 'set', d: '사각형에 대하여', p: '정사각형이다', q: '마름모이다', ans: 'suf', n: '정사각형은 모두 마름모이므로 p ⇒ q는 참입니다. 하지만 정사각형이 아닌 마름모가 있으므로 q ⇒ p는 거짓입니다.' },
+    { u: 'set', d: '사각형에 대하여', p: '직사각형이다', q: '정사각형이다', ans: 'nec', n: '정사각형은 모두 직사각형이므로 q ⇒ p는 참입니다. 하지만 정사각형이 아닌 직사각형이 있으므로 p ⇒ q는 거짓입니다.' },
+    { u: 'set', d: '삼각형에 대하여', p: '세 변의 길이가 같다', q: '세 각의 크기가 같다', ans: 'both', n: '두 조건 모두 정삼각형이라는 뜻이므로 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+    { u: 'eq', d: '실수 x, y에 대하여', p: 'x = 0이고 y = 0', q: 'xy = 0', ans: 'suf', n: 'x = 0이고 y = 0이면 xy = 0이므로 p ⇒ q는 참입니다. 하지만 x = 0, y = 1이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.' },
+    { u: 'eq', d: '실수 x, y에 대하여', p: 'x = 0이거나 y = 0', q: 'xy = 0', ans: 'both', n: 'xy = 0이면 x = 0이거나 y = 0이고, 그 반대도 성립하므로 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+    { u: 'eq', d: '실수 x에 대하여', p: '|x| = 3', q: 'x = 3이거나 x = −3', ans: 'both', n: '절댓값이 3인 수는 3과 −3뿐이므로 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+    { u: 'set', d: '두 집합 A, B에 대하여', p: 'A ⊂ B', q: 'A ∩ B = A', ans: 'both', n: 'A ⊂ B이면 A ∩ B = A이고, A ∩ B = A이면 A의 모든 원소가 B에 속하므로 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+    { u: 'set', d: '정수 n에 대하여', p: 'n²이 짝수', q: 'n이 짝수', ans: 'both', n: 'n이 짝수이면 n²도 짝수이고, n²이 짝수이면 n도 짝수이므로(대우: n이 홀수이면 n²도 홀수) p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+    { u: 'eq', d: '실수 x에 대하여', p: 'x² − 3x + 2 = 0', q: 'x = 1', ans: 'nec', n: 'x = 1이면 x² − 3x + 2 = 0이므로 q ⇒ p는 참입니다. 하지만 x = 2이면 p는 참, q는 거짓이므로 p ⇒ q는 거짓입니다.' },
+    { u: 'eq', d: '실수 a, b에 대하여', p: 'a² + b² = 0', q: 'a = 0이고 b = 0', ans: 'both', n: '실수의 제곱은 0 이상이므로 a² + b² = 0이면 a = 0이고 b = 0이며, 그 반대도 성립합니다. 그래서 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+    { u: 'matrix', d: '두 이차정사각행렬 A, B에 대하여 (O는 영행렬)', p: 'A = O', q: 'AB = O', ans: 'suf', n: 'A = O이면 AB = O이므로 p ⇒ q는 참입니다. 하지만 ' + MATRIX_AB + ' 그래서 q ⇒ p는 거짓입니다.' },
+    { u: 'eq', d: '계수가 실수인 이차방정식 x² + ax + b = 0에 대하여', p: 'b < 0', q: '서로 다른 두 실근을 갖는다', ans: 'suf', n: 'b < 0이면 판별식 a² − 4b가 0보다 크므로 p ⇒ q는 참입니다. 하지만 x² − 3x + 2 = 0은 b = 2 > 0인데도 서로 다른 두 실근 1, 2를 가지므로 q ⇒ p는 거짓입니다.' },
+    { u: 'eq', d: '복소수 z에 대하여 (z̄는 z의 켤레복소수)', p: 'z = z̄', q: 'z는 실수', ans: 'both', n: 'z = a + bi(a, b는 실수)라 하면 z = z̄는 b = 0과 같은 뜻입니다. 그래서 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+    { u: 'geo', d: '좌표평면 위의 두 직선 y = mx + a, y = nx + b에 대하여', p: 'm = n', q: '두 직선이 서로 평행하다', ans: 'nec', n: '두 직선이 평행하면 기울기가 같으므로 q ⇒ p는 참입니다. 하지만 m = n이어도 a = b이면 두 직선이 일치하므로 p ⇒ q는 거짓입니다.' },
+    { u: 'func', d: '함수 f: X → Y에 대하여', p: 'f는 일대일대응', q: 'f의 역함수가 존재한다', ans: 'both', n: '함수의 역함수가 존재할 필요충분조건은 그 함수가 일대일대응인 것이므로 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+    { u: 'eq', d: '실수 x에 대하여', p: 'x > 3', q: 'x² > 9', ans: 'suf', n: 'x > 3이면 x² > 9이므로 p ⇒ q는 참입니다. 하지만 x = −4이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.' },
+    { u: 'set', d: '두 집합 A, B에 대하여', p: 'A ∩ B = A', q: 'A ∪ B = B', ans: 'both', n: '두 조건은 모두 A ⊂ B와 같은 뜻이므로 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+    { u: 'set', d: '자연수 n에 대하여', p: 'n은 6의 약수', q: 'n은 12의 약수', ans: 'suf', n: '6의 약수 1, 2, 3, 6은 모두 12의 약수이므로 p ⇒ q는 참입니다. 하지만 n = 4이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.' },
+    { u: 'poly', d: '다항식 P(x)에 대하여', p: 'P(2) = 0', q: 'P(x)는 x − 2로 나누어떨어진다', ans: 'both', n: '인수정리에 따라 두 조건은 같은 뜻이므로 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+    { u: 'eq', d: '실수 x에 대하여', p: '|x − 1| < 2', q: '−1 < x < 3', ans: 'both', n: '|x − 1| < 2를 풀면 −2 < x − 1 < 2, 곧 −1 < x < 3이므로 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+    { u: 'eq', d: '실수 x에 대하여', p: '|x| < 1', q: 'x < 1', ans: 'suf', n: '|x| < 1이면 −1 < x < 1이므로 p ⇒ q는 참입니다. 하지만 x = −2이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.' },
+    { u: 'count', d: '2 이상의 자연수 n에 대하여', p: 'ₙC₂ = 10', q: 'n = 5', ans: 'both', n: 'ₙC₂ = n(n − 1)/2 = 10에서 n(n − 1) = 20이므로 n = 5뿐입니다. 그래서 p ⇒ q와 q ⇒ p가 모두 참입니다.' },
+    { u: 'func', d: '함수 f(x) = x²과 실수 a, b에 대하여', p: 'a = b', q: 'f(a) = f(b)', ans: 'suf', n: 'a = b이면 f(a) = f(b)이므로 p ⇒ q는 참입니다. 하지만 a = 1, b = −1이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.' },
   ],
   // 반례: ce가 반례(가정 ○ 결론 ×), ok는 가정과 결론을 모두 만족, out은 가정을 만족하지 않음
   counter: [
-    { id: 'prime', d: '자연수 n에 대하여', p: 'n이 소수이면, n은 홀수이다.', ce: 'n = 2', ok: 'n = 3', out: 'n = 9' },
-    { id: 'lt', d: '실수 x에 대하여', p: 'x < 1이면, x² < 1이다.', ce: 'x = −2', ok: 'x = 0', out: 'x = 3' },
-    { id: 'ab', d: '실수 a, b에 대하여', p: 'a² = b²이면, a = b이다.', ce: 'a = 2, b = −2', ok: 'a = 2, b = 2', out: 'a = 1, b = 2' },
+    { id: 'prime', u: 'set', d: '자연수 n에 대하여', p: 'n이 소수이면, n은 홀수이다.', ce: 'n = 2', ok: 'n = 3', out: 'n = 9' },
+    { id: 'lt', u: 'eq', d: '실수 x에 대하여', p: 'x < 1이면, x² < 1이다.', ce: 'x = −2', ok: 'x = 0', out: 'x = 3' },
+    { id: 'ab', u: 'eq', d: '실수 a, b에 대하여', p: 'a² = b²이면, a = b이다.', ce: 'a = 2, b = −2', ok: 'a = 2, b = 2', out: 'a = 1, b = 2' },
+    { id: 'zsq', u: 'eq', d: '복소수 z에 대하여 (i는 허수단위)', p: 'z²이 실수이면, z는 실수이다.', ce: 'z = i', ok: 'z = 2', out: 'z = 1 + i' },
+    { id: 'fsq', u: 'func', d: '함수 f(x) = x²과 실수 a, b에 대하여', p: 'f(a) = f(b)이면, a = b이다.', ce: 'a = 1, b = −1', ok: 'a = 2, b = 2', out: 'a = 1, b = 2' },
+    { id: 'gtsq', u: 'eq', d: '실수 a, b에 대하여', p: 'a > b이면, a² > b²이다.', ce: 'a = 1, b = −2', ok: 'a = 3, b = 1', out: 'a = 1, b = 2' },
+    { id: 'recip', u: 'func', d: '0이 아닌 실수 a, b에 대하여', p: 'a > b이면, 1/a < 1/b이다.', ce: 'a = 1, b = −1', ok: 'a = 2, b = 1', out: 'a = 1, b = 2' },
+    { id: 'setcap', u: 'set', d: '세 집합 A, B, C에 대하여', p: 'A ∩ B = A ∩ C이면, B = C이다.', ce: 'A = {1}, B = {1, 2}, C = {1, 3}', ok: 'A = {1}, B = {1, 2}, C = {1, 2}', out: 'A = {1}, B = {1}, C = {2}' },
+    { id: 'quad', u: 'geo', d: '좌표평면 위의 점 P(a, b)에 대하여', p: 'ab > 0이면, 점 P는 제1사분면 위에 있다.', ce: 'P(−1, −2)', ok: 'P(1, 2)', out: 'P(1, −2)' },
+    { id: 'x2', u: 'eq', d: '실수 x에 대하여', p: 'x² = 2x이면, x = 2이다.', ce: 'x = 0', ok: 'x = 2', out: 'x = 1' },
+    { id: 'comb', u: 'count', d: '0 이상 5 이하의 정수 r, s에 대하여', p: '₅Cᵣ = ₅Cₛ이면, r = s이다.', ce: 'r = 2, s = 3', ok: 'r = 2, s = 2', out: 'r = 1, s = 2' },
+    { id: 'div', u: 'set', d: '자연수 n에 대하여', p: 'n이 12의 약수이면, n은 6의 약수이다.', ce: 'n = 4', ok: 'n = 3', out: 'n = 5' },
+    { id: 'polyc', u: 'poly', d: '다항식 P(x)에 대하여', p: 'P(1) = 0이면, P(x) = x − 1이다.', ce: 'P(x) = x² − 1', ok: 'P(x) = x − 1', out: 'P(x) = x + 1' },
+  ],
+  // 참 · 거짓: t가 참인 명제(정답), f는 거짓인 명제와 그 까닭, n은 참인 까닭
+  truth: [
+    { u: 'matrix', d: '두 이차정사각행렬 A, B에 대하여', t: 'A + B = B + A이다.', n: '행렬의 덧셈은 같은 위치의 성분끼리 더하므로 교환법칙이 성립합니다.', f: [
+      { t: 'AB = BA이다.', why: '행렬의 곱셈은 교환법칙이 성립하지 않습니다. A는 (1, 2) 성분만 1, B는 (2, 1) 성분만 1이고 나머지 성분이 0이면 AB와 BA가 다릅니다.' },
+      { t: '(A + B)² = A² + 2AB + B²이다.', why: '(A + B)² = A² + AB + BA + B²이고, AB와 BA가 다를 수 있으므로 거짓입니다.' }] },
+    { u: 'count', t: '₅C₂ = ₅C₃이다.', n: 'ₙCᵣ = ₙCₙ₋ᵣ이므로 ₅C₂ = ₅C₃ = 10입니다.', f: [
+      { t: '₅P₂ = ₅C₂이다.', why: '₅P₂ = 5 × 4 = 20, ₅C₂ = 10이므로 같지 않습니다.' },
+      { t: '0! = 0이다.', why: '0! = 1로 정합니다.' }] },
+    { u: 'count', t: '서로 다른 4개의 문자를 일렬로 나열하는 경우의 수는 24이다.', n: '4! = 4 × 3 × 2 × 1 = 24입니다.', f: [
+      { t: '서로 다른 5개에서 2개를 택하는 조합의 수는 20이다.', why: '₅C₂ = (5 × 4)/(2 × 1) = 10입니다. 20은 순서까지 따진 순열의 수 ₅P₂입니다.' },
+      { t: '₆C₀ = 0이다.', why: 'ₙC₀ = 1로 정합니다.' }] },
+    { u: 'eq', d: 'i가 허수단위일 때', t: 'i² = −1이다.', n: '허수단위 i는 제곱하여 −1이 되는 수입니다.', f: [
+      { t: 'i⁴ = −1이다.', why: 'i⁴ = (i²)² = (−1)² = 1입니다.' },
+      { t: '√(−2) × √(−3) = √6이다.', why: '√(−2) × √(−3) = √2 i × √3 i = √6 i² = −√6입니다. 음수끼리는 √a √b = √(ab)가 성립하지 않습니다.' }] },
+    { u: 'set', d: '전체집합 U의 두 부분집합 A, B에 대하여', t: '(A ∪ B)ᶜ = Aᶜ ∩ Bᶜ이다.', n: '드모르간 법칙입니다. 두 집합 모두 A에도 B에도 속하지 않는 원소의 집합입니다.', f: [
+      { t: '(A ∩ B)ᶜ = Aᶜ ∩ Bᶜ이다.', why: 'U = {1, 2}, A = {1}, B = {2}이면 (A ∩ B)ᶜ = {1, 2}, Aᶜ ∩ Bᶜ = ∅입니다. 바른 식은 (A ∩ B)ᶜ = Aᶜ ∪ Bᶜ입니다.' },
+      { t: 'A − B = B − A이다.', why: 'A = {1}, B = ∅이면 A − B = {1}, B − A = ∅입니다.' }] },
+    { u: 'eq', d: '실수 a, b에 대하여', t: 'a² + b² ≥ 2ab이다.', n: 'a² + b² − 2ab = (a − b)² ≥ 0이므로 언제나 성립합니다.', f: [
+      { t: '|a + b| = |a| + |b|이다.', why: 'a = 1, b = −1이면 |a + b| = 0, |a| + |b| = 2입니다. 등호는 ab ≥ 0일 때만 성립합니다.' },
+      { t: 'a > b이면 a² > b²이다.', why: 'a = 1, b = −2이면 a > b이지만 a² = 1, b² = 4입니다.' }] },
+    { u: 'eq', t: '이차방정식 x² + x + 1 = 0은 실근을 갖지 않는다.', n: '판별식이 1 − 4 = −3 < 0이므로 서로 다른 두 허근을 갖습니다.', f: [
+      { t: '이차방정식 x² − 4x + 4 = 0은 서로 다른 두 실근을 갖는다.', why: '판별식이 16 − 16 = 0이므로 중근 x = 2를 갖습니다.' },
+      { t: '이차방정식 x² − 2x − 3 = 0의 두 근의 합은 −2이다.', why: '근과 계수의 관계에서 두 근의 합은 2입니다. 실제로 두 근은 3과 −1입니다.' }] },
+    { u: 'poly', t: '다항식 x³ − 1은 x − 1로 나누어떨어진다.', n: 'x = 1을 넣으면 1 − 1 = 0이므로 인수정리에 따라 나누어떨어집니다. x³ − 1 = (x − 1)(x² + x + 1)입니다.', f: [
+      { t: '다항식 x² + 1을 x − 1로 나눈 나머지는 0이다.', why: '나머지정리에 따라 나머지는 1² + 1 = 2입니다.' },
+      { t: '모든 실수 a, b에 대하여 a³ + b³ = (a + b)³이다.', why: 'a = b = 1이면 a³ + b³ = 2, (a + b)³ = 8입니다. 바른 식은 a³ + b³ = (a + b)(a² − ab + b²)입니다.' }] },
+    { u: 'geo', t: '두 점 (0, 0), (3, 4) 사이의 거리는 5이다.', n: '√(3² + 4²) = √25 = 5입니다.', f: [
+      { t: '두 직선 y = 2x + 1, y = −2x + 3은 서로 수직이다.', why: '기울기의 곱이 2 × (−2) = −4로 −1이 아니므로 수직이 아닙니다.' },
+      { t: '원 x² + y² = 4의 반지름의 길이는 4이다.', why: 'x² + y² = r²에서 r² = 4이므로 반지름의 길이는 2입니다.' }] },
+    { u: 'func', t: '함수 f(x) = 2x + 1의 역함수는 f⁻¹(x) = (x − 1)/2이다.', n: 'y = 2x + 1을 x에 대하여 풀면 x = (y − 1)/2이고, x와 y를 바꾸면 y = (x − 1)/2입니다.', f: [
+      { t: '실수 전체의 집합에서 정의된 함수 f(x) = x²은 일대일함수이다.', why: 'f(1) = f(−1) = 1이므로 일대일함수가 아닙니다.' },
+      { t: '두 함수 f(x) = x + 1, g(x) = 2x에 대하여 (f ∘ g)(1) = 4이다.', why: '(f ∘ g)(1) = f(g(1)) = f(2) = 3입니다. 4는 (g ∘ f)(1)의 값입니다.' }] },
+    { u: 'func', t: '함수 y = 1/x의 그래프는 원점에 대하여 대칭이다.', n: '점 (a, b)가 그래프 위에 있으면 점 (−a, −b)도 그래프 위에 있으므로 원점에 대하여 대칭입니다.', f: [
+      { t: '함수 y = √x의 정의역은 실수 전체의 집합이다.', why: '근호 안이 0 이상이어야 하므로 정의역은 {x | x ≥ 0}입니다.' },
+      { t: '함수 y = 1/(x − 1)의 그래프의 점근선은 두 직선 x = −1, y = 0이다.', why: '분모가 0이 되는 x = 1이 점근선이므로 점근선은 두 직선 x = 1, y = 0입니다.' }] },
+    { u: 'set', t: '어떤 실수 x에 대하여 x² − 1 = 0이다.', n: 'x = 1이면 x² − 1 = 0이므로 참입니다. ‘어떤’이 들어간 명제는 예가 하나만 있어도 참입니다.', f: [
+      { t: '모든 실수 x에 대하여 x² − 2x + 1 > 0이다.', why: 'x = 1이면 x² − 2x + 1 = 0이므로 거짓입니다. ‘모든’이 들어간 명제는 반례가 하나만 있어도 거짓입니다.' },
+      { t: '어떤 실수 x에 대하여 x² + 1 = 0이다.', why: '모든 실수 x에 대하여 x² + 1 ≥ 1이므로 x² + 1 = 0인 실수는 없습니다.' }] },
   ],
 };
 
-// 숫자를 바꿔 끝없이 만들어 내는 문제 (방 Ⅲ·Ⅳ에 섞여 나온다)
+// 숫자 뒤 조사: 받침이 있는 숫자(영 · 일 · 삼 · 육 · 칠 · 팔 · 십)와 없는 숫자를 가른다
+function hasBatchim(n) { return [0, 1, 3, 6, 7, 8].includes(Math.abs(n) % 10); }
+function iga(n) { return hasBatchim(n) ? '이' : '가'; }
+function eunNeun(n) { return hasBatchim(n) ? '은' : '는'; }
+function euro(n) { return [0, 3, 6].includes(Math.abs(n) % 10) ? '으로' : '로'; }   // ㄹ 받침(일 · 칠 · 팔)과 받침 없는 수는 '로'
+
+// 숫자를 바꿔 끝없이 만들어 내는 대우 문제 (방 Ⅲ·Ⅳ에 섞여 나온다)
 const GENERATORS = [
   () => {
     const a = randInt(0, 6), b = a + randInt(1, 6);
     return Math.random() < 0.5
-      ? { d: '실수 x에 대하여', p: `x > ${b}이면, x > ${a}이다.`, c: `x ≤ ${a}이면, x ≤ ${b}이다.`, v: `x > ${a}이면, x > ${b}이다.`, n: '‘>’의 부정은 ‘≤’입니다.' }
-      : { d: '실수 x에 대하여', p: `x ≥ ${b}이면, x ≥ ${a}이다.`, c: `x < ${a}이면, x < ${b}이다.`, v: `x ≥ ${a}이면, x ≥ ${b}이다.`, n: '‘≥’의 부정은 ‘<’입니다.' };
+      ? { u: 'eq', d: '실수 x에 대하여', p: `x > ${b}이면, x > ${a}이다.`, c: `x ≤ ${a}이면, x ≤ ${b}이다.`, v: `x > ${a}이면, x > ${b}이다.`, n: '‘>’의 부정은 ‘≤’입니다.' }
+      : { u: 'eq', d: '실수 x에 대하여', p: `x ≥ ${b}이면, x ≥ ${a}이다.`, c: `x < ${a}이면, x < ${b}이다.`, v: `x ≥ ${a}이면, x ≥ ${b}이다.`, n: '‘≥’의 부정은 ‘<’입니다.' };
   },
   () => {
     const k = pick([2, 3, 4, 5]), big = k * pick([2, 3, 4]);
-    return { d: '자연수 n에 대하여', p: `n이 ${big}의 배수이면, n은 ${k}의 배수이다.`, c: `n이 ${k}의 배수가 아니면, n은 ${big}의 배수가 아니다.`, v: `n이 ${k}의 배수이면, n은 ${big}의 배수이다.` };
+    return { u: 'set', d: '자연수 n에 대하여', p: `n이 ${big}의 배수이면, n은 ${k}의 배수이다.`, c: `n이 ${k}의 배수가 아니면, n은 ${big}의 배수가 아니다.`, v: `n이 ${k}의 배수이면, n은 ${big}의 배수이다.` };
   },
   () => {
     const a = randInt(2, 9), sq = a * a;
-    return { d: '실수 x에 대하여', p: `x = ${a}이면, x² = ${sq}이다.`, c: `x² ≠ ${sq}이면, x ≠ ${a}이다.`, v: `x² = ${sq}이면, x = ${a}이다.` };
+    return { u: 'eq', d: '실수 x에 대하여', p: `x = ${a}이면, x² = ${sq}이다.`, c: `x² ≠ ${sq}이면, x ≠ ${a}이다.`, v: `x² = ${sq}이면, x = ${a}이다.` };
+  },
+  () => {
+    const a = randInt(1, 5), r = randInt(1, 9), by = `x − ${a}${euro(a)}`;
+    return { u: 'poly', d: '다항식 P(x)에 대하여', p: `P(x)를 ${by} 나눈 나머지가 ${r}이면, P(${a}) = ${r}이다.`, c: `P(${a}) ≠ ${r}이면, P(x)를 ${by} 나눈 나머지는 ${r}${iga(r)} 아니다.`, v: `P(${a}) = ${r}이면, P(x)를 ${by} 나눈 나머지는 ${r}이다.`, n: '나머지정리에 따라 이 명제와 역은 모두 참입니다.' };
+  },
+];
+// 숫자를 바꿔 만드는 ‘그리고’ · ‘또는’ 대우 문제 (방 Ⅴ)
+const T3_GENS = [
+  () => {
+    const a = randInt(1, 5), b = a + randInt(1, 4), f = `(x − ${a})(x − ${b})`;
+    return { u: 'eq', d: '실수 x에 대하여', p: `${a} < x < ${b}이면, ${f} < 0이다.`, c: `${f} ≥ 0이면, x ≤ ${a}이거나 x ≥ ${b}이다.`, v: `${f} < 0이면, ${a} < x < ${b}이다.`, b: `${f} ≥ 0이면, x ≤ ${a}이고 x ≥ ${b}이다.`, n: `${a} < x < ${b}${eunNeun(b)} ‘x > ${a}이고 x < ${b}’라는 뜻이므로 그 부정은 ‘x ≤ ${a}이거나 x ≥ ${b}’입니다.` };
   },
 ];
 // 숫자를 바꿔 만드는 필요·충분조건 문제
@@ -1158,22 +1434,109 @@ const COND_GENS = [
   () => {
     const a = randInt(0, 5), b = a + randInt(2, 5), m = a + 1;   // a < m < b
     return Math.random() < 0.5
-      ? { d: '실수 x에 대하여', p: `x > ${b}`, q: `x > ${a}`, ans: 'suf', n: `x > ${b}인 수는 모두 x > ${a}이므로 p ⇒ q는 참입니다. 하지만 x = ${m}이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.` }
-      : { d: '실수 x에 대하여', p: `x > ${a}`, q: `x > ${b}`, ans: 'nec', n: `x > ${b}인 수는 모두 x > ${a}이므로 q ⇒ p는 참입니다. 하지만 x = ${m}이면 p는 참, q는 거짓이므로 p ⇒ q는 거짓입니다.` };
+      ? { u: 'eq', d: '실수 x에 대하여', p: `x > ${b}`, q: `x > ${a}`, ans: 'suf', n: `x > ${b}인 수는 모두 x > ${a}이므로 p ⇒ q는 참입니다. 하지만 x = ${m}이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.` }
+      : { u: 'eq', d: '실수 x에 대하여', p: `x > ${a}`, q: `x > ${b}`, ans: 'nec', n: `x > ${b}인 수는 모두 x > ${a}이므로 q ⇒ p는 참입니다. 하지만 x = ${m}이면 p는 참, q는 거짓이므로 p ⇒ q는 거짓입니다.` };
   },
   () => {
     const k = pick([2, 3, 4, 5]), big = k * pick([2, 3]);
     return Math.random() < 0.5
-      ? { d: '자연수 n에 대하여', p: `n은 ${big}의 배수`, q: `n은 ${k}의 배수`, ans: 'suf', n: `${big}의 배수는 모두 ${k}의 배수이므로 p ⇒ q는 참입니다. 하지만 n = ${k}이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.` }
-      : { d: '자연수 n에 대하여', p: `n은 ${k}의 배수`, q: `n은 ${big}의 배수`, ans: 'nec', n: `${big}의 배수는 모두 ${k}의 배수이므로 q ⇒ p는 참입니다. 하지만 n = ${k}이면 p는 참, q는 거짓이므로 p ⇒ q는 거짓입니다.` };
+      ? { u: 'set', d: '자연수 n에 대하여', p: `n은 ${big}의 배수`, q: `n은 ${k}의 배수`, ans: 'suf', n: `${big}의 배수는 모두 ${k}의 배수이므로 p ⇒ q는 참입니다. 하지만 n = ${k}이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.` }
+      : { u: 'set', d: '자연수 n에 대하여', p: `n은 ${k}의 배수`, q: `n은 ${big}의 배수`, ans: 'nec', n: `${big}의 배수는 모두 ${k}의 배수이므로 q ⇒ p는 참입니다. 하지만 n = ${k}이면 p는 참, q는 거짓이므로 p ⇒ q는 거짓입니다.` };
+  },
+  () => {
+    const a = randInt(1, 4), b = a + randInt(1, 4), eq = `x² − ${a + b}x + ${a * b} = 0`;
+    const r = pick([a, b]), other = r === a ? b : a;
+    return Math.random() < 0.5
+      ? { u: 'eq', d: '실수 x에 대하여', p: `x = ${r}`, q: eq, ans: 'suf', n: `x = ${r}이면 ${eq}이 성립하므로 p ⇒ q는 참입니다. 하지만 x = ${other}이면 q는 참, p는 거짓이므로 q ⇒ p는 거짓입니다.` }
+      : { u: 'eq', d: '실수 x에 대하여', p: eq, q: `x = ${r}`, ans: 'nec', n: `x = ${r}이면 ${eq}이 성립하므로 q ⇒ p는 참입니다. 하지만 x = ${other}이면 p는 참, q는 거짓이므로 p ⇒ q는 거짓입니다.` };
   },
 ];
 // 숫자를 바꿔 만드는 반례 문제
 const COUNTER_GENS = [
-  () => { const a = randInt(2, 9); return { id: 'sq', a, d: '실수 x에 대하여', p: `x² = ${a * a}이면, x = ${a}이다.`, ce: `x = −${a}`, ok: `x = ${a}`, out: `x = ${a * a}` }; },
-  () => { const a = randInt(1, 6); return { id: 'gt', a, d: '실수 x에 대하여', p: `x² > ${a * a}이면, x > ${a}이다.`, ce: `x = −${a + 1}`, ok: `x = ${a + 1}`, out: 'x = 0' }; },
-  () => { const k = pick([2, 3, 4, 5]), m = pick([2, 3]); return { id: 'mul', k, m, d: '자연수 n에 대하여', p: `n이 ${k}의 배수이면, n은 ${k * m}의 배수이다.`, ce: `n = ${k}`, ok: `n = ${k * m}`, out: `n = ${k + 1}` }; },
+  () => { const a = randInt(2, 9); return { id: 'sq', a, u: 'eq', d: '실수 x에 대하여', p: `x² = ${a * a}이면, x = ${a}이다.`, ce: `x = −${a}`, ok: `x = ${a}`, out: `x = ${a * a}` }; },
+  () => { const a = randInt(1, 6); return { id: 'gt', a, u: 'eq', d: '실수 x에 대하여', p: `x² > ${a * a}이면, x > ${a}이다.`, ce: `x = −${a + 1}`, ok: `x = ${a + 1}`, out: 'x = 0' }; },
+  () => { const k = pick([2, 3, 4, 5]), m = pick([2, 3]); return { id: 'mul', k, m, u: 'set', d: '자연수 n에 대하여', p: `n이 ${k}의 배수이면, n은 ${k * m}의 배수이다.`, ce: `n = ${k}`, ok: `n = ${k * m}`, out: `n = ${k + 1}` }; },
 ];
+
+// 진리집합: 전체집합 U = {1, 2, …, 10}에서 조건을 참이 되게 하는 원소의 집합을 고른다
+const UNIVERSE = Array.from({ length: 10 }, (_, k) => k + 1);
+const SET_CONDS = [
+  () => { const k = pick([2, 3, 4]); return { t: `x는 ${k}의 배수`, f: x => x % k === 0 }; },
+  () => { const m = pick([6, 8, 10, 12]); return { t: `x는 ${m}의 약수`, f: x => m % x === 0 }; },
+  () => {
+    const a = randInt(3, 7);
+    return pick([
+      { t: `x ≤ ${a}`, f: x => x <= a }, { t: `x < ${a}`, f: x => x < a },
+      { t: `x ≥ ${a}`, f: x => x >= a }, { t: `x > ${a}`, f: x => x > a },
+    ]);
+  },
+  () => ({ t: 'x는 소수', f: x => [2, 3, 5, 7].includes(x) }),
+  () => ({ t: 'x는 홀수', f: x => x % 2 === 1 }),
+  () => { const a = randInt(1, 4), b = a + randInt(1, 5); return { t: `x² − ${a + b}x + ${a * b} = 0`, f: x => (x - a) * (x - b) === 0 }; },
+];
+function setText(xs) { return xs.length ? `{${xs.join(', ')}}` : '∅'; }
+const TSET_ASK = {
+  p: { label: 'p', eyebrow: '조건 · <span class="mono">p</span>', prompt: '조건 p의 <b>진리집합</b>을 고르세요', chip: 'P' },
+  not: { label: '~p', eyebrow: '조건 · <span class="mono">p</span>', prompt: '조건 <b>~p</b>의 진리집합을 고르세요', chip: 'Pᶜ' },
+  and: { label: '‘p 그리고 q’', eyebrow: '두 조건 · <span class="mono">p, q</span>', prompt: '조건 <b>‘p 그리고 q’</b>의 진리집합을 고르세요', chip: 'P ∩ Q' },
+  or: { label: '‘p 또는 q’', eyebrow: '두 조건 · <span class="mono">p, q</span>', prompt: '조건 <b>‘p 또는 q’</b>의 진리집합을 고르세요', chip: 'P ∪ Q' },
+};
+// 정답 집합에서 원소 하나를 빼거나 더한 함정 보기
+function nearMiss(ans, label, taken) {
+  for (const x of shuffle(UNIVERSE)) {
+    const has = ans.includes(x);
+    const s = has ? ans.filter(y => y !== x) : [...ans, x].sort((a, b) => a - b);
+    if (!s.length || taken.includes(setText(s))) continue;
+    return {
+      s, tag: has ? '원소 빠짐' : '원소 더함',
+      why: has ? `${x}도 조건 ${label}를 만족하는데 빠져 있습니다.` : `${x}${eunNeun(x)} 조건 ${label}를 만족하지 않는데 들어가 있습니다.`,
+    };
+  }
+  return null;
+}
+function tsetItem() {
+  for (let tries = 0; tries < 100; tries++) {
+    const mode = pick(Object.keys(TSET_ASK));
+    const two = mode === 'and' || mode === 'or';
+    const pc = pick(SET_CONDS)(), qc = two ? pick(SET_CONDS)() : null;
+    if (qc && qc.t === pc.t) continue;
+    const P = UNIVERSE.filter(pc.f), Q = qc ? UNIVERSE.filter(qc.f) : [];
+    const notP = UNIVERSE.filter(x => !pc.f(x));
+    const cap = P.filter(x => Q.includes(x)), cup = UNIVERSE.filter(x => P.includes(x) || Q.includes(x));
+    const ask = TSET_ASK[mode];
+    let ans, wrong, note;
+    if (mode === 'p') {
+      ans = P;
+      wrong = [{ s: notP, tag: 'Pᶜ', why: '이 집합은 조건 p를 만족하지 않는 원소를 모은 Pᶜ, 곧 ~p의 진리집합입니다.' }];
+      note = `U의 원소 가운데 조건 p를 참이 되게 하는 것을 모두 모으면 P = ${setText(P)}입니다.`;
+    } else if (mode === 'not') {
+      ans = notP;
+      wrong = [{ s: P, tag: 'P', why: '이 집합은 조건 p의 진리집합 P입니다. ~p의 진리집합은 P에 속하지 않는 원소를 모은 Pᶜ입니다.' }];
+      note = `P = ${setText(P)}이므로 ~p의 진리집합은 Pᶜ = ${setText(notP)}입니다.`;
+    } else if (mode === 'and') {
+      ans = cap;
+      wrong = [{ s: cup, tag: 'P ∪ Q', why: '이 집합은 ‘p 또는 q’의 진리집합 P ∪ Q입니다. ‘그리고’의 진리집합은 교집합 P ∩ Q입니다.' }];
+      note = `P = ${setText(P)}, Q = ${setText(Q)}이므로 ‘p 그리고 q’의 진리집합은 P ∩ Q = ${setText(cap)}입니다.`;
+    } else {
+      ans = cup;
+      wrong = [{ s: cap, tag: 'P ∩ Q', why: '이 집합은 ‘p 그리고 q’의 진리집합 P ∩ Q입니다. ‘또는’의 진리집합은 합집합 P ∪ Q입니다.' }];
+      note = `P = ${setText(P)}, Q = ${setText(Q)}이므로 ‘p 또는 q’의 진리집합은 P ∪ Q = ${setText(cup)}입니다.`;
+    }
+    // 너무 뻔한 문제(빈 집합 · U 전체가 답)와 겹치는 보기는 다시 만든다
+    if (!ans.length || ans.length === UNIVERSE.length) continue;
+    const taken = [setText(ans), ...wrong.map(w => setText(w.s))];
+    if (new Set(taken).size !== taken.length || wrong.some(w => !w.s.length)) continue;
+    const miss = nearMiss(ans, ask.label, taken);
+    if (!miss) continue;
+    wrong.push(miss);
+    return {
+      u: 'set', d: '전체집합 U = {1, 2, 3, …, 10}에 대하여', mode,
+      p: qc ? `p: ${pc.t}\nq: ${qc.t}` : `p: ${pc.t}`,
+      ans: setText(ans), n: note, w: wrong.map(w => ({ t: setText(w.s), tag: w.tag, why: w.why })),
+    };
+  }
+  return null;
+}
 
 // 방 종류마다 명판 제목, 질문, 논리식, 복습 노트 이름
 const KINDS = {
@@ -1182,6 +1545,8 @@ const KINDS = {
   neg: { eyebrow: '명제 · <span class="mono">p</span>', prompt: '이 명제의 <b>부정</b>을 고르세요', chip: '~p', label: '부정' },
   cond: { eyebrow: '두 조건 · <span class="mono">p, q</span>', prompt: 'p는 q이기 위한 <b>어떤 조건</b>인가요?', chip: 'p ⇒ q · q ⇒ p', label: '조건' },
   counter: { eyebrow: '원래 명제 · <span class="mono">p → q</span>', prompt: '이 명제가 거짓임을 보이는 <b>반례</b>를 고르세요', chip: '가정 ○ · 결론 ×', label: '반례' },
+  truth: { eyebrow: '명제의 참 · 거짓', prompt: '다음 중 <b>참인 명제</b>를 고르세요', chip: '반례가 있으면 거짓', label: '참 · 거짓' },
+  tset: { eyebrow: '조건 · <span class="mono">p</span>', prompt: '조건 p의 <b>진리집합</b>을 고르세요', chip: 'P', label: '진리집합' },
 };
 const COND_LABEL = { suf: '충분조건', nec: '필요조건', both: '필요충분조건' };
 const COND_TAG = { suf: 'p ⇒ q만 참', nec: 'q ⇒ p만 참', both: 'p ⇔ q' };
@@ -1192,6 +1557,8 @@ const COND_WHY = {
 };
 const NEG_HINT = '‘모든’ ↔ ‘어떤’, ‘그리고’ ↔ ‘또는’, ‘>’ ↔ ‘≤’, ‘=’ ↔ ‘≠’처럼 바꾸면 부정이 됩니다.';
 const COND_HINT = 'p ⇒ q만 참이면 충분조건, q ⇒ p만 참이면 필요조건, 둘 다 참이면 필요충분조건입니다.';
+const TRUTH_HINT = '‘모든’이 들어간 명제나 등식은 반례가 하나만 있어도 거짓이고, ‘어떤’이 들어간 명제는 예가 하나만 있어도 참입니다.';
+const TSET_HINT = 'U의 원소를 하나씩 넣어 보며 조건을 참이 되게 하는 것만 모으세요. ~p는 Pᶜ, ‘그리고’는 P ∩ Q, ‘또는’은 P ∪ Q입니다.';
 
 /* ───────── 유틸 ───────── */
 const $ = id => document.getElementById(id);
@@ -1207,6 +1574,14 @@ function shuffle(arr) {
 }
 function fmt(n) { return Number(n).toLocaleString('ko-KR'); }
 function purseHTML(n, prefix) { return `<svg aria-hidden="true"><use href="#i-coin"/></svg>${prefix || ''}${fmt(n)}<small>금화</small>`; }
+// 내 금화: 운영자 계정은 무한
+function walletHTML() {
+  return account.admin
+    ? '<svg aria-hidden="true"><use href="#i-coin"/></svg><span aria-hidden="true">∞</span><small>금화 · 무한</small><span class="sr-only">금화 무한</span>'
+    : purseHTML(profile.coins);
+}
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function unitText(u) { const x = UNITS[u]; return x ? `${x.book} · ${x.name}` : ''; }
 function scrollMode() { return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'; }
 // scrollIntoView는 다른 페이지 안에 넣었을 때 바깥 페이지까지 스크롤하므로 이 창만 스크롤
 function revealInViewport(el) {
@@ -1282,11 +1657,13 @@ const SYNC_TEXT = {
   error: '계정 저장 실패 · 이 기기에는 저장됨', wait: '계정에 연결하지 못함 · 이 기기에 저장 중', local: '',
 };
 
-// 관리자(상점 상품 무료): 공개 저장소에 이메일을 그대로 두지 않도록 SHA-256('logicmaze:' + 소문자 이메일)만 둔다.
+// 운영자(금화 무한 · 상점에서 금화가 줄지 않음): 공개 저장소에 이메일을 그대로 두지 않도록 SHA-256('logicmaze:' + 소문자 이메일)만 둔다.
 // 서버도 같은 목록으로 확인하므로(firestore.rules의 isAdmin) 바꿀 때는 두 곳을 함께 바꾼다.
 const ADMIN_HASHES = [
   'd8700fe4292519649687c4ae9036295332c4fc001e980743556a77e56caf23eb',
   'c56fd8778bd83c4b806cbe51b9f3d9d0e458ca85ba944d0dc9df77fa54c078d2',
+  '5b21363f857ade65a51184dc9e6e6d687066cdb6e9f96c2adf2c3b85fbceeda8',
+  'c2126cd1388f157c732a458ffcd78813a7098394a6ae6887e77c1c4bbcbd2337',
 ];
 async function isAdminEmail(email) {
   if (!email || !(window.crypto && crypto.subtle)) return false;
@@ -1377,6 +1754,7 @@ async function pushProfile(gen) {
   markSync();
   account.sync = isDirty() ? 'saving' : 'saved';
   renderAccount();
+  publishPub();   // 친구 기능을 켰으면 친구에게 보이는 기록도 맞춘다
   return 'ok';
 }
 // 서버가 저장을 거부하면(다른 기기에서 계정 기록이 바뀌었거나, 이 기기의 기록이 게임 기록과 맞지 않을 때)
@@ -1409,6 +1787,7 @@ function settleAuth() {
   if (account.settled) return;
   account.settled = true;
   renderAccount();
+  if (friends.invite && state.screen === 'menu' && !state.run) navigate('friends');
 }
 async function initAuth() {
   if (!FIREBASE_CONFIG) { settleAuth(); return; }
@@ -1428,6 +1807,8 @@ function afterProfileChange() {
   if (state.screen === 'shop') renderShop();
   else if (state.screen === 'brief') renderBrief();
   else if (state.screen === 'feedback') renderFeedback();
+  else if (state.screen === 'friends') renderFriends();
+  else if (state.screen === 'notes') renderNotes();
   renderMenu();
 }
 async function onUser(user) {
@@ -1440,6 +1821,7 @@ async function onUser(user) {
   account.admin = false;
   account.rejected = false;
   account.sent = null;
+  resetFriends();
   if (!user) {
     account.user = null;
     account.base = null;
@@ -1511,6 +1893,7 @@ async function loadAccount(gen, adopt) {
   markSync();
   afterProfileChange();
   if (account.loaded && isDirty()) await saveCloud();
+  if (account.loaded && friends.pub === undefined && gen === authGen) loadFriendsState(gen);
 }
 // 처음 로그인: 이 기기의 기록(손님 기록)을 계정으로 옮긴다.
 // 게임 기록과 맞지 않아 서버가 거부하면 옮기지 않고 새 기록으로 시작한다 (손님 기록은 그대로 둔다).
@@ -1681,12 +2064,16 @@ function navigate(to) {
   if (to === 'credits') renderCredits();
   if (to === 'patch') renderPatch();
   if (to === 'feedback') renderFeedback();
+  if (to === 'practice') renderPractice();
+  if (to === 'notes') { notesArmed = 0; renderNotes(); }
+  if (to === 'friends') { friends.armed = ''; openFriends(); }
   show(to);
   if (to === 'menu') retryAccount();   // 계정 기록을 못 불러온 상태면 메뉴로 올 때마다 다시 시도
 }
 
 function renderMenu() {
-  $('menu-purse').innerHTML = purseHTML(profile.coins);
+  $('menu-purse').innerHTML = walletHTML();
+  renderFriendBadge();
   const s = profile.stats;
   $('menu-stats').innerHTML = s.runs
     ? [['탈출', s.clears + '회'], ['완벽 탈출', s.perfect + '회'], ['지나온 방', fmt(s.rooms) + '개']]
@@ -1708,7 +2095,7 @@ function renderAccount() {
       </div>`;
     if (account.user.photo) slot.querySelector('img').src = account.user.photo;
     slot.querySelector('.row-label').textContent = account.user.name;
-    slot.querySelector('.row-sub').textContent = (account.admin ? '관리자 · ' : '') + (SYNC_TEXT[account.sync] || '');
+    slot.querySelector('.row-sub').textContent = (account.admin ? '운영자 · 금화 무한 · ' : '') + (SYNC_TEXT[account.sync] || '');
     $('menu-who').textContent = account.user.name + ' 님';
   } else if (FIREBASE_CONFIG && !account.settled) {
     slot.innerHTML = `
@@ -1764,14 +2151,11 @@ function renderBrief() {
 }
 
 function priceHTML(price) {
-  const coin = '<svg aria-hidden="true"><use href="#i-coin"/></svg>';
-  return account.admin
-    ? `<span class="price">${coin}<s>${fmt(price)}</s>무료</span>`
-    : `<span class="price">${coin}${fmt(price)}</span>`;
+  return `<span class="price"><svg aria-hidden="true"><use href="#i-coin"/></svg>${fmt(price)}</span>`;
 }
 
 function renderShop() {
-  $('shop-purse').innerHTML = purseHTML(profile.coins);
+  $('shop-purse').innerHTML = walletHTML();
   $('admin-note').hidden = !account.admin;
   $('wares-items').innerHTML = Object.entries(WARES).map(([id, w]) => {
     const n = profile.items[id];
@@ -1785,7 +2169,7 @@ function renderShop() {
         <p>${w.desc}</p>
         <div class="ware-foot">
           ${priceHTML(w.price)}
-          <button type="button" class="btn btn-ghost btn-sm" data-act="buy" data-id="${id}"${full || poor ? ' disabled' : ''}>${full ? '가득 찼습니다' : poor ? '금화 부족' : account.admin ? '무료로 받기' : '구입'}</button>
+          <button type="button" class="btn btn-ghost btn-sm" data-act="buy" data-id="${id}"${full || poor ? ' disabled' : ''}>${full ? '가득 찼습니다' : poor ? '금화 부족' : '구입'}</button>
         </div>
       </article>`;
   }).join('');
@@ -1794,7 +2178,7 @@ function renderShop() {
     let foot;
     if (using) foot = '<span class="in-use">사용 중</span>';
     else if (owned) foot = `<button type="button" class="btn btn-ghost btn-sm" data-act="equip" data-id="${id}">적용</button>`;
-    else foot = `<button type="button" class="btn btn-ghost btn-sm" data-act="buy" data-id="${id}"${poor ? ' disabled' : ''}>${poor ? '금화 부족' : account.admin ? '무료로 받기' : '구입'}</button>`;
+    else foot = `<button type="button" class="btn btn-ghost btn-sm" data-act="buy" data-id="${id}"${poor ? ' disabled' : ''}>${poor ? '금화 부족' : '구입'}</button>`;
     return `
       <article class="frame ware">
         <div class="swatch" aria-hidden="true">${s.swatch.map(c => `<span data-c="${c}"></span>`).join('')}</div>
@@ -1819,7 +2203,7 @@ function buy(id) {
     profile.items[id] += 1;
     commit();
     toast(account.admin
-      ? `관리자 권한으로 ${w.name}${w.obj} 무료로 받았습니다. 보유 ${profile.items[id]}개`
+      ? `${w.name}${w.obj} 샀습니다. 운영자 금화는 줄지 않습니다. 보유 ${profile.items[id]}개`
       : `${w.name}${w.obj} 샀습니다. 보유 ${profile.items[id]}개`);
   } else if (SKINS[id]) {
     const s = SKINS[id];
@@ -1830,7 +2214,7 @@ function buy(id) {
     profile.skin = id;
     commit();
     applySkin();
-    toast(account.admin ? `관리자 권한으로 ${s.name} 테마를 무료로 받아 적용했습니다.` : `${s.name} 테마를 사서 적용했습니다.`);
+    toast(account.admin ? `${s.name} 테마를 사서 적용했습니다. 운영자 금화는 줄지 않습니다.` : `${s.name} 테마를 사서 적용했습니다.`);
   }
   renderShop();
 }
@@ -1844,10 +2228,11 @@ function equip(id) {
 }
 
 function renderCredits() {
-  const handmade = ['t1', 't2', 't3', 'neg', 'cond', 'counter'].reduce((s, k) => s + BANK[k].length, 0);
-  const generated = GENERATORS.length + COND_GENS.length + COUNTER_GENS.length;
+  const handmade = Object.values(BANK).reduce((s, list) => s + list.length, 0);
+  const generated = GENERATORS.length + T3_GENS.length + COND_GENS.length + COUNTER_GENS.length + 1;   // + 진리집합
   $('credit-numbers').innerHTML = [
-    ['직접 쓴 문제', handmade + '문항'], ['자동 생성 문제', generated + '종'], ['문제 유형', Object.keys(KINDS).length + '종'], ['테마', Object.keys(SKINS).length + '종'],
+    ['직접 쓴 문제', handmade + '문항'], ['자동 생성 문제', generated + '종'], ['문제 유형', Object.keys(KINDS).length + '종'],
+    ['공통수학 단원', Object.keys(UNITS).length + '개'], ['테마', Object.keys(SKINS).length + '종'],
   ].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
 }
 
@@ -1859,10 +2244,11 @@ function splitHint(p) {
   const at = p.indexOf(', ');
   return at > 0 ? `가정 p: ${p.slice(0, at)}\n결론 q: ${p.slice(at + 2)}` : '';
 }
+// extra로 명판 문장(prop) · 질문(prompt) · 논리식(chip) · 명판 제목(eyebrow) · 실마리(hint)를 방마다 바꿀 수 있다
 function newRoom(kind, item, answer, note, options, extra) {
   return Object.assign({
-    kind, domain: item.d || '', prop: `“${item.p}”`, answer, note,
-    hint: kind === 'neg' ? NEG_HINT : kind === 'cond' ? COND_HINT : splitHint(item.p),
+    kind, unit: UNITS[item.u] ? item.u : 'set', domain: item.d || '', prop: item.p ? `“${item.p}”` : '', answer, note,
+    hint: kind === 'neg' ? NEG_HINT : kind === 'cond' ? COND_HINT : item.p ? splitHint(item.p) : '',
     options, status: null, wrongHere: 0, lensUsed: false,
   }, extra || {});
 }
@@ -1918,18 +2304,76 @@ function counterRoom(item) {
     { text: item.out, correct: false, tag: '가정 ×', why: '이 값은 가정을 만족하지 않습니다. 가정을 만족하지 않는 값으로는 명제가 거짓임을 보일 수 없습니다.' },
   ]));
 }
-// 방 Ⅰ: 대우, Ⅱ: 대우 또는 역 찾기, Ⅲ·Ⅳ: 수학 대우와 특별한 방(조건·반례·부정)을 무작위 순서로, Ⅴ: ‘그리고’·‘또는’이 섞인 대우
-// (명제의 ‘이’는 고1 공통수학에서 다루지 않으므로 내지 않는다)
+function truthRoom(item) {
+  return newRoom('truth', item, item.t, item.n, shuffle([
+    { text: item.t, correct: true, tag: '참' },
+    ...item.f.map(f => ({ text: f.t, correct: false, tag: '거짓', why: `고른 명제는 거짓입니다. ${f.why}` })),
+  ]), { prop: '다음 세 명제 가운데 참인 것은 하나뿐입니다.', hint: TRUTH_HINT });
+}
+function tsetRoom(item) {
+  const ask = TSET_ASK[item.mode];
+  return newRoom('tset', item, item.ans, item.n, shuffle([
+    { text: item.ans, correct: true, tag: `${ask.chip} · 정답` },
+    ...item.w.map(w => ({ text: w.t, correct: false, tag: w.tag, why: w.why })),
+  ]), { prop: item.p, eyebrow: ask.eyebrow, prompt: ask.prompt, chip: ask.chip, hint: TSET_HINT });
+}
+
+// 최근에 낸 문제는 한동안 다시 내지 않는다 (판이 바뀌어도, 연습에서도)
+const recentItems = [];
+function itemKey(item) { return [item.d, item.p || item.t, item.q].join('|'); }
+// list(직접 쓴 문제)와 gens(숫자를 바꿔 만드는 문제)에서 하나를 뽑는다.
+// 직접 쓴 문제는 최근에 내지 않은 것 가운데서, 모두 최근에 냈으면 가장 오래전에 낸 것을 고른다 (방금 낸 문제는 다시 나오지 않는다)
+function draw(list, gens) {
+  let item = null;
+  if (gens.length && (!list.length || Math.random() < 0.35)) {
+    for (let k = 0; k < 15; k++) {
+      item = pick(gens)();
+      if (!recentItems.includes(itemKey(item))) break;
+    }
+  } else {
+    const fresh = list.filter(it => !recentItems.includes(itemKey(it)));
+    const age = it => recentItems.indexOf(itemKey(it));
+    item = fresh.length ? pick(fresh) : list.reduce((best, it) => (age(it) < age(best) ? it : best));
+  }
+  remember(item);
+  return item;
+}
+function remember(item) {
+  const key = itemKey(item), at = recentItems.indexOf(key);
+  if (at >= 0) recentItems.splice(at, 1);
+  recentItems.push(key);
+  if (recentItems.length > 40) recentItems.shift();
+}
+function drawTset() {
+  let item = null;
+  for (let k = 0; k < 10; k++) {
+    item = tsetItem();
+    if (!item || !recentItems.includes(itemKey(item))) break;
+  }
+  if (item) remember(item);
+  return item;
+}
+// 방 종류마다 새 방을 만든다 (특별한 방과 유형별 연습이 함께 쓴다)
+const ROOM_MAKERS = {
+  contra: () => contraRoom(draw([...BANK.t1, ...BANK.t2, ...BANK.t3], [...GENERATORS, ...T3_GENS])),
+  converse: () => converseRoom(draw([...BANK.t1, ...BANK.t2], GENERATORS)),
+  neg: () => negRoom(draw(BANK.neg, [])),
+  cond: () => condRoom(draw(BANK.cond, COND_GENS)),
+  counter: () => counterRoom(draw(BANK.counter, COUNTER_GENS)),
+  truth: () => truthRoom(draw(BANK.truth, [])),
+  tset: () => { const item = drawTset(); return item ? tsetRoom(item) : ROOM_MAKERS.cond(); },   // (못 만드는 일은 사실상 없다)
+};
+const SPECIAL_KINDS = ['cond', 'counter', 'neg', 'truth', 'tset'];
+// 방 Ⅰ: 대우, Ⅱ: 대우 또는 역 찾기, Ⅲ·Ⅳ: 수학 대우와 특별한 방(조건·반례·부정·참거짓·진리집합)을 무작위 순서로,
+// Ⅴ: ‘그리고’·‘또는’이 섞인 대우 (명제의 ‘이’는 고1 공통수학에서 다루지 않으므로 내지 않는다)
 function buildRooms() {
-  const t1 = shuffle(BANK.t1);
-  const r2 = Math.random() < 0.5 ? contraRoom(t1[1]) : converseRoom(t1[1]);
-  const r3 = contraRoom(Math.random() < 0.5 ? pick(GENERATORS)() : pick(BANK.t2));
-  const special = pick(['cond', 'counter', 'neg']);
-  const r4 = special === 'cond' ? condRoom(Math.random() < 0.5 ? pick(COND_GENS)() : pick(BANK.cond))
-    : special === 'counter' ? counterRoom(Math.random() < 0.5 ? pick(COUNTER_GENS)() : pick(BANK.counter))
-    : negRoom(pick(BANK.neg));
+  const r1 = contraRoom(draw(BANK.t1, []));
+  const second = draw(BANK.t1, []);
+  const r2 = Math.random() < 0.5 ? contraRoom(second) : converseRoom(second);
+  const r3 = contraRoom(draw(BANK.t2, GENERATORS));
+  const r4 = ROOM_MAKERS[pick(SPECIAL_KINDS)]();
   const [m1, m2] = shuffle([r3, r4]);
-  return [contraRoom(t1[0]), r2, m1, m2, contraRoom(pick(BANK.t3))];
+  return [r1, r2, m1, m2, contraRoom(draw(BANK.t3, T3_GENS))];
 }
 
 /* ───────── 도전 ───────── */
@@ -1977,6 +2421,16 @@ async function enterMaze() {
 
 function renderHud(hit) {
   const run = state.run;
+  const practice = !!run.practice;
+  for (const id of ['doors', 'charms', 'keys', 'run-purse']) $(id).hidden = practice;
+  $('tally').hidden = !practice;
+  if (practice) {
+    // 연습: 열쇠 · 금화 대신 푼 문제 수를 보여 준다
+    $('room-title').textContent = '연습';
+    $('room-of').textContent = `· ${KINDS[run.practice].label} · ${run.idx + 1}번째 문제`;
+    $('tally').textContent = `한 번에 맞힘 ${run.firstTry} / ${run.cleared}`;
+    return;
+  }
   $('room-title').innerHTML = `방 <span class="num">${ROMAN[run.idx]}</span>`;
   $('room-of').textContent = `/ ${ROMAN[run.rooms.length - 1]}`;
   $('doors').innerHTML = run.rooms.map((r, k) => {
@@ -2007,14 +2461,20 @@ function renderRoom() {
   state.lockUntil = Date.now() + 450;
   renderHud();
   const kind = KINDS[room.kind];
-  $('room-eyebrow').innerHTML = kind.eyebrow;
-  $('prompt-text').innerHTML = kind.prompt;
-  $('prompt-chip').textContent = kind.chip;
+  $('room-eyebrow').innerHTML = room.eyebrow || kind.eyebrow;
+  $('prompt-text').innerHTML = room.prompt || kind.prompt;
+  $('prompt-chip').textContent = room.chip || kind.chip;
+  const unit = UNITS[room.unit];
+  $('unit-tag').innerHTML = `<b>${unit.book}</b>${unit.name}`;
   $('domain').textContent = room.domain;
   $('domain').hidden = !room.domain;
   $('prop').textContent = room.prop;
   $('hint-text').textContent = room.hint;
   $('hint').hidden = !(run.candle && room.hint);
+  // 연습에서는 렌즈를 쓰지 않고, 실마리를 원할 때 볼 수 있다
+  $('btn-lens').hidden = !!run.practice;
+  $('btn-hint').hidden = !run.practice || !room.hint;
+  $('btn-hint').disabled = false;
   $('keyhole').classList.remove('is-open');
 
   const box = $('choices');
@@ -2045,6 +2505,8 @@ function answer(btn, opt) {
   const room = run.rooms[run.idx];
   btn.disabled = true;   // 같은 오답을 다시 눌러 열쇠를 또 잃지 않도록
   revealTag(btn);
+  if (!opt.correct) addNote(room, opt);
+  if (run.practice) { answerPractice(btn, opt, room); return; }
 
   if (opt.correct) {
     run.locked = true;
@@ -2114,6 +2576,65 @@ function answer(btn, opt) {
     }
   }
   updateLens();
+}
+
+// 연습: 열쇠를 잃지 않고 금화도 없다. 맞히면 같은 유형의 다음 문제로 넘어간다
+function answerPractice(btn, opt, room) {
+  const run = state.run;
+  if (opt.correct) {
+    run.locked = true;
+    room.status = 'ok';
+    btn.classList.add('is-correct');
+    run.buttons.forEach(({ b }) => { b.disabled = true; revealTag(b); });
+    run.cleared += 1;
+    if (room.wrongHere === 0) run.firstTry += 1;
+    $('keyhole').classList.add('is-open');
+    glint();
+    renderHud();
+    showVerdict({ kind: 'ok', mark: 'Apertum', title: room.wrongHere ? '정답입니다.' : '정답! 한 번에 맞혔습니다.', desc: room.note, action: '다음 문제', onAction: nextPractice });
+  } else {
+    run.wrong += 1;
+    room.wrongHere += 1;
+    btn.classList.add('is-wrong');
+    showVerdict({ kind: 'bad', mark: 'Clausum', title: '오답입니다. 다시 골라 보세요.', desc: opt.why + ' 이 문제는 오답 노트에 담았습니다.' });
+    $('choices').focus({ preventScroll: true });
+  }
+}
+function startPractice(kind) {
+  if (state.run || !ROOM_MAKERS[kind]) return;
+  state.run = {
+    practice: kind, rooms: [ROOM_MAKERS[kind]()], idx: 0, hp: 1, maxHp: 1,
+    wrong: 0, cleared: 0, firstTry: 0, earned: { correct: 0, firstTry: 0 }, locked: false, buttons: [], over: false,
+    shield: false, revive: false, candle: false,
+  };
+  renderRoom();
+  show('game');
+}
+function nextPractice() {
+  const run = state.run;
+  if (!run || !run.practice) return;
+  run.rooms.push(ROOM_MAKERS[run.practice]());
+  run.idx += 1;
+  renderRoom();
+  window.scrollTo({ top: 0, behavior: scrollMode() });
+  $('room-title').focus({ preventScroll: true });
+}
+function finishPractice() {
+  const run = state.run;
+  if (!run || !run.practice) return;
+  state.run = null;
+  navigate('practice');
+  toast(run.cleared
+    ? `연습을 마쳤습니다. ${run.cleared}문제를 풀었고, 그중 ${run.firstTry}문제를 한 번에 맞혔습니다.`
+    : '연습을 마쳤습니다.');
+  applyPendingAuth();
+}
+// 도전 중에 바뀐 로그인 상태를 이제 반영
+function applyPendingAuth() {
+  if (!pendingAuth) return;
+  const p = pendingAuth;
+  pendingAuth = null;
+  onUser(p.user);
 }
 
 function showVerdict({ kind, mark, title, desc, reward, bonus, action, onAction }) {
@@ -2191,11 +2712,12 @@ function resetAbandon() {
   const btn = $('btn-abandon');
   clearTimeout(btn._timer);
   btn.dataset.armed = '';
-  btn.textContent = '포기하기';
+  btn.textContent = state.run && state.run.practice ? '연습 끝내기' : '포기하기';
 }
 function onAbandon() {
   const run = state.run;
   if (!run || Date.now() < state.lockUntil) return;
+  if (run.practice) { finishPractice(); return; }   // 연습은 잃을 것이 없으니 바로 끝낸다
   const btn = $('btn-abandon');
   if (btn.dataset.armed === '1') {
     resetAbandon();
@@ -2252,7 +2774,7 @@ function finishRun(kind) {
   run.rooms.forEach((r, k) => {
     if (!r.status) return;
     const li = document.createElement('li');
-    li.innerHTML = `<div class="r-head"><span>방 ${ROMAN[k]}</span><span class="${r.status === 'ok' ? 'r-ok' : 'r-fail'}">${r.status === 'ok' ? '통과' : '실패'}</span></div><p class="r-prop"></p><p class="r-ans"><b>${KINDS[r.kind].label}</b> <span></span></p>`;
+    li.innerHTML = `<div class="r-head"><span>방 ${ROMAN[k]}</span><span class="${r.status === 'ok' ? 'r-ok' : 'r-fail'}">${r.status === 'ok' ? '통과' : '실패'}</span><span>${unitText(r.unit)}</span></div><p class="r-prop"></p><p class="r-ans"><b>${KINDS[r.kind].label}</b> <span></span></p>`;
     li.querySelector('.r-prop').textContent = (r.domain ? r.domain + ', ' : '') + r.prop.replace(/\n/g, ' · ');
     li.querySelector('.r-ans span').textContent = r.answer;
     review.appendChild(li);
@@ -2262,11 +2784,504 @@ function finishRun(kind) {
 
   state.run = null;
   show('result');
-  if (pendingAuth) {   // 도전 중에 바뀐 로그인 상태를 이제 반영
-    const p = pendingAuth;
-    pendingAuth = null;
-    onUser(p.user);
+  applyPendingAuth();
+}
+
+/* ───────── 유형별 연습 ───────── */
+const PRACTICE = [
+  ['contra', '원래 명제 p → q의 대우 ~q → ~p를 고릅니다.', ['t1', 't2', 't3'], true],
+  ['converse', '가정과 결론의 자리만 바꾼 역 q → p를 고릅니다.', ['t1', 't2'], true],
+  ['neg', '‘모든’ ↔ ‘어떤’, ‘그리고’ ↔ ‘또는’으로 명제의 부정을 만듭니다.', ['neg'], false],
+  ['cond', 'p가 q이기 위한 충분 · 필요 · 필요충분조건인지 가립니다.', ['cond'], true],
+  ['counter', '가정은 만족하지만 결론은 만족하지 않는 반례를 찾습니다.', ['counter'], true],
+  ['truth', '세 명제 가운데 참인 것 하나를 고릅니다.', ['truth'], false],
+  ['tset', '전체집합 U에서 조건을 참이 되게 하는 원소를 모읍니다.', [], true],
+];
+function renderPractice() {
+  $('drill-grid').innerHTML = PRACTICE.map(([kind, desc, lists, gen]) => {
+    const n = lists.reduce((s, k) => s + BANK[k].length, 0);
+    const count = n ? `${n}문항${gen ? ' + 자동 생성' : ''}` : '자동 생성';
+    return `<button type="button" class="drill" data-act="practice" data-kind="${kind}"><b>${KINDS[kind].label}</b><small>${desc}</small><span class="chip">${count}</span></button>`;
+  }).join('');
+}
+
+/* ───────── 오답 노트 (이 기기에만, 기록마다 따로) ───────── */
+const NOTE_MAX = 50;
+function notesKey() { return LS_PREFIX + 'notes.' + slotName(); }
+function readNotes() {
+  try {
+    const list = JSON.parse(localStorage.getItem(notesKey()));
+    return Array.isArray(list) ? list.filter(n => n && typeof n.p === 'string' && typeof n.w === 'string' && KINDS[n.k]) : [];
+  } catch (e) { return []; }
+}
+function writeNotes(list) {
+  try { localStorage.setItem(notesKey(), JSON.stringify(list.slice(0, NOTE_MAX))); } catch (e) { /* 저장소를 쓸 수 없는 환경 */ }
+}
+// 틀린 보기를 맨 위에 적는다. 같은 문제에서 같은 보기를 또 틀리면 위로 올리기만 한다
+function addNote(room, opt) {
+  const list = readNotes().filter(n => !(n.p === room.prop && n.d === room.domain && n.w === opt.text));
+  list.unshift({ k: room.kind, u: room.unit, d: room.domain, p: room.prop, a: room.answer, w: opt.text, y: opt.why || '', t: Date.now() });
+  writeNotes(list);
+}
+let notesArmed = 0;
+function renderNotes() {
+  const list = readNotes();
+  $('notes-meta').textContent = list.length
+    ? `틀린 문제 ${list.length}개 · 이 기기에만 저장되고 최근 ${NOTE_MAX}개까지 남습니다.`
+    : '미궁이나 연습에서 틀린 문제가 해설과 함께 여기에 모입니다.';
+  const box = $('notes-list');
+  box.innerHTML = list.length ? '' : '<p class="empty">아직 틀린 문제가 없습니다.</p>';
+  for (const n of list) {
+    const el = document.createElement('article');
+    el.className = 'frame note';
+    el.innerHTML = `
+      <div class="note-head"><span class="chip"></span><span class="note-unit"></span><span class="note-date"></span></div>
+      <p class="note-d"></p><p class="note-p"></p>
+      <dl class="note-dl">
+        <div class="note-row bad"><dt>고른 답</dt><dd><span class="note-w"></span><span class="note-why"></span></dd></div>
+        <div class="note-row good"><dt>정답</dt><dd class="note-a"></dd></div>
+      </dl>
+      <div class="note-foot"><button type="button" class="btn btn-text btn-sm" data-act="practice">이 유형 연습하기</button></div>`;
+    el.querySelector('.chip').textContent = KINDS[n.k].label;
+    el.querySelector('.note-unit').textContent = unitText(n.u);
+    el.querySelector('.note-date').textContent = n.t ? new Date(n.t).toLocaleDateString('ko-KR', { month: 'long', day: 'numeric' }) : '';
+    el.querySelector('.note-d').textContent = n.d || '';
+    el.querySelector('.note-d').hidden = !n.d;
+    el.querySelector('.note-p').textContent = n.p;
+    el.querySelector('.note-w').textContent = n.w;
+    el.querySelector('.note-why').textContent = n.y || '';
+    el.querySelector('.note-a').textContent = n.a || '';
+    el.querySelector('[data-act]').dataset.kind = n.k;
+    box.appendChild(el);
   }
+  const btn = $('btn-clear-notes');
+  btn.hidden = !list.length;
+  btn.textContent = notesArmed > Date.now() ? '한 번 더 누르면 모두 지웁니다' : '모두 지우기';
+}
+function clearNotes() {
+  if (notesArmed > Date.now()) {
+    notesArmed = 0;
+    writeNotes([]);
+    renderNotes();
+    toast('오답 노트를 비웠습니다.');
+    return;
+  }
+  notesArmed = Date.now() + 3000;
+  renderNotes();
+  setTimeout(() => { if (state.screen === 'notes') renderNotes(); }, 3100);
+}
+
+/* ───────── 친구 ─────────
+   players/<uid>: 친구에게 보이는 공개 프로필 { code, name, skin, stats, updatedAt }. skin · stats는 계정 기록과 같아야 한다(규칙이 확인).
+   codes/<코드>: 친구 코드 → { uid }. friendships/<작은 uid>_<큰 uid>: { users, from, status: 'pending' | 'accepted', createdAt, acceptedAt? } */
+const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';   // 헷갈리는 I · O · 0 · 1은 뺐다
+const CODE_RE = /^[A-HJ-NP-Z2-9]{6}$/;
+const NAME_RE = /^[가-힣ㄱ-ㅣA-Za-z0-9._-][가-힣ㄱ-ㅣA-Za-z0-9 ._-]{0,10}[가-힣ㄱ-ㅣA-Za-z0-9._-]$/;   // firestore.rules와 같은 규칙
+const MAX_FRIENDS = 50;
+// pub: undefined(아직 모름) · null(친구 기능 꺼짐) · { code, name, skin, stats }
+const friends = { pub: undefined, list: null, loading: false, busy: false, error: '', invite: '', codeDraft: '', nameDraft: '', renaming: false, renameDraft: '', armed: '', armedUntil: 0 };
+
+function newCode() {
+  const a = new Uint32Array(6);
+  crypto.getRandomValues(a);
+  return Array.from(a, n => CODE_CHARS[n % CODE_CHARS.length]).join('');
+}
+function cleanCode(s) { return String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6); }
+function cleanName(s) { return String(s || '').replace(/\s+/g, ' ').trim(); }
+function randomName() {
+  return `${pick(['황동', '은빛', '고요한', '날랜', '슬기로운', '에메랄드'])} ${pick(['열쇠공', '탐험가', '수학자', '파수꾼', '길잡이'])} ${randInt(10, 99)}`;
+}
+function sameStats(a, b) { return !!a && !!b && ['runs', 'clears', 'perfect', 'rooms'].every(k => a[k] === b[k]); }
+function pubRef(uid) { return fb.fsM.doc(fb.db, 'players', uid); }
+function pickPub(d) { return { code: d.code, name: d.name, skin: d.skin, stats: sanitize({ stats: d.stats }).stats }; }
+function resetFriends() {
+  Object.assign(friends, { pub: undefined, list: null, loading: false, busy: false, error: '', renaming: false, armed: '' });
+  renderFriendBadge();
+}
+function friendsReady() { return !!(account.user && fb && account.loaded && friends.pub); }
+
+// 계정 기록을 불러온 뒤: 친구 기능을 켰는지 보고, 켰다면 공개 기록을 계정 기록에 맞추고 받은 신청을 센다
+async function loadFriendsState(gen) {
+  if (!account.user || !fb || friends.loading) return;
+  friends.loading = true;
+  try {
+    const snap = await fb.fsM.getDoc(pubRef(account.user.uid));
+    if (gen !== authGen) return;
+    friends.pub = snap.exists() ? pickPub(snap.data()) : null;
+    friends.error = '';
+  } catch (e) {
+    if (gen !== authGen) return;
+    console.warn('친구 정보를 불러오지 못했습니다', e);
+    friends.error = '친구 정보를 불러오지 못했습니다. 연결을 확인한 뒤 새로 고쳐 주세요.';
+  } finally {
+    if (gen === authGen) friends.loading = false;
+  }
+  if (gen !== authGen) return;
+  if (friends.pub) { publishPub(); await refreshFriends(gen); }
+  else if (state.screen === 'friends') renderFriends();
+}
+// 공개 프로필의 테마 · 기록을 계정에 저장된 기록(base)에 맞춘다. 실패해도 게임에는 영향이 없고 다음 저장 때 다시 맞춘다.
+let publishing = null;   // 진행 중인 공개 프로필 저장
+function publishPub(name) {
+  const pub = friends.pub, base = account.base;
+  if (!pub || !base || !account.loaded || !fb || publishing) return Promise.resolve(false);
+  const next = { code: pub.code, name: name || pub.name, skin: base.skin, stats: { ...base.stats } };
+  if (next.name === pub.name && next.skin === pub.skin && sameStats(next.stats, pub.stats)) return Promise.resolve(true);
+  const gen = authGen;
+  let ok = false;
+  publishing = fb.fsM.setDoc(pubRef(account.user.uid), { ...next, updatedAt: fb.fsM.serverTimestamp() })
+    .then(() => { if (gen === authGen && friends.pub) { friends.pub = next; ok = true; } })
+    .catch(e => console.warn('공개 프로필을 고치지 못했습니다', e))
+    .then(() => {
+      publishing = null;
+      if (!ok) return false;
+      publishPub();   // 보내는 동안 기록이 또 바뀌었으면 이어서 맞춘다
+      if (state.screen === 'friends') renderFriends();
+      return true;
+    });
+  return publishing;
+}
+async function refreshFriends(gen = authGen) {
+  if (!account.user || !fb || !friends.pub) return;
+  const uid = account.user.uid, { fsM, db } = fb;
+  friends.loading = true;
+  if (state.screen === 'friends') renderFriends();
+  try {
+    const snap = await fsM.getDocs(fsM.query(fsM.collection(db, 'friendships'), fsM.where('users', 'array-contains', uid), fsM.limit(120)));
+    const rows = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const people = await Promise.all(rows.map(r =>
+      fsM.getDoc(pubRef(r.users.find(u => u !== uid))).then(s => (s.exists() ? pickPub(s.data()) : null)).catch(() => null)));
+    if (gen !== authGen) return;
+    friends.list = rows.map((r, k) => ({ id: r.id, status: r.status, mine: r.from === uid, player: people[k] }));
+    friends.error = '';
+  } catch (e) {
+    if (gen !== authGen) return;
+    console.warn('친구 목록을 불러오지 못했습니다', e);
+    friends.error = '친구 목록을 불러오지 못했습니다. 잠시 후 새로 고쳐 주세요.';
+  } finally {
+    if (gen === authGen) friends.loading = false;
+  }
+  if (gen !== authGen) return;
+  renderFriendBadge();
+  if (state.screen === 'friends') renderFriends();
+}
+function incoming() { return (friends.list || []).filter(f => f.status === 'pending' && !f.mine); }
+function renderFriendBadge() {
+  const badge = $('friend-badge');
+  if (!badge) return;
+  const n = account.user ? incoming().length : 0;
+  badge.hidden = !n;
+  badge.textContent = n;
+  badge.setAttribute('aria-label', `받은 친구 신청 ${n}개`);
+}
+
+// 친구 기능 켜기: 공개 프로필과 친구 코드를 한 번에 만든다. 이미 있는 코드와 겹치면(서버가 거부) 다른 코드로 다시 해 본다.
+async function enableFriends() {
+  if (friends.busy || !account.user || !fb) return;
+  const name = cleanName($('friend-name') ? $('friend-name').value : friends.nameDraft);
+  if (!NAME_RE.test(name)) { toast('이름은 한글 · 영문 · 숫자로 2~12자로 정해 주세요.'); return; }
+  friends.busy = true;
+  renderFriends();
+  const gen = authGen, uid = account.user.uid, { fsM, db } = fb;
+  try {
+    await flushSave();   // 공개 기록은 계정에 저장된 기록과 같아야 하므로 기다리던 저장부터 보낸다
+    if (gen !== authGen) return;
+    if (!account.loaded || isDirty()) throw new Error('계정 기록이 아직 저장되지 않았습니다');
+    let made = null;
+    for (let k = 0; k < 5 && !made; k++) {
+      const pub = { code: newCode(), name, skin: account.base.skin, stats: { ...account.base.stats } };
+      const batch = fsM.writeBatch(db);
+      batch.set(pubRef(uid), { ...pub, updatedAt: fsM.serverTimestamp() });
+      batch.set(fsM.doc(db, 'codes', pub.code), { uid });
+      try { await batch.commit(); made = pub; } catch (e) { if (!e || e.code !== 'permission-denied') throw e; }
+    }
+    if (gen !== authGen) return;
+    if (!made) throw new Error('친구 코드를 만들지 못했습니다');
+    friends.pub = made;
+    friends.list = [];
+    friends.nameDraft = '';
+    toast(`친구 기능을 켰습니다. 내 친구 코드는 ${made.code}입니다.`);
+    await refreshFriends(gen);
+  } catch (e) {
+    console.warn('친구 기능을 켜지 못했습니다', e);
+    if (gen === authGen) toast('친구 기능을 켜지 못했습니다. 잠시 후 다시 시도해 주세요.');
+  } finally {
+    friends.busy = false;
+    if (state.screen === 'friends') renderFriends();
+  }
+}
+async function sendRequest() {
+  if (friends.busy || !friendsReady()) return;
+  const code = cleanCode($('friend-code').value);
+  if (!CODE_RE.test(code)) { toast('친구 코드 6자리를 확인해 주세요.'); return; }
+  if (code === friends.pub.code) { toast('내 친구 코드입니다. 친구의 코드를 넣어 주세요.'); return; }
+  if ((friends.list || []).filter(f => f.status === 'accepted' || f.mine).length >= MAX_FRIENDS) {
+    toast(`친구와 보낸 신청은 합쳐서 ${MAX_FRIENDS}명까지입니다.`);
+    return;
+  }
+  friends.busy = true;
+  renderFriends();
+  const gen = authGen, uid = account.user.uid, { fsM, db } = fb;
+  try {
+    const found = await fsM.getDoc(fsM.doc(db, 'codes', code));
+    if (!found.exists() || found.data().uid === uid) { toast('그 친구 코드를 찾지 못했습니다. 다시 확인해 주세요.'); return; }
+    const users = [uid, found.data().uid].sort();
+    const ref = fsM.doc(db, 'friendships', users.join('_'));
+    const cur = await fsM.getDoc(ref);
+    if (cur.exists() && cur.data().status === 'accepted') toast('이미 친구입니다.');
+    else if (cur.exists() && cur.data().from === uid) toast('이미 친구 신청을 보냈습니다. 상대가 수락하면 친구가 됩니다.');
+    else if (cur.exists()) {
+      await fsM.updateDoc(ref, { status: 'accepted', acceptedAt: fsM.serverTimestamp() });
+      toast('상대도 나에게 신청해 두어서 바로 친구가 되었습니다.');
+    } else {
+      await fsM.setDoc(ref, { users, from: uid, status: 'pending', createdAt: fsM.serverTimestamp() });
+      toast('친구 신청을 보냈습니다. 상대가 수락하면 친구가 됩니다.');
+    }
+    friends.codeDraft = '';
+    friends.invite = '';
+    await refreshFriends(gen);
+  } catch (e) {
+    console.warn('친구 신청을 보내지 못했습니다', e);
+    toast(e && e.code === 'permission-denied'
+      ? '친구 신청을 보내지 못했습니다. 상대가 친구 기능을 껐을 수 있습니다.'
+      : '친구 신청을 보내지 못했습니다. 잠시 후 다시 시도해 주세요.');
+  } finally {
+    friends.busy = false;
+    if (state.screen === 'friends') renderFriends();
+  }
+}
+// 수락(accept), 거절 · 신청 취소 · 친구 삭제(remove)
+async function friendAct(kind, id) {
+  if (friends.busy || !friendsReady()) return;
+  const f = (friends.list || []).find(x => x.id === id);
+  if (!f) return;
+  friends.busy = true;
+  renderFriends();
+  const gen = authGen, { fsM, db } = fb, ref = fsM.doc(db, 'friendships', id);
+  try {
+    if (kind === 'accept') {
+      await fsM.updateDoc(ref, { status: 'accepted', acceptedAt: fsM.serverTimestamp() });
+      toast('친구가 되었습니다.');
+    } else {
+      await fsM.deleteDoc(ref);
+      toast(f.status === 'accepted' ? '친구 목록에서 지웠습니다.' : f.mine ? '친구 신청을 취소했습니다.' : '친구 신청을 거절했습니다.');
+    }
+    await refreshFriends(gen);
+  } catch (e) {
+    console.warn('친구 정보를 바꾸지 못했습니다', e);
+    toast('처리하지 못했습니다. 새로 고친 뒤 다시 시도해 주세요.');
+  } finally {
+    friends.busy = false;
+    friends.armed = '';
+    if (state.screen === 'friends') renderFriends();
+  }
+}
+async function renameMe() {
+  if (friends.busy || !friendsReady()) return;
+  const name = cleanName($('friend-rename').value);
+  if (!NAME_RE.test(name)) { toast('이름은 한글 · 영문 · 숫자로 2~12자로 정해 주세요.'); return; }
+  if (name === friends.pub.name) { friends.renaming = false; renderFriends(); return; }
+  friends.busy = true;
+  renderFriends();
+  await flushSave();
+  if (publishing) await publishing;
+  const ok = await publishPub(name);
+  friends.busy = false;
+  if (ok) { friends.renaming = false; toast('이름을 바꿨습니다.'); }
+  else toast('이름을 바꾸지 못했습니다. 잠시 후 다시 시도해 주세요.');
+  if (state.screen === 'friends') renderFriends();
+}
+// 친구 기능 끄기: 공개 프로필, 친구 코드, 친구 목록과 신청을 모두 지운다
+async function disableFriends() {
+  if (friends.busy || !friendsReady()) return;
+  friends.busy = true;
+  renderFriends();
+  const gen = authGen, uid = account.user.uid, { fsM, db } = fb;
+  try {
+    const snap = await fsM.getDocs(fsM.query(fsM.collection(db, 'friendships'), fsM.where('users', 'array-contains', uid)));
+    const batch = fsM.writeBatch(db);
+    snap.docs.forEach(d => batch.delete(d.ref));
+    batch.delete(fsM.doc(db, 'codes', friends.pub.code));
+    batch.delete(pubRef(uid));
+    await batch.commit();
+    if (gen !== authGen) return;
+    friends.pub = null;
+    friends.list = null;
+    toast('친구 기능을 껐습니다. 공개 프로필과 친구 목록을 지웠습니다.');
+  } catch (e) {
+    console.warn('친구 기능을 끄지 못했습니다', e);
+    toast('친구 기능을 끄지 못했습니다. 잠시 후 다시 시도해 주세요.');
+  } finally {
+    friends.busy = false;
+    friends.armed = '';
+    renderFriendBadge();
+    if (state.screen === 'friends') renderFriends();
+  }
+}
+// 두 번 눌러야 하는 버튼(친구 삭제 · 친구 기능 끄기): 처음 누르면 3초 동안 확인 문구를 보여 준다
+function armFriend(key) {
+  if (friends.armed === key && friends.armedUntil > Date.now()) return true;
+  friends.armed = key;
+  friends.armedUntil = Date.now() + 3000;
+  renderFriends();
+  setTimeout(() => { if (friends.armed === key && friends.armedUntil <= Date.now()) { friends.armed = ''; if (state.screen === 'friends') renderFriends(); } }, 3100);
+  return false;
+}
+function inviteURL() { return `${location.origin}${location.pathname}?friend=${friends.pub.code}`; }
+async function copyText(text, done) {
+  try {
+    await navigator.clipboard.writeText(text);
+    toast(done);
+  } catch (e) {
+    // 클립보드를 쓸 수 없는 환경: 숨긴 입력칸을 골라 복사해 본다
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+    ta.remove();
+    toast(ok ? done : `복사하지 못했습니다. 직접 적어 주세요: ${text}`);
+  }
+}
+function shareInvite() {
+  const url = inviteURL();
+  if (navigator.share) {
+    navigator.share({ title: '논리 미궁', text: `논리 미궁에서 친구 해요! 내 친구 코드는 ${friends.pub.code}입니다.`, url }).catch(() => {});
+  } else {
+    copyText(url, '초대 링크를 복사했습니다. 친구에게 보내 주세요.');
+  }
+}
+
+function friendLine(f, opts) {
+  const p = f.player;
+  const name = p ? esc(p.name) : '떠난 플레이어';
+  const color = p && SKINS[p.skin] ? SKINS[p.skin].swatch[2] : '';
+  return `
+    <li class="friend${opts.me ? ' is-me' : ''}">
+      <span class="rank">${opts.rank ? opts.rank : '<svg aria-hidden="true"><use href="#i-person"/></svg>'}</span>
+      <div>
+        <span class="f-name"><i class="dot" data-c="${color}" aria-hidden="true"></i><span>${name}</span>${opts.me ? '<span class="me-chip">나</span>' : ''}</span>
+        <span class="f-sub">${opts.sub}</span>
+      </div>
+      <div class="f-actions">${opts.actions || ''}</div>
+    </li>`;
+}
+function statLine(p) { return p ? `탈출 ${fmt(p.stats.clears)} · 완벽 ${fmt(p.stats.perfect)} · 방 ${fmt(p.stats.rooms)}` : '친구 기능을 껐습니다'; }
+function renderFriends() {
+  const body = $('friends-body');
+  const busy = friends.busy ? ' disabled' : '';
+  let html;
+  if (!account.user) {
+    html = `
+      <div class="frame pad friends-intro">
+        <p class="story">친구 코드를 주고받아 친구를 맺고, 서로의 탈출 기록을 순위로 볼 수 있습니다. 친구 기능은 Google 계정으로 로그인한 뒤에 쓸 수 있습니다.</p>
+        ${friends.invite ? `<p class="admin-note">초대받은 친구 코드 <b class="mono">${esc(friends.invite)}</b> · 로그인하고 친구 기능을 켜면 바로 신청할 수 있습니다.</p>` : ''}
+        <div class="actions"><button type="button" class="btn btn-brass" data-act="login"${account.busy ? ' disabled' : ''}>Google 계정으로 로그인</button></div>
+      </div>`;
+  } else if (!fb || !account.loaded || friends.pub === undefined) {
+    const msg = friends.error || (account.sync === 'wait' ? '계정에 연결하지 못했습니다. 연결되면 친구 정보를 불러옵니다.' : '친구 정보를 불러오는 중…');
+    html = `<div class="frame pad friends-intro"><p class="story">${msg}</p>${friends.error ? '<div class="actions"><button type="button" class="btn btn-ghost" data-act="friends-refresh">새로 고침</button></div>' : ''}</div>`;
+  } else if (!friends.pub) {
+    if (!friends.nameDraft) friends.nameDraft = randomName();
+    html = `
+      <div class="frame pad friends-intro">
+        <p class="story">친구 코드를 주고받아 친구를 맺고, 서로의 탈출 기록을 순위로 볼 수 있습니다.</p>
+        ${friends.invite ? `<p class="admin-note">초대받은 친구 코드 <b class="mono">${esc(friends.invite)}</b> · 친구 기능을 켜면 바로 신청할 수 있습니다.</p>` : ''}
+        <label class="field-label" for="friend-name">친구에게 보일 이름</label>
+        <input id="friend-name" class="input" maxlength="12" autocomplete="off" spellcheck="false" value="${esc(friends.nameDraft)}">
+        <p class="counter">한글 · 영문 · 숫자 2~12자 · 나중에 바꿀 수 있습니다</p>
+        <p class="doc-meta">친구 기능을 켜면 이 이름과 친구 코드, 쓰고 있는 테마, 판 수 · 탈출 · 완벽 탈출 · 지나온 방 수를 친구 코드를 아는 플레이어가 볼 수 있습니다. 이메일, Google 이름과 사진, 금화는 보이지 않습니다. 언제든 끌 수 있습니다.</p>
+        <div class="actions"><button type="button" class="btn btn-brass" data-act="friends-on"${busy}>${friends.busy ? '켜는 중…' : '친구 기능 켜기'}</button></div>
+      </div>`;
+  } else {
+    const pub = friends.pub, list = friends.list || [];
+    const me = { player: { ...pub, skin: profile.skin, stats: account.base ? account.base.stats : pub.stats } };
+    const inbox = incoming(), sent = list.filter(f => f.status === 'pending' && f.mine);
+    const mates = list.filter(f => f.status === 'accepted');
+    const ranked = [...mates.filter(f => f.player), { ...me, me: true }].sort((a, b) =>
+      b.player.stats.clears - a.player.stats.clears || b.player.stats.perfect - a.player.stats.perfect
+      || b.player.stats.rooms - a.player.stats.rooms || a.player.name.localeCompare(b.player.name, 'ko'));
+    const removeBtn = f => `<button type="button" class="btn btn-text btn-sm" data-act="friend-remove" data-id="${esc(f.id)}"${busy}>${friends.armed === f.id ? '정말 지울까요?' : '삭제'}</button>`;
+    html = `
+      <article class="frame me-card">
+        <div class="me-top">
+          <div><span class="f-sub">친구에게 보이는 이름</span><span class="me-name">${esc(pub.name)}</span></div>
+          ${friends.renaming ? '' : `<button type="button" class="btn btn-text btn-sm" data-act="friend-rename-open"${busy}>이름 바꾸기</button>`}
+        </div>
+        ${friends.renaming ? `
+        <div>
+          <label class="field-label" for="friend-rename">새 이름 (한글 · 영문 · 숫자 2~12자)</label>
+          <div class="field-row">
+            <input id="friend-rename" class="input" maxlength="12" autocomplete="off" spellcheck="false" value="${esc(friends.renameDraft || pub.name)}">
+            <button type="button" class="btn btn-brass" data-act="friend-rename-save"${busy}>저장</button>
+            <button type="button" class="btn btn-ghost" data-act="friend-rename-cancel"${busy}>취소</button>
+          </div>
+        </div>` : ''}
+        <div>
+          <span class="f-sub">내 친구 코드</span>
+          <div class="code-box">
+            <span class="code-big">${esc(pub.code)}</span>
+            <div class="code-actions">
+              <button type="button" class="btn btn-ghost btn-sm" data-act="copy-code">코드 복사</button>
+              <button type="button" class="btn btn-ghost btn-sm" data-act="share-invite">초대 링크 보내기</button>
+            </div>
+          </div>
+        </div>
+      </article>
+      <h3 class="section-label">친구 추가</h3>
+      <div class="field-row">
+        <input id="friend-code" class="input code" maxlength="7" placeholder="친구 코드 6자리" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="친구 코드" value="${esc(friends.codeDraft)}">
+        <button type="button" class="btn btn-brass" data-act="friend-send"${busy}>친구 신청</button>
+      </div>
+      ${friends.error ? `<p class="list-note">${friends.error}</p>` : ''}
+      ${inbox.length ? `
+      <h3 class="section-label">받은 신청<span class="badge">${inbox.length}</span></h3>
+      <ul class="friend-list">${inbox.map(f => friendLine(f, {
+        sub: f.player ? `${esc(f.player.code)} · 나에게 친구 신청을 보냈습니다` : '친구 기능을 껐습니다',
+        actions: `${f.player ? `<button type="button" class="btn btn-brass btn-sm" data-act="friend-accept" data-id="${esc(f.id)}"${busy}>수락</button>` : ''}<button type="button" class="btn btn-ghost btn-sm" data-act="friend-decline" data-id="${esc(f.id)}"${busy}>거절</button>`,
+      })).join('')}</ul>` : ''}
+      ${sent.length ? `
+      <h3 class="section-label">보낸 신청</h3>
+      <ul class="friend-list">${sent.map(f => friendLine(f, {
+        sub: '상대가 수락하기를 기다리는 중',
+        actions: `<button type="button" class="btn btn-text btn-sm" data-act="friend-decline" data-id="${esc(f.id)}"${busy}>취소</button>`,
+      })).join('')}</ul>` : ''}
+      <h3 class="section-label">친구 순위</h3>
+      <ul class="friend-list">${ranked.map((f, k) => friendLine(f, {
+        me: f.me, rank: k + 1, sub: statLine(f.player), actions: f.me ? '' : removeBtn(f),
+      })).join('')}${mates.filter(f => !f.player).map(f => friendLine(f, { sub: statLine(null), actions: removeBtn(f) })).join('')}</ul>
+      <p class="list-note">${friends.loading ? '불러오는 중…' : mates.length ? '탈출 → 완벽 탈출 → 지나온 방 순서로 줄을 세웁니다.' : '아직 친구가 없습니다. 내 친구 코드나 초대 링크를 친구에게 보내 보세요.'}</p>
+      <div class="actions">
+        <button type="button" class="btn btn-ghost" data-act="friends-refresh"${busy}>새로 고침</button>
+        <button type="button" class="btn btn-text" data-act="friends-off"${busy}>${friends.armed === 'off' ? '한 번 더 누르면 친구 기능을 끕니다' : '친구 기능 끄기'}</button>
+      </div>`;
+  }
+  body.innerHTML = html;
+  // 테마 색 점은 style 속성 대신 스크립트로 칠한다
+  body.querySelectorAll('.dot[data-c]').forEach(el => { if (el.dataset.c) el.style.background = el.dataset.c; });
+}
+// 친구 화면을 열 때: 아직 모르면 불러오고, 켜져 있으면 목록을 새로 받는다
+function openFriends() {
+  renderFriends();
+  if (!account.user || !fb || !account.loaded) return;
+  if (friends.pub === undefined) loadFriendsState(authGen);
+  else if (friends.pub) { publishPub(); refreshFriends(); }
+}
+// 초대 링크(?friend=코드)로 들어오면 코드를 기억해 두고 주소에서는 지운다
+function readInvite() {
+  try {
+    const params = new URLSearchParams(location.search);
+    const code = cleanCode(params.get('friend'));
+    if (!params.has('friend')) return;
+    params.delete('friend');
+    const rest = params.toString();
+    history.replaceState(null, '', location.pathname + (rest ? '?' + rest : '') + location.hash);
+    if (CODE_RE.test(code)) { friends.invite = code; friends.codeDraft = code; }
+  } catch (e) { /* 주소를 바꿀 수 없는 환경 */ }
 }
 
 /* ───────── 패치노트 · 의견 보내기 ───────── */
@@ -2360,7 +3375,46 @@ document.addEventListener('click', e => {
     case 'abandon': onAbandon(); break;
     case 'buy': buy(act.dataset.id); break;
     case 'equip': equip(act.dataset.id); break;
+    case 'practice': startPractice(act.dataset.kind); break;
+    case 'hint': $('hint').hidden = false; act.disabled = true; break;
+    case 'clear-notes': clearNotes(); break;
+    case 'friends-on': enableFriends(); break;
+    case 'friend-send': sendRequest(); break;
+    case 'friend-accept': friendAct('accept', act.dataset.id); break;
+    case 'friend-decline': friendAct('remove', act.dataset.id); break;
+    case 'friend-remove': if (armFriend(act.dataset.id)) friendAct('remove', act.dataset.id); break;
+    case 'friend-rename-open': friends.renaming = true; friends.renameDraft = ''; renderFriends(); $('friend-rename').focus(); break;
+    case 'friend-rename-cancel': friends.renaming = false; renderFriends(); break;
+    case 'friend-rename-save': renameMe(); break;
+    case 'copy-code': copyText(friends.pub.code, '친구 코드를 복사했습니다.'); break;
+    case 'share-invite': shareInvite(); break;
+    case 'friends-refresh': if (friends.pub === undefined) loadFriendsState(authGen); else refreshFriends(); break;
+    case 'friends-off': if (armFriend('off')) disableFriends(); break;
   }
+});
+
+// 친구 화면의 입력칸: 다시 그려도 쓰던 내용이 남게 기억하고, Enter로 보낸다
+document.addEventListener('input', e => {
+  const el = e.target;
+  if (el.id === 'friend-code') {
+    const v = cleanCode(el.value);
+    if (el.value !== v) el.value = v;
+    friends.codeDraft = v;
+  } else if (el.id === 'friend-name') friends.nameDraft = el.value;
+  else if (el.id === 'friend-rename') friends.renameDraft = el.value;
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.isComposing) {
+    if (e.target.id === 'friend-code') { e.preventDefault(); sendRequest(); }
+    else if (e.target.id === 'friend-name') { e.preventDefault(); enableFriends(); }
+    else if (e.target.id === 'friend-rename') { e.preventDefault(); renameMe(); }
+    return;
+  }
+  // 방에서 1 · 2 · 3으로 보기 고르기
+  if (state.screen !== 'game' || !state.run || e.altKey || e.ctrlKey || e.metaKey) return;
+  const k = ['1', '2', '3'].indexOf(e.key);
+  const entry = k >= 0 ? state.run.buttons[k] : null;
+  if (entry && !entry.b.disabled) { e.preventDefault(); entry.b.click(); }
 });
 
 // 계정 저장: 다시 연결되면 불러오기를 재시도하고, 창을 닫거나 숨길 때는 기다리던 저장을 바로 보낸다
@@ -2375,6 +3429,7 @@ window.addEventListener('resize', () => {
 });
 
 function init() {
+  readInvite();
   profile = readLocal('guest');
   applySkin();
   $('app-version').textContent = 'v' + APP_VERSION;
