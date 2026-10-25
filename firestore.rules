@@ -21,16 +21,25 @@ rules_version = '2';
 //   - stats: map (required, exactly { runs, clears, perfect, rooms }) - ints,
 //       0 <= perfect <= clears <= runs <= 10,000,000 and rooms <= 5 * runs; never decrease
 //   - updatedAt: timestamp (required, == request.time; the client writes serverTimestamp())
+//   - rev: int (optional, 0..1,000,000) - how many times admins changed this record (운영자 화면).
+//       The owner's saves must keep it, so a device holding an older copy is refused, reloads the record
+//       and adds only its own new progress on top. Each admin change raises it by exactly 1.
 //
 // Collection: feedback ('의견 보내기')
 // Document ID: '<uid>_<n>', where n is the sender's feedbackMeta count after this message
-// Fields (all required, no other fields allowed; create-only, read in the Firebase console):
+// Fields the sender writes (all required, no other fields allowed; the sender only creates):
 //   - uid: string (== request.auth.uid) - sender
 //   - category: string, one of ['bug', 'problem', 'idea', 'delete', 'etc']
 //   - text: string (5..1000 chars)
 //   - version: string (<= 20 chars) - game version
 //   - device: string (<= 300 chars) - browser/OS and screen size
 //   - createdAt: timestamp (== request.time)
+// Fields only admins add (운영자 화면 → 문의):
+//   - status: 'new' | 'doing' | 'done' (absent = 'new')
+//   - reply: string (0..1000 chars) - the answer the sender sees
+//   - repliedAt: timestamp (== request.time whenever reply changes)
+//   - handledAt: timestamp (== request.time on every admin change)
+// The sender and admins can read a message; only admins change or delete it.
 //
 // Collection: feedbackMeta (one per sender, written in the same transaction as each feedback message)
 // Document ID: the sender's uid
@@ -64,7 +73,19 @@ rules_version = '2';
 // The sender creates it as pending (both players must have a players document); only the other player can accept;
 // either player can delete it (decline, cancel, unfriend). Players list their own with where('users', 'array-contains', uid).
 //
-// No email or Google profile is stored anywhere. users documents are read and fully overwritten only by their owner.
+// Collection: bans ('이용 제한', written only by admins)
+// Document ID: the restricted player's uid
+// Fields (all required, no other fields allowed):
+//   - reason: string (1..200 chars) - shown to the player
+//   - at: timestamp (== request.time)
+// A restricted player cannot send feedback, turn the friend feature on, update a public profile, or send or accept
+// friend requests. They can still play, save their record, read their own restriction and delete their own friend data.
+//
+// Admins (운영자 화면) can read every document above, change feedback status and replies, change users records
+// (raising rev), delete public profiles, friend codes, friendships, feedback and feedbackMeta, and write bans.
+//
+// No email or Google profile is stored anywhere. users documents are read by their owner and admins,
+// and written by their owner (fair saves) or by admins.
 //
 // Anti-cheat (the game runs in the browser, so the server checks every save against the previous one):
 //   - Coins can only go up by what the new progress can pay out: 15 per new room (10 correct + 5 first try),
@@ -162,7 +183,10 @@ service cloud.firestore {
     }
 
     function isValidProfile(data) {
-      return hasExactKeys(data, ['v', 'coins', 'items', 'skins', 'skin', 'stats', 'updatedAt'])
+      return data is map
+        && data.keys().hasAll(['v', 'coins', 'items', 'skins', 'skin', 'stats', 'updatedAt'])
+        && data.keys().hasOnly(['v', 'coins', 'items', 'skins', 'skin', 'stats', 'updatedAt', 'rev'])
+        && (!('rev' in data) || isIntInRange(data.rev, 0, 1000000))
         && data.v is int && data.v == 1
         && isValidItems(data.items)
         && isValidStats(data.stats)
@@ -254,6 +278,38 @@ service cloud.firestore {
     }
 
     // ===============================================================
+    // Admin tools (운영자 화면)
+    // ===============================================================
+
+    // Admin changes: rev (absent = 0)
+    function revOf(data) {
+      return data.get('rev', 0);
+    }
+
+    // An admin handles a message: only status, reply, repliedAt and handledAt change.
+    // A new or changed reply always comes with repliedAt == now (and repliedAt never moves on its own).
+    function isValidHandling(after, before) {
+      let changed = after.diff(before).affectedKeys();
+      return changed.hasOnly(['status', 'reply', 'repliedAt', 'handledAt'])
+        && after.status in ['new', 'doing', 'done']
+        && after.handledAt == request.time
+        && (!('reply' in after) || (after.reply is string && after.reply.size() <= 1000))
+        && (!changed.hasAny(['reply', 'repliedAt'])
+          || (changed.hasAll(['reply', 'repliedAt']) && 'reply' in after && after.repliedAt == request.time));
+    }
+
+    function isValidBan(data) {
+      return hasExactKeys(data, ['reason', 'at'])
+        && data.reason is string && data.reason.size() >= 1 && data.reason.size() <= 200
+        && data.at == request.time;
+    }
+
+    // The signed-in player is restricted (이용 제한)
+    function isBanned() {
+      return exists(/databases/$(database)/documents/bans/$(request.auth.uid));
+    }
+
+    // ===============================================================
     // Friends (친구)
     // ===============================================================
 
@@ -296,29 +352,36 @@ service cloud.firestore {
     // ===============================================================
 
     match /users/{userId} {
-      allow read: if isOwner(userId);
+      allow read: if isOwner(userId) || isAdmin();
       allow create: if isOwner(userId)
         && isValidProfile(request.resource.data)
         && isFairStart(request.resource.data);
-      allow update: if isOwner(userId)
-        && isValidProfile(request.resource.data)
-        && isFairUpdate(request.resource.data, resource.data);
+      // The owner saves fair progress and keeps rev; an admin may set any valid record, raising rev by 1
+      allow update: if isValidProfile(request.resource.data)
+        && ((isOwner(userId)
+            && revOf(request.resource.data) == revOf(resource.data)
+            && isFairUpdate(request.resource.data, resource.data))
+          || (isAdmin() && revOf(request.resource.data) == revOf(resource.data) + 1));
       allow delete: if false;
     }
 
     // 의견 보내기: signed-in players add their own messages, one per minute.
     // Each message is '<uid>_<n>' and must be written together with feedbackMeta/<uid> moving to count n,
-    // so one transaction can add only one message. Nobody can read or change messages in the app.
+    // so one transaction can add only one message. The sender reads their own messages (and the replies);
+    // admins read, handle and delete them.
     match /feedback/{feedbackId} {
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.uid == request.auth.uid);
       allow create: if isAuthenticated()
+        && !isBanned()
         && isValidFeedback(request.resource.data)
         && getAfter(feedbackMetaPath(request.auth.uid)).data.last == request.time
         && feedbackId == request.auth.uid + '_' + string(getAfter(feedbackMetaPath(request.auth.uid)).data.count);
-      allow read, update, delete: if false;
+      allow update: if isAdmin() && isValidHandling(request.resource.data, resource.data);
+      allow delete: if isAdmin();
     }
 
     match /feedbackMeta/{userId} {
-      allow read: if isOwner(userId);
+      allow read: if isOwner(userId) || isAdmin();
       allow create: if isOwner(userId)
         && isValidFeedbackMeta(request.resource.data)
         && request.resource.data.count == 1
@@ -328,20 +391,23 @@ service cloud.firestore {
         && request.resource.data.count == resource.data.count + 1
         && request.time >= resource.data.last + duration.value(60, 's')
         && existsAfter(/databases/$(database)/documents/feedback/$(userId + '_' + string(request.resource.data.count)));
-      allow delete: if false;
+      allow delete: if isAdmin();
     }
 
     // 친구: public profile. Created together with its friend code; the code never changes.
+    // Admins can list them (search by name) and delete them (with the code and friendships).
     match /players/{userId} {
       allow get: if isAuthenticated();
-      allow list: if false;
+      allow list: if isAdmin();
       allow create: if isOwner(userId)
+        && !isBanned()
         && isValidPlayer(userId, request.resource.data)
         && getAfter(codePath(request.resource.data.code)).data.uid == userId;
       allow update: if isOwner(userId)
+        && !isBanned()
         && isValidPlayer(userId, request.resource.data)
         && request.resource.data.code == resource.data.code;
-      allow delete: if isOwner(userId);
+      allow delete: if isOwner(userId) || isAdmin();
     }
 
     // Friend code → uid. An existing code cannot be overwritten (that is an update), so a clash makes the batch fail.
@@ -349,27 +415,36 @@ service cloud.firestore {
       allow get: if isAuthenticated();
       allow list, update: if false;
       allow create: if isAuthenticated()
+        && !isBanned()
         && hasExactKeys(request.resource.data, ['uid'])
         && request.resource.data.uid == request.auth.uid
         && code.matches('[A-HJ-NP-Z2-9]{6}')
         && getAfter(playerPath(request.auth.uid)).data.code == code;
-      allow delete: if isAuthenticated() && resource.data.uid == request.auth.uid;
+      allow delete: if isAdmin() || (isAuthenticated() && resource.data.uid == request.auth.uid);
     }
 
     match /friendships/{pairId} {
       // A single document (even a missing one) can be read by either player in the pair id
-      allow get: if isAuthenticated() && request.auth.uid in pairId.split('_');
-      allow list: if isAuthenticated() && request.auth.uid in resource.data.users;
-      allow create: if isAuthenticated() && isValidFriendRequest(pairId, request.resource.data);
+      allow get: if isAdmin() || (isAuthenticated() && request.auth.uid in pairId.split('_'));
+      allow list: if isAdmin() || (isAuthenticated() && request.auth.uid in resource.data.users);
+      allow create: if isAuthenticated() && !isBanned() && isValidFriendRequest(pairId, request.resource.data);
       // Only the player who received the request accepts it, and only status and acceptedAt change
       allow update: if isAuthenticated()
+        && !isBanned()
         && resource.data.status == 'pending'
         && request.auth.uid in resource.data.users
         && request.auth.uid != resource.data.from
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'acceptedAt'])
         && request.resource.data.status == 'accepted'
         && request.resource.data.acceptedAt == request.time;
-      allow delete: if isAuthenticated() && request.auth.uid in resource.data.users;
+      allow delete: if isAdmin() || (isAuthenticated() && request.auth.uid in resource.data.users);
+    }
+
+    // 이용 제한: the player reads their own; admins write them
+    match /bans/{userId} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list, delete: if isAdmin();
+      allow create, update: if isAdmin() && isValidBan(request.resource.data);
     }
   }
 }

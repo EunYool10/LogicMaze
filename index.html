@@ -575,6 +575,67 @@ div.menu-row { cursor: default; }
   .field-row .btn { flex: 1 1 100%; }
 }
 
+/* ───────── 의견 · 답변, 운영자 ───────── */
+.tickets { display: grid; gap: 12px; }
+.ticket { display: grid; gap: 10px; padding: 18px 20px; }
+.mine-item { display: grid; gap: 8px; padding: 14px 0; border-bottom: 1px solid var(--hair); }
+.tickets > .mine-item:first-child { border-top: 1px solid var(--hair); }
+.t-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; color: var(--mute); }
+.t-head .chip { font-family: var(--sans); font-size: 12.5px; }
+.state { padding: 0 9px; border: 1px solid currentColor; border-radius: 999px; font-size: 12px; font-weight: 700; line-height: 1.75; }
+.state.s-new { color: var(--brass-hi); }
+.state.s-doing { color: var(--verdigris); }
+.state.s-done { color: var(--mute); }
+.state.s-ban { color: var(--oxblood); }
+.t-from { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 10px; font-size: 14px; color: var(--bone-2); }
+.t-from b { font-family: var(--serif); color: var(--bone); }
+.t-from .mono { font-size: 12.5px; color: var(--mute); }
+.t-text { margin: 0; font-size: 15.5px; line-height: 1.7; white-space: pre-wrap; }
+.t-device summary { font-size: 13px; color: var(--mute); cursor: pointer; }
+.t-device p { margin: 4px 0 0; font-family: var(--mono); font-size: 12px; color: var(--mute); }
+.t-reply { padding: 10px 14px; border-left: 2px solid var(--brass); background: rgba(var(--brass-rgb), 0.07); }
+.t-reply-k { display: block; font-size: 12.5px; font-weight: 700; color: var(--brass-hi); }
+.t-reply p { margin: 2px 0 0; font-size: 15px; white-space: pre-wrap; }
+.t-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.t-note { margin: 0; font-size: 13.5px; color: var(--brass-hi); }
+.ticket .field-label { margin: 2px 0 0; }
+.textarea.sm { min-height: 92px; font-size: 15px; }
+.btn-danger { color: var(--oxblood); }
+.seg { display: inline-flex; border: 1px solid var(--hair-strong); border-radius: 2px; }
+.seg-btn { min-height: 44px; padding: 8px 20px; border: 0; background: none; font-weight: 600; color: var(--bone-2); cursor: pointer; }
+.seg-btn + .seg-btn { border-left: 1px solid var(--hair-strong); }
+.seg-btn[aria-selected="true"] { color: var(--on-brass); background: linear-gradient(180deg, var(--brass-hi), var(--brass)); }
+.seg-btn[aria-selected="true"] .badge { color: var(--brass-hi); background: var(--on-brass); }
+.ops-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 24px 0 16px; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.filters .toggle { min-width: 0; }
+.ops-bar .select { flex: 1 1 150px; width: auto; max-width: 230px; min-height: 42px; padding: 8px 12px; font-size: 14px; }
+.ops-bar .btn { margin-left: auto; }
+.ops-search { margin-top: 24px; }
+.ops-facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px 20px; margin: 0; }
+.ops-facts dt { font-size: 12.5px; color: var(--mute); }
+.ops-facts dd { margin: 2px 0 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.ops-facts .mono { font-size: 13px; font-weight: 500; }
+.ops-facts .wide { grid-column: 1 / -1; }
+.f-name > span.state { flex: none; font-family: var(--sans); overflow: visible; }
+.ops-users .f-name { flex-wrap: wrap; }
+.ops-users .f-name > span:not(.me-chip) { white-space: normal; overflow: visible; }
+.ops-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 12px; }
+.ops-grid label { display: grid; gap: 6px; font-size: 13px; font-weight: 600; color: var(--bone-2); }
+.ops-grid .input { min-height: 44px; padding: 8px 12px; font-variant-numeric: tabular-nums; }
+.ops-skins { display: flex; flex-wrap: wrap; gap: 6px; }
+.ops-help { margin: 8px 0 0; font-size: 13.5px; color: var(--mute); }
+.ops-danger { display: grid; gap: 14px; }
+.ops-danger > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px 16px; padding-bottom: 14px; border-bottom: 1px solid var(--hair); }
+.ops-danger b { display: block; font-family: var(--serif); }
+.ops-danger small { display: block; font-size: 13.5px; color: var(--mute); }
+.ops-more { display: flex; justify-content: center; margin-top: 14px; }
+@media (max-width: 560px) {
+  .ops-bar .btn { margin-left: 0; }
+  .ops-danger > div { grid-template-columns: 1fr; }
+  .t-actions .btn { flex: 1 1 auto; }
+}
+
 /* ───────── 알림 ───────── */
 .toasts {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; display: grid; justify-items: center; gap: 8px; pointer-events: none;
@@ -625,6 +686,7 @@ div.menu-row { cursor: default; }
   <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/></symbol>
   <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6.5C10 5 7.5 4.5 4 4.8v13.4c3.5-.3 6 .2 8 1.7 2-1.5 4.5-2 8-1.7V4.8c-3.5-.3-6 .2-8 1.7Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 6.5v13.4" stroke="currentColor" stroke-width="1.5"/></symbol>
   <symbol id="i-friends" viewBox="0 0 24 24"><circle cx="9" cy="9" r="3.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 19c.9-3.2 3.2-4.8 6-4.8s5.1 1.6 6 4.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="16.5" cy="8" r="2.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M16.8 13.2c2.2.2 3.7 1.6 4.4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M4 13.5 6.2 5.5h11.6L20 13.5V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M4 13.5h4.5l1.2 2.5h4.6l1.2-2.5H20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
   <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 1 0 0 17c1.2 0 1.8-.8 1.6-1.8-.3-1.3.5-2.3 1.8-2.3H18a2.5 2.5 0 0 0 2.5-2.6A8.6 8.6 0 0 0 12 3.5Z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="11" r="1.2" fill="currentColor"/><circle cx="11.5" cy="7.8" r="1.2" fill="currentColor"/><circle cx="15.5" cy="9" r="1.2" fill="currentColor"/></symbol>
 </svg>
 
@@ -662,6 +724,11 @@ div.menu-row { cursor: default; }
           <button type="button" class="btn btn-ghost" data-go="notes"><svg aria-hidden="true"><use href="#i-book"/></svg><span><b>오답 노트</b><small>틀린 문제 다시 보기</small></span></button>
         </div>
         <div class="menu-list">
+          <button type="button" class="menu-row" data-go="admin" id="admin-row" hidden>
+            <span class="ico" aria-hidden="true"><svg><use href="#i-inbox"/></svg></span>
+            <span class="row-text"><span class="row-label">운영자<span class="badge" id="ops-badge" hidden></span></span><span class="row-sub">문의 처리 · 사용자 관리</span></span>
+            <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
+          </button>
           <button type="button" class="menu-row" data-go="friends">
             <span class="ico" aria-hidden="true"><svg><use href="#i-friends"/></svg></span>
             <span class="row-text"><span class="row-label">친구<span class="badge" id="friend-badge" hidden></span></span><span class="row-sub">친구 코드로 친구를 맺고 탈출 기록을 겨룹니다</span></span>
@@ -686,7 +753,7 @@ div.menu-row { cursor: default; }
       <button type="button" class="link-btn" data-go="guide">게임 안내</button>
       <button type="button" class="link-btn" data-go="patch">패치노트</button>
       <button type="button" class="link-btn" data-go="credits">크레딧</button>
-      <button type="button" class="link-btn" data-go="feedback">의견 보내기</button>
+      <button type="button" class="link-btn" data-go="feedback">의견 보내기<span class="badge" id="reply-badge" hidden></span></button>
       <button type="button" class="link-btn" data-go="terms">약관 · 개인정보</button>
       <button type="button" class="link-btn" data-go="apps">은율이의 다른 앱</button>
       <button type="button" class="install-chip" id="btn-install" data-act="install" hidden><svg aria-hidden="true"><use href="#i-install"/></svg>앱으로 설치</button>
@@ -757,7 +824,7 @@ div.menu-row { cursor: default; }
           <li>모든 방은 「집합과 명제」의 명제 문제이고, 명제에 담긴 수학은 고등학교 1학년 공통수학1 · 공통수학2에 나오는 내용만 씁니다. 방마다 그 내용이 나온 단원을 보여 줍니다.</li>
           <li>교육과정에서 다루지 않는 명제의 ‘이’는 나오지 않습니다.</li>
           <li>무료로 운영하는 게임이라 내용이 바뀌거나 잠시 멈출 수 있습니다. 새 버전이 나오면 새로고침하면 됩니다.</li>
-          <li>문제에 오류가 있거나 궁금한 점이 있으면 ‘의견 보내기’로 알려 주세요.</li>
+          <li>문제에 오류가 있거나 궁금한 점이 있으면 ‘의견 보내기’로 알려 주세요. 운영진의 답변은 같은 화면의 ‘보낸 의견 · 답변’에 나옵니다.</li>
         </ul>
       </section>
       <div class="actions"><button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button></div>
@@ -779,7 +846,8 @@ div.menu-row { cursor: default; }
     <div class="frame pad doc">
       <p class="eyebrow">Epistula</p>
       <h2 class="h1" id="feedback-title" tabindex="-1" data-focus>의견 보내기</h2>
-      <p class="story">버그, 문제 오류, 아이디어, 계정 기록 삭제 요청을 보내 주세요. 보낸 내용은 운영진만 보고, 의견은 1분에 한 번 보낼 수 있습니다.</p>
+      <p class="story">버그, 문제 오류, 아이디어, 계정 기록 삭제 요청을 보내 주세요. 보낸 내용은 나와 운영진만 볼 수 있고, 운영진의 답변은 아래 ‘보낸 의견 · 답변’에 나옵니다. 의견은 1분에 한 번 보낼 수 있습니다.</p>
+      <p class="admin-note" id="feedback-ban" hidden></p>
       <div id="feedback-form">
         <label class="field-label" for="fb-category">종류</label>
         <select id="fb-category" class="select">
@@ -804,6 +872,11 @@ div.menu-row { cursor: default; }
           <button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button>
         </div>
       </div>
+      <div id="feedback-mine" hidden>
+        <h3 class="section-label">보낸 의견 · 답변</h3>
+        <div class="tickets" id="mine-list"></div>
+      </div>
+      <div class="actions" id="feedback-back" hidden><button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button></div>
     </div>
   </section>
 
@@ -833,7 +906,8 @@ div.menu-row { cursor: default; }
         <ul>
           <li>로그인하면: Google 계정의 고유 번호, 이메일, 이름, 프로필 사진 주소를 계정 확인과 화면 표시에 씁니다. 이메일은 관리자 계정인지 확인할 때만 쓰고 게임 기록에 넣지 않습니다.</li>
           <li>게임 기록: 금화, 가진 물건과 테마, 판 수 · 탈출 · 완벽 탈출 · 지나온 방 수, 마지막 저장 시각.</li>
-          <li>의견 보내기: 보낸 내용과 종류, 계정 고유 번호, 게임 버전, 기기 정보(브라우저 · 운영체제 종류, 화면 크기), 보낸 시각. 1분에 한 번만 보낼 수 있게 보낸 횟수와 마지막으로 보낸 시각도 저장합니다.</li>
+          <li>의견 보내기: 보낸 내용과 종류, 계정 고유 번호, 게임 버전, 기기 정보(브라우저 · 운영체제 종류, 화면 크기), 보낸 시각, 운영진의 처리 상태와 답변. 1분에 한 번만 보낼 수 있게 보낸 횟수와 마지막으로 보낸 시각도 저장합니다.</li>
+          <li>이용 제한을 받으면: 제한한 이유와 시각.</li>
           <li>친구 기능을 켜면: 직접 정한 이름, 친구 코드, 쓰고 있는 테마, 판 수 · 탈출 · 완벽 탈출 · 지나온 방 수, 주고받은 친구 신청과 친구 목록.</li>
           <li>로그인하지 않으면 모든 기록은 이 기기의 브라우저 저장소에만 있습니다. 오답 노트는 로그인해도 이 기기에만 저장합니다. 광고 추적 쿠키는 쓰지 않습니다.</li>
         </ul>
@@ -841,7 +915,7 @@ div.menu-row { cursor: default; }
       <section class="doc-sec">
         <h3>4. 다른 사람에게 보이는 정보</h3>
         <ul>
-          <li>친구 기능을 켜지 않으면 다른 사람에게 공개되는 정보는 없습니다. 내 계정 기록은 나만 읽고 쓸 수 있고, 보낸 의견은 운영진만 봅니다.</li>
+          <li>친구 기능을 켜지 않으면 다른 플레이어에게 공개되는 정보는 없습니다. 내 계정 기록과 보낸 의견(답변 포함)은 나와 운영진만 볼 수 있습니다.</li>
           <li>친구 기능을 켜면 직접 정한 이름, 친구 코드, 테마, 판 수 · 탈출 · 완벽 탈출 · 지나온 방 수가 로그인한 다른 플레이어에게 보일 수 있습니다(내 친구 코드를 알거나 나와 친구 신청을 주고받은 사람). 이메일, Google 이름과 사진, 금화와 물건은 보이지 않습니다.</li>
         </ul>
       </section>
@@ -860,7 +934,8 @@ div.menu-row { cursor: default; }
           <li>클라우드 기록은 계정을 쓰는 동안 보관합니다.</li>
           <li>이 기기의 기록은 브라우저 데이터를 지우면 함께 지워집니다.</li>
           <li>친구 화면에서 ‘친구 기능 끄기’를 누르면 공개 프로필, 친구 코드, 친구 목록과 친구 신청이 바로 지워집니다.</li>
-          <li>계정 기록을 모두 지우고 싶다면 ‘의견 보내기’에서 ‘계정 기록 삭제 요청’을 보내 주세요. 확인한 뒤 지워 드립니다.</li>
+          <li>계정 기록을 모두 지우고 싶다면 ‘의견 보내기’에서 ‘계정 기록 삭제 요청’을 보내 주세요. 확인한 뒤 게임 기록을 처음 상태로 되돌리고, 친구 정보와 보낸 의견을 모두 지워 드립니다.</li>
+          <li>이용 제한 기록은 제한을 풀 때 지웁니다.</li>
         </ul>
       </section>
       <section class="doc-sec">
@@ -869,13 +944,16 @@ div.menu-row { cursor: default; }
           <li>금화나 기록 조작, 버그 악용, 데이터베이스를 직접 건드리는 행동은 하면 안 됩니다.</li>
           <li>계정에 저장할 때마다 서버가 금화 · 물건 · 플레이 기록이 서로 맞는지 확인하고, 맞지 않는 기록은 저장하지 않습니다.</li>
           <li>친구에게 보이는 이름에 욕설, 남을 불쾌하게 하는 말, 개인정보를 쓰면 안 됩니다.</li>
-          <li>이상한 기록이나 이름은 운영진이 지울 수 있습니다.</li>
+          <li>이상한 기록은 운영진이 고치거나 처음 상태로 되돌릴 수 있고, 규칙에 맞지 않는 이름은 친구 프로필째 지울 수 있습니다.</li>
+          <li>규칙을 어기면 운영진이 의견 보내기와 친구 기능을 막을 수 있습니다(이용 제한). 막힌 이유는 의견 보내기 · 친구 화면에 나옵니다. 게임과 기록 저장은 그대로 할 수 있습니다.</li>
         </ul>
       </section>
       <section class="doc-sec">
         <h3>8. 운영진</h3>
         <ul>
           <li>운영진 계정은 확인과 테스트를 위해 금화가 무한이며, 상점 물건을 금화를 쓰지 않고 받을 수 있습니다.</li>
+          <li>운영진은 문의를 처리하려고 보낸 의견, 계정 기록(금화 · 물건 · 테마 · 플레이 기록), 친구 프로필과 친구 목록을 볼 수 있고, 잃어버린 기록을 되살리는 것처럼 문제를 고칠 때 계정 기록을 바꿀 수 있습니다.</li>
+          <li>운영진에게도 이메일과 Google 이름 · 사진은 보이지 않습니다.</li>
         </ul>
       </section>
       <section class="doc-sec">
@@ -1037,6 +1115,22 @@ div.menu-row { cursor: default; }
     <div class="actions"><button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button></div>
   </section>
 
+  <!-- 운영자 (운영진 계정에만 보인다. 이메일 · Google 이름은 운영진에게도 보이지 않는다) -->
+  <section class="screen medium" id="screen-admin" aria-labelledby="admin-title" hidden>
+    <div class="page-head">
+      <div>
+        <p class="eyebrow">Custodia</p>
+        <h2 class="h1" id="admin-title" tabindex="-1" data-focus>운영자</h2>
+      </div>
+      <div class="seg" role="tablist" aria-label="운영자 메뉴">
+        <button type="button" class="seg-btn" role="tab" id="ops-tab-inbox" data-act="ops-tab" data-tab="inbox">문의<span class="badge" id="ops-tab-badge" hidden></span></button>
+        <button type="button" class="seg-btn" role="tab" id="ops-tab-users" data-act="ops-tab" data-tab="users">사용자</button>
+      </div>
+    </div>
+    <div id="ops-body" role="tabpanel"></div>
+    <div class="actions"><button type="button" class="btn btn-ghost" data-go="menu">메뉴로</button></div>
+  </section>
+
   <!-- 크레딧 -->
   <!-- 은율이의 다른 앱 (아이콘은 각 앱의 파비콘 사본, 색은 파비콘에서 땄다) -->
   <section class="screen narrow" id="screen-apps" aria-labelledby="apps-title" hidden>
@@ -1117,6 +1211,12 @@ const FIREBASE_VERSION = '10.12.2';
 
 // 패치노트 (맨 위가 지금 버전). 약관을 바꾸면 여기에도 적는다.
 const PATCH_NOTES = [
+  { v: '4.1.0', date: '2026년 10월 25일', items: [
+    '의견 보내기 화면에서 내가 보낸 의견과 처리 상태, 운영진의 답변을 볼 수 있습니다. 새 답변이 오면 메뉴 아래 ‘의견 보내기’에 숫자로 알려 드립니다.',
+    '운영진이 게임 안에서 문의에 답변하고, 계정 기록 삭제 요청과 신고를 바로 처리합니다.',
+    '계정 저장이 거부되어 계정 기록을 다시 맞출 때, 방금 한 플레이가 기록에서 빠질 수 있던 문제를 고쳤습니다.',
+    '약관의 ‘모으는 정보와 쓰는 곳’, ‘다른 사람에게 보이는 정보’, ‘보관 기간과 지우기’, ‘공정한 플레이’, ‘운영진’을 고쳤습니다.',
+  ] },
   { v: '4.0.0', date: '2026년 10월 25일', items: [
     '문제를 모두 검토해 고등학교 1학년 공통수학에 나오는 내용만 남겼습니다. 날씨 · 동물 · 과학처럼 수학이 아닌 명제는 빼고, 다항식 · 방정식과 부등식 · 경우의 수 · 행렬 · 도형의 방정식 · 집합과 명제 · 함수와 그래프의 내용으로 명제 문제를 새로 만들었습니다.',
     '방마다 문제에 담긴 내용이 나온 단원(공통수학1 · 공통수학2)을 보여 줍니다.',
@@ -1602,9 +1702,10 @@ function toast(msg) {
 
 /* ───────── 기록 (손님은 이 기기, 로그인하면 계정에도 저장) ───────── */
 const LS_PREFIX = 'logicmaze.v2.';
+// rev: 운영진이 이 계정 기록을 고친 횟수. 저장할 때 그대로 보내서, 운영진이 고친 뒤의 옛 기록은 서버가 받지 않는다.
 function defaultProfile() {
   const items = Object.fromEntries(Object.keys(WARES).map(id => [id, 0]));
-  return { v: 1, coins: 0, items, skins: ['emerald'], skin: 'emerald', stats: { runs: 0, clears: 0, perfect: 0, rooms: 0 } };
+  return { v: 1, coins: 0, items, skins: ['emerald'], skin: 'emerald', stats: { runs: 0, clears: 0, perfect: 0, rooms: 0 }, rev: 0 };
 }
 function sanitize(p) {
   const d = defaultProfile();
@@ -1615,6 +1716,7 @@ function sanitize(p) {
   if (Array.isArray(p.skins)) d.skins = Array.from(new Set(['emerald', ...p.skins.filter(s => SKINS[s])]));
   d.skin = SKINS[p.skin] && d.skins.includes(p.skin) ? p.skin : 'emerald';
   if (p.stats && typeof p.stats === 'object') for (const k of Object.keys(d.stats)) d.stats[k] = int(p.stats[k], 10000000);
+  d.rev = int(p.rev, 1000000);
   return d;
 }
 function readLocal(slot) {
@@ -1809,6 +1911,7 @@ function afterProfileChange() {
   else if (state.screen === 'feedback') renderFeedback();
   else if (state.screen === 'friends') renderFriends();
   else if (state.screen === 'notes') renderNotes();
+  else if (state.screen === 'admin') { if (account.admin) renderOps(); else navigate('menu'); }
   renderMenu();
 }
 async function onUser(user) {
@@ -1822,6 +1925,8 @@ async function onUser(user) {
   account.rejected = false;
   account.sent = null;
   resetFriends();
+  resetMine();
+  resetOps();
   if (!user) {
     account.user = null;
     account.base = null;
@@ -1871,8 +1976,11 @@ async function loadAccount(gen, adopt) {
         : account.sent && sameProfile(cloud, account.sent) ? account.sent
         : !account.sent || sameProfile(cloud, account.base) ? account.base : null;
       const merged = from && !sameProfile(profile, from) ? rebase(profile, from, cloud) : null;
-      if (!merged && !sameProfile(profile, from || cloud)) toast('계정에 저장된 기록과 맞지 않는 변경이 있어 계정 기록을 불러왔습니다.');
-      profile = merged || cloud;
+      // 이 기기에서 쓰던 기록보다 운영진이 고친 횟수(rev)가 늘었으면 알린다
+      if (hasLocal('u.' + uid) && account.base && cloud.rev > account.base.rev) toast('운영진이 계정 기록을 고쳐서, 고친 기록을 불러왔습니다.');
+      else if (!merged && !sameProfile(profile, from || cloud)) toast('계정에 저장된 기록과 맞지 않는 변경이 있어 계정 기록을 불러왔습니다.');
+      // profile은 게임이 그 자리에서 고치므로 base와 같은 객체를 쓰면 안 된다 (고친 것이 base에도 들어가 '바뀐 것 없음'이 된다)
+      profile = merged || sanitize(cloud);
       account.base = cloud;
     } else {
       await createAccount(ref, gen);
@@ -1894,6 +2002,8 @@ async function loadAccount(gen, adopt) {
   afterProfileChange();
   if (account.loaded && isDirty()) await saveCloud();
   if (account.loaded && friends.pub === undefined && gen === authGen) loadFriendsState(gen);
+  if (account.loaded && mine.list === null && gen === authGen) loadMine(gen);
+  if (account.loaded && account.admin && ops.inbox.list === null && gen === authGen) loadInbox();
 }
 // 처음 로그인: 이 기기의 기록(손님 기록)을 계정으로 옮긴다.
 // 게임 기록과 맞지 않아 서버가 거부하면 옮기지 않고 새 기록으로 시작한다 (손님 기록은 그대로 둔다).
@@ -2067,6 +2177,10 @@ function navigate(to) {
   if (to === 'practice') renderPractice();
   if (to === 'notes') { notesArmed = 0; renderNotes(); }
   if (to === 'friends') { friends.armed = ''; openFriends(); }
+  if (to === 'admin') {
+    if (!account.admin) { navigate('menu'); return; }
+    openOps();
+  }
   show(to);
   if (to === 'menu') retryAccount();   // 계정 기록을 못 불러온 상태면 메뉴로 올 때마다 다시 시도
 }
@@ -2074,6 +2188,9 @@ function navigate(to) {
 function renderMenu() {
   $('menu-purse').innerHTML = walletHTML();
   renderFriendBadge();
+  renderReplyBadge();
+  $('admin-row').hidden = !account.admin;
+  renderOpsBadge();
   const s = profile.stats;
   $('menu-stats').innerHTML = s.runs
     ? [['탈출', s.clears + '회'], ['완벽 탈출', s.perfect + '회'], ['지나온 방', fmt(s.rooms) + '개']]
@@ -2978,6 +3095,7 @@ function renderFriendBadge() {
 // 친구 기능 켜기: 공개 프로필과 친구 코드를 한 번에 만든다. 이미 있는 코드와 겹치면(서버가 거부) 다른 코드로 다시 해 본다.
 async function enableFriends() {
   if (friends.busy || !account.user || !fb) return;
+  if (mine.ban) { toast(banText()); return; }
   const name = cleanName($('friend-name') ? $('friend-name').value : friends.nameDraft);
   if (!NAME_RE.test(name)) { toast('이름은 한글 · 영문 · 숫자로 2~12자로 정해 주세요.'); return; }
   friends.busy = true;
@@ -3185,6 +3303,8 @@ function renderFriends() {
   } else if (!fb || !account.loaded || friends.pub === undefined) {
     const msg = friends.error || (account.sync === 'wait' ? '계정에 연결하지 못했습니다. 연결되면 친구 정보를 불러옵니다.' : '친구 정보를 불러오는 중…');
     html = `<div class="frame pad friends-intro"><p class="story">${msg}</p>${friends.error ? '<div class="actions"><button type="button" class="btn btn-ghost" data-act="friends-refresh">새로 고침</button></div>' : ''}</div>`;
+  } else if (!friends.pub && mine.ban) {
+    html = `<div class="frame pad friends-intro"><p class="story">${esc(banText())}</p></div>`;
   } else if (!friends.pub) {
     if (!friends.nameDraft) friends.nameDraft = randomName();
     html = `
@@ -3294,10 +3414,14 @@ function renderPatch() {
 }
 function updateCount() { $('fb-count').textContent = $('fb-text').value.length; }
 function renderFeedback() {
-  const can = !!account.user;
-  $('feedback-form').hidden = !can;
-  $('feedback-login').hidden = can;
+  const signed = !!account.user, banned = signed && !!mine.ban;
+  $('feedback-form').hidden = !signed || banned;
+  $('feedback-login').hidden = signed;
+  $('feedback-ban').hidden = !banned;
+  $('feedback-ban').textContent = banned ? banText() : '';
+  $('feedback-back').hidden = !banned;
   updateCount();
+  renderMine();
 }
 function deviceInfo() {
   return `${navigator.userAgent} · ${window.screen ? screen.width + 'x' + screen.height : ''}`.slice(0, 300);
@@ -3308,25 +3432,32 @@ async function sendFeedback() {
   const text = $('fb-text').value.trim();
   if (text.length < 5) { toast('내용을 5자 이상 적어 주세요.'); return; }
   if (!account.user || !fb) { toast('의견을 보내려면 먼저 Google 계정으로 로그인해 주세요.'); renderFeedback(); return; }
+  if (mine.ban) { toast(banText()); renderFeedback(); return; }
   const left = Math.ceil((feedbackReadyAt - Date.now()) / 1000);
   if (left > 0) { toast(`의견은 1분에 한 번 보낼 수 있습니다. ${left}초 뒤에 다시 보내 주세요.`); return; }
   const btn = document.querySelector('[data-act="send-feedback"]');
   btn.disabled = true;
   const { fsM, db } = fb, uid = account.user.uid;
   const data = { uid, category: $('fb-category').value, text: text.slice(0, 1000), version: APP_VERSION, device: deviceInfo() };
+  let sentId = '';
   try {
     // 보낸 횟수 기록(feedbackMeta)과 의견을 한 번에 쓴다. 의견 번호는 '<uid>_<횟수>'라서 서버가 한 번에 하나만 받는다.
     await fsM.runTransaction(db, async tx => {
       const metaRef = fsM.doc(db, 'feedbackMeta', uid);
       const meta = await tx.get(metaRef);
       const count = ((meta.exists() && Number(meta.data().count)) || 0) + 1;
-      tx.set(fsM.doc(db, 'feedback', uid + '_' + count), { ...data, createdAt: fsM.serverTimestamp() });
+      sentId = uid + '_' + count;
+      tx.set(fsM.doc(db, 'feedback', sentId), { ...data, createdAt: fsM.serverTimestamp() });
       tx.set(metaRef, { count, last: fsM.serverTimestamp() });
     });
     feedbackReadyAt = Date.now() + FEEDBACK_GAP;
     $('fb-text').value = '';
     updateCount();
-    toast('의견을 보냈습니다. 고맙습니다!');
+    if (mine.list && account.user && account.user.uid === uid) {
+      mine.list = [pickFeedback(sentId, { ...data, createdAt: Date.now() }), ...mine.list.filter(f => f.id !== sentId)];
+      if (state.screen === 'feedback') renderMine();
+    }
+    toast('의견을 보냈습니다. 고맙습니다! 답변은 아래 ‘보낸 의견 · 답변’에 나옵니다.');
   } catch (e) {
     console.warn('의견을 보내지 못했습니다', e);
     toast(e && e.code === 'permission-denied'
@@ -3335,6 +3466,710 @@ async function sendFeedback() {
   } finally {
     btn.disabled = false;
   }
+}
+
+/* ───────── 보낸 의견 · 답변, 이용 제한 ─────────
+   feedback/<uid>_<n>: 보낸 사람이 쓴 { uid, category, text, version, device, createdAt }에
+   운영진이 { status: 'new' | 'doing' | 'done', reply, repliedAt, handledAt }를 더한다. bans/<uid>: { reason, at } */
+const FB_CATS = { bug: '버그 신고', problem: '문제 오류', idea: '아이디어', delete: '계정 기록 삭제 요청', etc: '기타' };
+// list: 내가 보낸 의견 (null = 아직 모름), ban: 이용 제한 { reason, at } 또는 null
+const mine = { list: null, ban: null, loading: false, error: false };
+
+function msOf(t) { return t && typeof t.toMillis === 'function' ? t.toMillis() : typeof t === 'number' ? t : 0; }
+function when(ms) {
+  if (!ms) return '방금';
+  const d = new Date(ms), opt = { month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' };
+  if (d.getFullYear() !== new Date().getFullYear()) opt.year = 'numeric';
+  return d.toLocaleString('ko-KR', opt);
+}
+function pickFeedback(id, x) {
+  return {
+    id, uid: String(x.uid || ''), category: FB_CATS[x.category] ? x.category : 'etc', text: String(x.text || ''),
+    version: String(x.version || ''), device: String(x.device || ''), createdAt: msOf(x.createdAt),
+    status: ['doing', 'done'].includes(x.status) ? x.status : 'new',
+    reply: typeof x.reply === 'string' ? x.reply : '', repliedAt: msOf(x.repliedAt),
+  };
+}
+function newestFirst(a, b) { return b.createdAt - a.createdAt || (a.id < b.id ? 1 : -1); }
+function banText() { return `운영진이 이 계정의 의견 보내기와 친구 기능을 막았습니다. 사유: ${mine.ban ? mine.ban.reason : ''}`; }
+function resetMine() {
+  Object.assign(mine, { list: null, ban: null, loading: false, error: false });
+  renderReplyBadge();
+}
+// 계정 기록을 불러온 뒤 한 번: 내가 보낸 의견(답변 포함)과 이용 제한을 읽는다
+async function loadMine(gen = authGen) {
+  if (!account.user || !fb || mine.loading) return;
+  const uid = account.user.uid, { fsM, db } = fb;
+  mine.loading = true;
+  try {
+    const [ban, snap] = await Promise.all([
+      // 이용 제한을 못 읽으면 막히지 않은 것으로 보여 준다 (막혔다면 보낼 때 서버가 거부한다)
+      fsM.getDoc(fsM.doc(db, 'bans', uid)).catch(e => { console.warn('이용 제한을 확인하지 못했습니다', e); return null; }),
+      fsM.getDocs(fsM.query(fsM.collection(db, 'feedback'), fsM.where('uid', '==', uid), fsM.limit(30))),
+    ]);
+    if (gen !== authGen) return;
+    mine.ban = ban && ban.exists() ? { reason: String(ban.data().reason || ''), at: msOf(ban.data().at) } : null;
+    mine.list = snap.docs.map(d => pickFeedback(d.id, d.data())).sort(newestFirst);
+    mine.error = false;
+  } catch (e) {
+    if (gen !== authGen) return;
+    console.warn('보낸 의견을 불러오지 못했습니다', e);
+    mine.error = true;
+  } finally {
+    if (gen === authGen) mine.loading = false;
+  }
+  if (gen !== authGen) return;
+  const fresh = unseenReplies();
+  renderReplyBadge();
+  if (state.screen === 'feedback') renderFeedback();
+  else if (fresh) toast('운영진이 보낸 의견에 답변했습니다. 메뉴 아래 ‘의견 보내기’에서 볼 수 있습니다.');
+  if (state.screen === 'friends') renderFriends();
+}
+// 새 답변 알림: 이 기기에서 마지막으로 본 답변 시각(seen.<uid>)보다 나중에 온 답변 수
+function seenKey() { return LS_PREFIX + 'seen.' + account.user.uid; }
+function readSeen() { try { return Number(localStorage.getItem(seenKey())) || 0; } catch (e) { return 0; } }
+function unseenReplies() {
+  if (!account.user || !mine.list) return 0;
+  const seen = readSeen();
+  return mine.list.filter(f => f.reply && f.repliedAt > seen).length;
+}
+function markRepliesSeen() {
+  if (!account.user || !mine.list) return;
+  const last = Math.max(0, ...mine.list.filter(f => f.reply).map(f => f.repliedAt));
+  if (last > readSeen()) { try { localStorage.setItem(seenKey(), String(last)); } catch (e) { /* 저장소를 쓸 수 없는 환경 */ } }
+  renderReplyBadge();
+}
+function renderReplyBadge() {
+  const badge = $('reply-badge');
+  if (!badge) return;
+  const n = unseenReplies();
+  badge.hidden = !n;
+  badge.textContent = n || '';
+  badge.setAttribute('aria-label', `새 답변 ${n}개`);
+}
+function myState(f) {
+  if (f.status === 'done') return ['s-done', f.reply ? '답변 완료' : '처리 완료'];
+  if (f.status === 'doing') return ['s-doing', '확인 중'];
+  return ['s-new', '접수됨'];
+}
+function renderMine() {
+  const box = $('feedback-mine'), list = $('mine-list');
+  if (!account.user || (mine.list && !mine.list.length)) { box.hidden = true; return; }
+  box.hidden = false;
+  if (!mine.list) {
+    list.innerHTML = mine.error
+      ? '<p class="list-note">보낸 의견을 불러오지 못했습니다. <button type="button" class="inline-link" data-act="mine-refresh">다시 불러오기</button></p>'
+      : '<p class="list-note">보낸 의견을 불러오는 중…</p>';
+    return;
+  }
+  list.innerHTML = mine.list.map(f => {
+    const [cls, label] = myState(f);
+    return `
+      <article class="mine-item">
+        <div class="t-head"><span class="chip">${FB_CATS[f.category]}</span><span class="state ${cls}">${label}</span><span>${when(f.createdAt)}</span></div>
+        <p class="t-text">${esc(f.text)}</p>
+        ${f.reply ? `<div class="t-reply"><span class="t-reply-k">운영진 답변 · ${when(f.repliedAt)}</span><p>${esc(f.reply)}</p></div>` : ''}
+      </article>`;
+  }).join('');
+  markRepliesSeen();
+}
+
+/* ───────── 운영자 (문의 처리 · 사용자 관리) ─────────
+   운영진 계정에만 보인다. 서버도 운영진인지 확인하므로(firestore.rules의 isAdmin) 화면을 열어도 남은 읽지 못한다.
+   운영진에게도 이메일 · Google 이름은 보이지 않고, uid와 친구 이름(친구 기능을 켠 사람만)만 보인다. */
+const OPS_PAGE = 30;
+const OPS_STATE = { new: ['s-new', '새 문의', '새 문의로'], doing: ['s-doing', '확인 중', '확인 중으로'], done: ['s-done', '완료', '완료로'] };
+const OPS_FIELDS = [
+  ['coins', '금화'], ['runs', '판 수'], ['clears', '탈출'], ['perfect', '완벽 탈출'], ['rooms', '지나온 방'],
+  ...Object.keys(WARES).map(id => [id, WARES[id].name]),
+];
+// detail: 사용자 자세히 보기 { uid, from, loading, error, user: { profile, updatedAt } | null, pub, ban, feedback, pairs, editing, draft, banDraft }
+const ops = {
+  tab: 'inbox',
+  inbox: { list: null, last: null, more: false, loading: false, error: '', filter: 'open', cat: 'all', drafts: {} },
+  users: { list: null, last: null, more: false, loading: false, error: '', q: '', found: null },
+  detail: null, detailSeq: 0, scroll: 0,
+  names: new Map(),   // uid → 친구 공개 프로필 (없으면 null)
+  bans: new Map(),    // uid → 이용 제한
+  busy: false, armed: '', armedUntil: 0, seq: 0,
+};
+function resetOps() {
+  Object.assign(ops, { tab: 'inbox', detail: null, busy: false, armed: '', seq: ops.seq + 1 });
+  Object.assign(ops.inbox, { list: null, last: null, more: false, loading: false, error: '', drafts: {} });
+  Object.assign(ops.users, { list: null, last: null, more: false, loading: false, error: '', q: '', found: null });
+  ops.names.clear();
+  ops.bans.clear();
+  renderOpsBadge();
+}
+function opsError(e) {
+  return e && e.code === 'permission-denied'
+    ? '권한이 없어 처리하지 못했습니다. 운영진 계정인지, 새 보안 규칙이 서버에 적용됐는지 확인해 주세요.'
+    : '처리하지 못했습니다. 연결을 확인한 뒤 다시 시도해 주세요.';
+}
+function newCount() { return (ops.inbox.list || []).filter(f => f.status === 'new').length; }
+function renderOpsBadge() {
+  const n = account.admin ? newCount() : 0;
+  for (const id of ['ops-badge', 'ops-tab-badge']) {
+    const b = $(id);
+    if (!b) continue;
+    b.hidden = !n;
+    b.textContent = n || '';
+    b.setAttribute('aria-label', `새 문의 ${n}개`);
+  }
+}
+function shortUid(uid) { return uid.length > 10 ? uid.slice(0, 8) + '…' : uid; }
+function nameOf(uid) { const p = ops.names.get(uid); return p ? p.name : ''; }
+// 친구 이름을 붙인다 (한 번 읽은 것은 기억한다)
+async function loadNames(uids) {
+  const { fsM, db } = fb;
+  const need = [...new Set(uids)].filter(u => u && !ops.names.has(u));
+  await Promise.all(need.map(u => fsM.getDoc(fsM.doc(db, 'players', u))
+    .then(s => { ops.names.set(u, s.exists() ? pickPub(s.data()) : null); })
+    .catch(() => {})));
+}
+
+// 문의: 최근 것부터 OPS_PAGE개씩. 처리 상태와 종류는 불러온 것 안에서 거른다.
+async function loadInbox(more) {
+  if (!account.admin || !fb || ops.inbox.loading) return;
+  const box = ops.inbox, seq = ops.seq, { fsM, db } = fb;
+  box.loading = true;
+  if (state.screen === 'admin') renderOps();
+  try {
+    const cons = [fsM.orderBy('createdAt', 'desc')];
+    if (more && box.last) cons.push(fsM.startAfter(box.last));
+    const snap = await fsM.getDocs(fsM.query(fsM.collection(db, 'feedback'), ...cons, fsM.limit(OPS_PAGE)));
+    if (seq !== ops.seq) return;
+    const rows = snap.docs.map(d => pickFeedback(d.id, d.data()));
+    await loadNames(rows.map(f => f.uid));
+    if (seq !== ops.seq) return;
+    const old = more ? box.list || [] : [];
+    box.list = [...old, ...rows.filter(r => !old.some(f => f.id === r.id))];
+    if (snap.docs.length) box.last = snap.docs[snap.docs.length - 1];
+    else if (!more) box.last = null;
+    box.more = snap.docs.length === OPS_PAGE;
+    box.error = '';
+  } catch (e) {
+    if (seq !== ops.seq) return;
+    console.warn('문의를 불러오지 못했습니다', e);
+    box.error = opsError(e).replace('처리하지', '불러오지');
+  } finally {
+    if (seq === ops.seq) box.loading = false;
+  }
+  if (seq !== ops.seq) return;
+  renderOpsBadge();
+  if (state.screen === 'admin') renderOps();
+}
+// 사용자: 최근에 저장한 순서로 OPS_PAGE명씩 (처음 불러올 때 이용 제한 목록도 함께)
+async function loadUsers(more) {
+  if (!account.admin || !fb || ops.users.loading) return;
+  const box = ops.users, seq = ops.seq, { fsM, db } = fb;
+  box.loading = true;
+  if (state.screen === 'admin') renderOps();
+  try {
+    const cons = [fsM.orderBy('updatedAt', 'desc')];
+    if (more && box.last) cons.push(fsM.startAfter(box.last));
+    const [snap, bans] = await Promise.all([
+      fsM.getDocs(fsM.query(fsM.collection(db, 'users'), ...cons, fsM.limit(OPS_PAGE))),
+      more ? null : fsM.getDocs(fsM.query(fsM.collection(db, 'bans'), fsM.limit(500))).catch(() => null),
+    ]);
+    if (seq !== ops.seq) return;
+    const rows = snap.docs.map(d => ({ uid: d.id, profile: sanitize(d.data()), updatedAt: msOf(d.data().updatedAt) }));
+    await loadNames(rows.map(r => r.uid));
+    if (seq !== ops.seq) return;
+    if (bans) ops.bans = new Map(bans.docs.map(d => [d.id, { reason: String(d.data().reason || ''), at: msOf(d.data().at) }]));
+    const old = more ? box.list || [] : [];
+    box.list = [...old, ...rows.filter(r => !old.some(x => x.uid === r.uid))];
+    if (snap.docs.length) box.last = snap.docs[snap.docs.length - 1];
+    else if (!more) box.last = null;
+    box.more = snap.docs.length === OPS_PAGE;
+    box.error = '';
+  } catch (e) {
+    if (seq !== ops.seq) return;
+    console.warn('사용자를 불러오지 못했습니다', e);
+    box.error = opsError(e).replace('처리하지', '불러오지');
+  } finally {
+    if (seq === ops.seq) box.loading = false;
+  }
+  if (seq === ops.seq && state.screen === 'admin') renderOps();
+}
+
+// uid · 친구 코드 6자리 · 친구 이름(정확히)으로 찾는다. 한 명이면 바로 자세히 본다.
+async function searchUser() {
+  if (!account.admin || !fb || ops.busy) return;
+  const raw = String($('ops-search') ? $('ops-search').value : ops.users.q).trim();
+  ops.users.q = raw;
+  if (!raw) { ops.users.found = null; renderOps(); return; }
+  const seq = ops.seq, { fsM, db } = fb;
+  ops.busy = true;
+  renderOps();
+  let uids = [];
+  try {
+    const code = cleanCode(raw);
+    if (CODE_RE.test(code) && raw.replace(/[\s-]/g, '').length === 6) {
+      const c = await fsM.getDoc(fsM.doc(db, 'codes', code));
+      if (c.exists()) uids = [String(c.data().uid)];
+    }
+    if (!uids.length && /^[A-Za-z0-9]{16,64}$/.test(raw)) {
+      const [u, p] = await Promise.all([fsM.getDoc(fsM.doc(db, 'users', raw)), fsM.getDoc(fsM.doc(db, 'players', raw))]);
+      if (u.exists() || p.exists()) uids = [raw];
+    }
+    if (!uids.length) {
+      const snap = await fsM.getDocs(fsM.query(fsM.collection(db, 'players'), fsM.where('name', '==', cleanName(raw)), fsM.limit(20)));
+      snap.docs.forEach(d => ops.names.set(d.id, pickPub(d.data())));
+      uids = snap.docs.map(d => d.id);
+    }
+  } catch (e) {
+    console.warn('사용자를 찾지 못했습니다', e);
+    if (seq === ops.seq) toast(opsError(e).replace('처리하지', '찾지'));
+    uids = null;
+  }
+  if (seq !== ops.seq) return;
+  ops.busy = false;
+  if (uids && uids.length === 1) { ops.users.found = null; openUser(uids[0]); return; }
+  if (uids) {
+    ops.users.found = uids;
+    if (!uids.length) toast('찾지 못했습니다. uid, 친구 코드 6자리, 친구 이름(정확히)으로 찾을 수 있습니다.');
+  }
+  renderOps();
+}
+
+async function openUser(uid) {
+  if (!account.admin || !fb || !uid) return;
+  if (!ops.detail) ops.scroll = window.scrollY;
+  const from = ops.detail ? ops.detail.from : ops.tab;
+  ops.detail = { uid, from, loading: true, error: '', user: null, pub: null, ban: null, feedback: [], pairs: [], editing: false, draft: null, banDraft: '' };
+  ops.tab = 'users';
+  ops.armed = '';
+  if (state.screen === 'admin') { renderOps(); window.scrollTo(0, 0); }
+  await loadDetail();
+}
+function closeUser() {
+  const from = ops.detail ? ops.detail.from : 'users';
+  ops.detail = null;
+  ops.armed = '';
+  ops.tab = from === 'inbox' ? 'inbox' : 'users';
+  renderOps();
+  window.scrollTo(0, ops.scroll);
+  if (ops.tab === 'users' && ops.users.list === null) loadUsers();
+}
+async function loadDetail() {
+  const d = ops.detail;
+  if (!d || !fb) return;
+  const token = ++ops.detailSeq, seq = ops.seq, uid = d.uid, { fsM, db } = fb;
+  const one = col => fsM.getDoc(fsM.doc(db, col, uid));
+  d.loading = true;
+  if (state.screen === 'admin') renderOps();
+  try {
+    const [u, p, b, f, fr] = await Promise.all([
+      one('users'), one('players'), one('bans'),
+      fsM.getDocs(fsM.query(fsM.collection(db, 'feedback'), fsM.where('uid', '==', uid), fsM.limit(50))),
+      fsM.getDocs(fsM.query(fsM.collection(db, 'friendships'), fsM.where('users', 'array-contains', uid), fsM.limit(200))),
+    ]);
+    if (token !== ops.detailSeq || seq !== ops.seq) return;
+    Object.assign(d, {
+      loading: false, error: '',
+      user: u.exists() ? { profile: sanitize(u.data()), updatedAt: msOf(u.data().updatedAt) } : null,
+      pub: p.exists() ? pickPub(p.data()) : null,
+      ban: b.exists() ? { reason: String(b.data().reason || ''), at: msOf(b.data().at) } : null,
+      feedback: f.docs.map(x => pickFeedback(x.id, x.data())).sort(newestFirst),
+      pairs: fr.docs.map(x => ({ id: x.id, status: x.data().status })),
+    });
+    ops.names.set(uid, d.pub);
+    if (d.ban) ops.bans.set(uid, d.ban); else ops.bans.delete(uid);
+    const row = (ops.users.list || []).find(r => r.uid === uid);
+    if (row && d.user) Object.assign(row, d.user);
+  } catch (e) {
+    if (token !== ops.detailSeq || seq !== ops.seq) return;
+    console.warn('사용자 정보를 불러오지 못했습니다', e);
+    d.loading = false;
+    d.error = opsError(e).replace('처리하지', '불러오지');
+  }
+  if (state.screen === 'admin') renderOps();
+}
+// 작업 뒤: 보고 있는 사용자를 다시 불러오고, 내 계정이었다면 내 기록 · 친구 · 의견도 다시 불러온다
+async function afterUserOp(uid, ok) {
+  if (ops.detail && ops.detail.uid === uid) { ops.detail.editing = false; await loadDetail(); }
+  if (!ok || !account.user || uid !== account.user.uid || state.run) return;
+  friends.pub = undefined;
+  friends.list = null;
+  mine.list = null;
+  mine.ban = null;
+  account.loaded = false;
+  loadAccount(authGen);
+}
+
+// 운영진 작업을 하나씩 실행한다. 실패하면 이유를 알려 준다.
+async function opsRun(work, done) {
+  if (ops.busy || !fb) return false;
+  ops.busy = true;
+  renderOps();
+  const seq = ops.seq;
+  try {
+    await work();
+    if (seq === ops.seq && done) toast(done);
+    return seq === ops.seq;
+  } catch (e) {
+    console.warn('운영자 작업을 하지 못했습니다', e);
+    if (seq === ops.seq) {
+      toast(e && e.code === 'ops/changed' ? '그 사이에 사용자가 기록을 저장했습니다. 새 기록을 불러왔으니 확인한 뒤 다시 고쳐 주세요.'
+        : e && e.code === 'ops/missing' ? '계정 기록이 없습니다.' : opsError(e));
+    }
+    return false;
+  } finally {
+    if (seq === ops.seq) {
+      ops.busy = false;
+      ops.armed = '';
+      if (state.screen === 'admin') renderOps();
+    }
+  }
+}
+// 두 번 눌러야 하는 버튼: 처음 누르면 3초 동안 확인 문구를 보여 준다
+function opsArm(key) {
+  if (ops.armed === key && ops.armedUntil > Date.now()) return true;
+  ops.armed = key;
+  ops.armedUntil = Date.now() + 3000;
+  renderOps();
+  setTimeout(() => { if (ops.armed === key && ops.armedUntil <= Date.now()) { ops.armed = ''; if (state.screen === 'admin') renderOps(); } }, 3100);
+  return false;
+}
+// 여러 문서를 고친다. 500개 제한에 걸리지 않게 나눠 보낸다 (steps: batch를 받아 일을 하나 더하는 함수들)
+async function commitSteps(steps) {
+  const { fsM, db } = fb;
+  for (let k = 0; k < steps.length; k += 400) {
+    const batch = fsM.writeBatch(db);
+    steps.slice(k, k + 400).forEach(step => step(batch));
+    await batch.commit();
+  }
+}
+// 친구 프로필 · 친구 코드 · 친구 목록과 신청을 지우는 일들 (서버에서 지금 것을 다시 읽는다)
+async function unpublishSteps(uid) {
+  const { fsM, db } = fb;
+  const [p, fr] = await Promise.all([
+    fsM.getDoc(fsM.doc(db, 'players', uid)),
+    fsM.getDocs(fsM.query(fsM.collection(db, 'friendships'), fsM.where('users', 'array-contains', uid))),
+  ]);
+  const steps = fr.docs.map(x => b => b.delete(x.ref));
+  if (p.exists()) {
+    steps.push(b => b.delete(fsM.doc(db, 'players', uid)));
+    if (CODE_RE.test(String(p.data().code))) steps.push(b => b.delete(fsM.doc(db, 'codes', p.data().code)));
+  }
+  return steps;
+}
+// 계정 기록을 바꾼다 (rev가 1 늘어, 그 사용자의 다른 기기에 있던 예전 기록은 서버가 받지 않는다).
+// expect를 주면 읽은 뒤 사용자가 그 사이에 저장했는지 확인하고, 바뀌었으면 멈춘다.
+async function writeRecord(uid, make, expect) {
+  const { fsM, db } = fb, ref = fsM.doc(db, 'users', uid);
+  await fsM.runTransaction(db, async tx => {
+    const cur = await tx.get(ref);
+    if (!cur.exists()) throw Object.assign(new Error('no record'), { code: 'ops/missing' });
+    const now = sanitize(cur.data());
+    if (expect && !sameProfile(now, expect)) throw Object.assign(new Error('changed'), { code: 'ops/changed' });
+    tx.set(ref, { ...sanitize(make(now)), rev: now.rev + 1, updatedAt: fsM.serverTimestamp() });
+  });
+}
+
+// 문의 처리: 처리 상태를 바꾸고, withReply면 답변도 보낸다
+function findTickets(id) {
+  return [...(ops.inbox.list || []), ...(ops.detail ? ops.detail.feedback : [])].filter(f => f.id === id);
+}
+async function handleTicket(id, status, withReply) {
+  const t = findTickets(id)[0];
+  if (!t || !OPS_STATE[status]) return;
+  const { fsM, db } = fb;
+  const data = { status, handledAt: fsM.serverTimestamp() };
+  let reply = t.reply;
+  if (withReply) {
+    reply = String(ops.inbox.drafts[id] !== undefined ? ops.inbox.drafts[id] : t.reply).trim().slice(0, 1000);
+    if (!reply) { toast('보낼 답변을 적어 주세요.'); const el = $('reply-' + id); if (el) el.focus(); return; }
+    if (reply !== t.reply) { data.reply = reply; data.repliedAt = fsM.serverTimestamp(); }
+  }
+  const ok = await opsRun(() => fsM.updateDoc(fsM.doc(db, 'feedback', id), data),
+    withReply ? '답변을 보내고 완료로 바꿨습니다. 보낸 사람의 ‘의견 보내기’ 화면에 나옵니다.' : `${OPS_STATE[status][2]} 바꿨습니다.`);
+  if (!ok) return;
+  for (const x of findTickets(id)) Object.assign(x, { status, reply, repliedAt: data.reply !== undefined ? Date.now() : x.repliedAt });
+  delete ops.inbox.drafts[id];
+  renderOpsBadge();
+  if (state.screen === 'admin') renderOps();
+}
+async function deleteTicket(id) {
+  const ok = await opsRun(() => fb.fsM.deleteDoc(fb.fsM.doc(fb.db, 'feedback', id)), '의견을 지웠습니다.');
+  if (!ok) return;
+  if (ops.inbox.list) ops.inbox.list = ops.inbox.list.filter(f => f.id !== id);
+  if (ops.detail) ops.detail.feedback = ops.detail.feedback.filter(f => f.id !== id);
+  delete ops.inbox.drafts[id];
+  renderOpsBadge();
+  if (state.screen === 'admin') renderOps();
+}
+
+// 사용자 관리
+function startEdit() {
+  const d = ops.detail;
+  if (!d || !d.user) return;
+  const p = d.user.profile;
+  d.draft = { coins: p.coins, ...p.stats, ...p.items, skins: [...p.skins] };
+  d.editing = true;
+  renderOps();
+}
+function toggleDraftSkin(id) {
+  const d = ops.detail;
+  if (!d || !d.draft || !SKINS[id] || id === 'emerald') return;
+  d.draft.skins = d.draft.skins.includes(id) ? d.draft.skins.filter(s => s !== id) : [...d.draft.skins, id];
+  renderOps();
+}
+async function saveEdit() {
+  const d = ops.detail;
+  if (!d || !d.user || !d.draft || ops.busy) return;
+  const v = {};
+  for (const [k, label] of OPS_FIELDS) {
+    const raw = String(d.draft[k]).trim();
+    if (!/^\d{1,8}$/.test(raw)) { toast(`${label}: 0 이상의 정수로 적어 주세요.`); return; }
+    v[k] = Number(raw);
+  }
+  const over = Object.keys(WARES).find(id => v[id] > WARES[id].max);
+  const maxCoins = Math.min(10000000, v.runs * 125);
+  const why = over ? `${WARES[over].name}${WARES[over].obj === '을' ? '은' : '는'} ${WARES[over].max}개까지입니다.`
+    : v.runs > 10000000 ? '판 수는 1,000만까지입니다.'
+    : v.clears > v.runs ? '탈출은 판 수보다 많을 수 없습니다.'
+    : v.perfect > v.clears ? '완벽 탈출은 탈출보다 많을 수 없습니다.'
+    : v.rooms > v.runs * 5 ? '지나온 방은 판 수 × 5까지입니다.'
+    : v.coins > maxCoins ? `금화는 판 수 × 125까지입니다 (지금 판 수로는 ${fmt(maxCoins)}).`
+    : '';
+  if (why) { toast(why); return; }
+  const next = {
+    ...d.user.profile, coins: v.coins, skins: d.draft.skins,
+    stats: { runs: v.runs, clears: v.clears, perfect: v.perfect, rooms: v.rooms },
+    items: Object.fromEntries(Object.keys(WARES).map(id => [id, v[id]])),
+  };
+  const uid = d.uid;
+  const ok = await opsRun(() => writeRecord(uid, () => next, d.user.profile), '기록을 고쳤습니다. 사용자가 다음에 게임을 열면 고친 기록을 받습니다.');
+  await afterUserOp(uid, ok);
+}
+async function resetUser() {
+  const uid = ops.detail.uid;
+  const ok = await opsRun(() => writeRecord(uid, () => defaultProfile()), '기록을 처음 상태로 되돌렸습니다.');
+  await afterUserOp(uid, ok);
+}
+async function unpublishUser() {
+  const uid = ops.detail.uid;
+  const ok = await opsRun(async () => commitSteps(await unpublishSteps(uid)), '친구 프로필과 친구 목록을 지웠습니다.');
+  if (ok) ops.names.set(uid, null);
+  await afterUserOp(uid, ok);
+}
+async function banUser() {
+  const d = ops.detail;
+  if (!d || d.loading || ops.busy) return;
+  const reason = String(d.banDraft || '').replace(/\s+/g, ' ').trim().slice(0, 200);
+  if (!reason) { toast('사용자에게 보일 사유를 적어 주세요.'); if ($('ops-ban-reason')) $('ops-ban-reason').focus(); return; }
+  if (!opsArm('ban')) return;
+  const uid = d.uid, { fsM, db } = fb;
+  const ok = await opsRun(async () => {
+    const steps = await unpublishSteps(uid);
+    await commitSteps([b => b.set(fsM.doc(db, 'bans', uid), { reason, at: fsM.serverTimestamp() }), ...steps]);
+  }, '의견 보내기와 친구 기능을 막았습니다.');
+  if (ok) { d.banDraft = ''; ops.names.set(uid, null); ops.bans.set(uid, { reason, at: Date.now() }); }
+  await afterUserOp(uid, ok);
+}
+async function unbanUser() {
+  const uid = ops.detail.uid;
+  const ok = await opsRun(() => fb.fsM.deleteDoc(fb.fsM.doc(fb.db, 'bans', uid)), '이용 제한을 풀었습니다.');
+  if (ok) ops.bans.delete(uid);
+  await afterUserOp(uid, ok);
+}
+// 계정 기록 삭제 요청 처리: 게임 기록은 처음 상태로(rev를 올려 다른 기기의 예전 기록이 되살아나지 않게),
+// 친구 프로필 · 친구 코드 · 친구 목록 · 보낸 의견 · 보낸 횟수 기록은 지운다. 이용 제한은 그대로 둔다.
+async function wipeUser() {
+  const uid = ops.detail.uid, { fsM, db } = fb;
+  const ok = await opsRun(async () => {
+    const [u, f, steps] = await Promise.all([
+      fsM.getDoc(fsM.doc(db, 'users', uid)),
+      fsM.getDocs(fsM.query(fsM.collection(db, 'feedback'), fsM.where('uid', '==', uid))),
+      unpublishSteps(uid),
+    ]);
+    f.docs.forEach(x => steps.push(b => b.delete(x.ref)));
+    steps.push(b => b.delete(fsM.doc(db, 'feedbackMeta', uid)));
+    if (u.exists()) steps.push(b => b.set(fsM.doc(db, 'users', uid), { ...defaultProfile(), rev: sanitize(u.data()).rev + 1, updatedAt: fsM.serverTimestamp() }));
+    await commitSteps(steps);
+  }, '계정 기록을 모두 지웠습니다.');
+  if (ok) {
+    ops.names.set(uid, null);
+    if (ops.inbox.list) ops.inbox.list = ops.inbox.list.filter(t => t.uid !== uid);
+    renderOpsBadge();
+  }
+  await afterUserOp(uid, ok);
+}
+
+function openOps() {
+  ops.armed = '';
+  renderOps();
+  if (ops.inbox.list === null) loadInbox();
+  if (ops.tab === 'users' && ops.users.list === null) loadUsers();
+}
+function opsTab(tab) {
+  if (tab !== 'inbox' && tab !== 'users') return;
+  ops.tab = tab;
+  ops.armed = '';
+  renderOps();
+  if (tab === 'users' && ops.users.list === null) loadUsers();
+  if (tab === 'inbox' && ops.inbox.list === null) loadInbox();
+}
+function ticketHTML(f, inDetail) {
+  const [cls, label] = OPS_STATE[f.status], busy = ops.busy ? ' disabled' : '', id = esc(f.id);
+  const name = nameOf(f.uid), draft = ops.inbox.drafts[f.id] !== undefined ? ops.inbox.drafts[f.id] : f.reply;
+  const btn = (act, text, extra, cls2) => `<button type="button" class="btn ${cls2 || 'btn-ghost'} btn-sm" data-act="${act}" data-id="${id}"${extra || ''}${busy}>${text}</button>`;
+  return `
+    <article class="frame ticket">
+      <div class="t-head"><span class="chip">${FB_CATS[f.category]}</span><span class="state ${cls}">${label}</span><span>${when(f.createdAt)}</span>${f.version ? `<span>v${esc(f.version)}</span>` : ''}</div>
+      ${inDetail ? '' : `<div class="t-from"><span>보낸 사람</span><b>${name ? esc(name) : '이름 없음'}</b><span class="mono">${esc(shortUid(f.uid))}</span><button type="button" class="btn btn-text btn-sm" data-act="ops-user" data-uid="${esc(f.uid)}">사용자 보기</button></div>`}
+      <p class="t-text">${esc(f.text)}</p>
+      ${f.device ? `<details class="t-device"><summary>기기 정보</summary><p>${esc(f.device)}</p></details>` : ''}
+      ${f.category === 'delete' && f.status !== 'done' ? `<p class="t-note">계정 기록 삭제 요청입니다. ${inDetail ? '아래' : '‘사용자 보기’의'} ‘계정 기록 모두 지우기’로 처리하면 이 의견도 함께 지워집니다.</p>` : ''}
+      ${f.reply ? `<div class="t-reply"><span class="t-reply-k">보낸 답변 · ${when(f.repliedAt)}</span><p>${esc(f.reply)}</p></div>` : ''}
+      <label class="field-label" for="reply-${id}">${f.reply ? '답변 고치기' : '답변'} · 보낸 사람에게 보입니다</label>
+      <textarea class="textarea sm" id="reply-${id}" data-draft="${id}" maxlength="1000" rows="3" placeholder="답변을 적고 ‘답변 보내고 완료’를 누르세요.">${esc(draft)}</textarea>
+      <div class="t-actions">
+        ${btn('ops-reply', f.reply ? '고친 답변 보내기' : '답변 보내고 완료', '', 'btn-brass')}
+        ${f.status !== 'doing' ? btn('ops-status', '확인 중으로', ' data-s="doing"') : ''}
+        ${f.status !== 'done' ? btn('ops-status', '답변 없이 완료', ' data-s="done"') : btn('ops-status', '다시 열기', ' data-s="new"')}
+        ${btn('ops-del', ops.armed === 'del:' + f.id ? '한 번 더 누르면 지웁니다' : '지우기', '', 'btn-text btn-danger')}
+      </div>
+    </article>`;
+}
+function renderInbox() {
+  const box = ops.inbox, list = box.list || [];
+  const inCat = list.filter(f => box.cat === 'all' || f.category === box.cat);
+  const counts = { open: inCat.filter(f => f.status !== 'done').length, done: inCat.filter(f => f.status === 'done').length, all: inCat.length };
+  const shown = inCat.filter(f => box.filter === 'all' || (box.filter === 'done') === (f.status === 'done'));
+  const filters = [['open', '처리 전'], ['done', '완료'], ['all', '전체']];
+  let body;
+  if (box.list === null) body = `<p class="list-note">${box.loading ? '문의를 불러오는 중…' : ''}</p>`;
+  else if (!shown.length) body = `<p class="empty">${box.filter === 'open' ? '처리할 문의가 없습니다.' : '해당하는 문의가 없습니다.'}</p>`;
+  else body = `<div class="tickets">${shown.map(f => ticketHTML(f)).join('')}</div>`;
+  return `
+    <div class="ops-bar">
+      <div class="filters" role="group" aria-label="처리 상태">${filters.map(([k, text]) => `<button type="button" class="toggle" data-act="ops-filter" data-f="${k}" aria-pressed="${box.filter === k}">${text} ${counts[k]}</button>`).join('')}</div>
+      <select class="select" id="ops-cat" aria-label="의견 종류">
+        <option value="all">모든 종류</option>${Object.entries(FB_CATS).map(([k, v]) => `<option value="${k}"${box.cat === k ? ' selected' : ''}>${v}</option>`).join('')}
+      </select>
+      <button type="button" class="btn btn-ghost btn-sm" data-act="ops-refresh"${box.loading ? ' disabled' : ''}>새로 고침</button>
+    </div>
+    ${box.error ? `<p class="list-note">${esc(box.error)}</p>` : ''}
+    ${body}
+    ${box.more ? `<div class="ops-more"><button type="button" class="btn btn-ghost" data-act="ops-more"${box.loading ? ' disabled' : ''}>${box.loading ? '불러오는 중…' : '이전 문의 더 보기'}</button></div>` : ''}
+    <p class="list-note">최근 문의부터 ${OPS_PAGE}개씩 불러옵니다. 답변은 보낸 사람의 ‘의견 보내기’ 화면에 나오고, 새 답변이 있으면 메뉴에 숫자로 알려 줍니다.</p>`;
+}
+function userRow(r) {
+  const name = nameOf(r.uid), p = r.profile, ban = ops.bans.get(r.uid);
+  const sub = p ? ` · 금화 ${fmt(p.coins)} · 판 ${fmt(p.stats.runs)} · 탈출 ${fmt(p.stats.clears)} · ${when(r.updatedAt)}` : '';
+  return `
+    <li class="friend">
+      <span class="rank"><svg aria-hidden="true"><use href="#i-person"/></svg></span>
+      <div>
+        <span class="f-name"><span>${name ? esc(name) : '이름 없음'}</span>${ban ? '<span class="state s-ban">이용 제한</span>' : ''}</span>
+        <span class="f-sub"><span class="mono">${esc(shortUid(r.uid))}</span>${sub}</span>
+      </div>
+      <div class="f-actions"><button type="button" class="btn btn-ghost btn-sm" data-act="ops-user" data-uid="${esc(r.uid)}">자세히</button></div>
+    </li>`;
+}
+function renderUsersTab() {
+  const box = ops.users, busy = ops.busy ? ' disabled' : '';
+  let body;
+  if (box.list === null) body = `<p class="list-note">${box.loading ? '사용자를 불러오는 중…' : ''}</p>`;
+  else if (!box.list.length) body = '<p class="empty">아직 사용자가 없습니다.</p>';
+  else body = `<ul class="friend-list ops-users">${box.list.map(userRow).join('')}</ul>`;
+  return `
+    <div class="field-row ops-search">
+      <input id="ops-search" class="input" placeholder="uid · 친구 코드 · 친구 이름" autocomplete="off" spellcheck="false" aria-label="사용자 찾기" value="${esc(box.q)}">
+      <button type="button" class="btn btn-brass" data-act="ops-search"${busy}>${ops.busy ? '찾는 중…' : '찾기'}</button>
+    </div>
+    ${box.found ? `
+    <h3 class="section-label">찾은 사용자 ${box.found.length}명</h3>
+    ${box.found.length ? `<ul class="friend-list ops-users">${box.found.map(uid => userRow((box.list || []).find(r => r.uid === uid) || { uid })).join('')}</ul>` : '<p class="list-note">찾지 못했습니다.</p>'}
+    <div class="ops-more"><button type="button" class="btn btn-text btn-sm" data-act="ops-search-clear">찾기 지우기</button></div>` : ''}
+    <h3 class="section-label">최근에 저장한 사용자</h3>
+    ${box.error ? `<p class="list-note">${esc(box.error)}</p>` : ''}
+    ${body}
+    <div class="ops-more">
+      ${box.more ? `<button type="button" class="btn btn-ghost" data-act="ops-users-more"${box.loading ? ' disabled' : ''}>${box.loading ? '불러오는 중…' : '더 보기'}</button>` : ''}
+      <button type="button" class="btn btn-text btn-sm" data-act="ops-users-refresh"${box.loading ? ' disabled' : ''}>새로 고침</button>
+    </div>
+    <p class="list-note">이메일과 Google 이름 · 사진은 운영진에게도 보이지 않습니다. 이름은 친구 기능을 켠 사용자만 있습니다.</p>`;
+}
+function renderDetail(d) {
+  const back = `<button type="button" class="btn btn-text btn-sm" data-act="ops-back">← ${d.from === 'inbox' ? '문의로 돌아가기' : '사용자 목록으로'}</button>`;
+  if (d.loading && !d.user && !d.pub && !d.feedback.length) return `${back}<p class="list-note">사용자 정보를 불러오는 중…</p>`;
+  if (d.error) return `${back}<p class="list-note">${esc(d.error)}</p><div class="actions"><button type="button" class="btn btn-ghost" data-act="ops-reload">다시 불러오기</button></div>`;
+  const busy = ops.busy || d.loading ? ' disabled' : '', p = d.user && d.user.profile;
+  const accepted = d.pairs.filter(x => x.status === 'accepted').length;
+  const armed = (key, idle, sure) => (ops.armed === key ? sure : idle);
+  const fact = (k, v, mono, wide) => `<div${wide ? ' class="wide"' : ''}><dt>${k}</dt><dd${mono ? ' class="mono"' : ''}>${v}</dd></div>`;
+  let record;
+  if (!p) {
+    record = '<p class="list-note">계정 기록이 없습니다. 로그인한 뒤 아직 저장한 적이 없거나, 이 uid로 저장된 기록이 없습니다.</p>';
+  } else if (d.editing) {
+    record = `
+      <div class="ops-grid">${OPS_FIELDS.map(([k, label]) => `<label>${label}<input class="input" type="text" inputmode="numeric" data-field="${k}" value="${esc(d.draft[k])}"></label>`).join('')}</div>
+      <p class="field-label">테마</p>
+      <div class="ops-skins">${Object.entries(SKINS).map(([id, s]) => `<button type="button" class="toggle" data-act="ops-skin" data-id="${id}" aria-pressed="${d.draft.skins.includes(id)}"${id === 'emerald' ? ' disabled' : ''}>${s.name}</button>`).join('')}</div>
+      <p class="ops-help">금화는 판 수 × 125까지, 완벽 탈출 ≤ 탈출 ≤ 판 수, 지나온 방 ≤ 판 수 × 5, 물건은 종류마다 0~9개입니다. 저장하면 이 사용자의 다른 기기에 남은 예전 기록은 서버가 받지 않고, 사용자가 다음에 게임을 열 때 고친 기록 위에 그 뒤의 진행만 더해집니다.</p>
+      <div class="actions">
+        <button type="button" class="btn btn-brass" data-act="ops-edit-save"${busy}>${ops.busy ? '저장하는 중…' : '고친 기록 저장'}</button>
+        <button type="button" class="btn btn-ghost" data-act="ops-edit-cancel"${busy}>취소</button>
+      </div>`;
+  } else {
+    record = `
+      <dl class="ops-facts">
+        ${fact('금화', fmt(p.coins))}${fact('판 수', fmt(p.stats.runs))}${fact('탈출', fmt(p.stats.clears))}${fact('완벽 탈출', fmt(p.stats.perfect))}${fact('지나온 방', fmt(p.stats.rooms))}
+        ${Object.keys(WARES).map(id => fact(WARES[id].name, p.items[id] + '개')).join('')}
+        ${fact('테마', p.skins.map(s => esc(SKINS[s].name) + (s === p.skin ? ' (사용 중)' : '')).join(', '), false, true)}
+        ${fact('마지막 저장', when(d.user.updatedAt))}${fact('운영진 수정', fmt(p.rev) + '회')}
+      </dl>
+      <div class="actions"><button type="button" class="btn btn-ghost" data-act="ops-edit"${busy}>기록 고치기</button></div>`;
+  }
+  return `
+    ${back}
+    <article class="frame me-card">
+      <div class="me-top">
+        <div><span class="f-sub">친구에게 보이는 이름</span><span class="me-name">${d.pub ? esc(d.pub.name) : '친구 기능을 켜지 않았습니다'}</span></div>
+        ${d.ban ? '<span class="state s-ban">이용 제한 중</span>' : ''}
+      </div>
+      <dl class="ops-facts">
+        <div class="wide"><dt>uid</dt><dd class="mono">${esc(d.uid)} <button type="button" class="btn btn-text btn-sm" data-act="ops-copy">복사</button></dd></div>
+        ${fact('친구 코드', d.pub ? esc(d.pub.code) : '없음', !!d.pub)}${fact('친구', `${accepted}명 · 신청 ${d.pairs.length - accepted}개`)}${fact('보낸 의견', d.feedback.length + '개')}
+      </dl>
+    </article>
+    <h3 class="section-label">계정 기록</h3>
+    ${record}
+    <h3 class="section-label">보낸 의견</h3>
+    ${d.feedback.length ? `<div class="tickets">${d.feedback.map(f => ticketHTML(f, true)).join('')}</div>` : '<p class="list-note">보낸 의견이 없습니다.</p>'}
+    <h3 class="section-label">이용 제한</h3>
+    ${d.ban ? `
+      <p class="story">사유: ${esc(d.ban.reason)} · ${when(d.ban.at)}부터</p>
+      <p class="ops-help">의견 보내기와 친구 기능이 막혀 있습니다. 게임과 기록 저장은 그대로 할 수 있습니다.</p>
+      <div class="actions"><button type="button" class="btn btn-ghost" data-act="ops-unban"${busy}>제한 풀기</button></div>` : `
+      <label class="field-label" for="ops-ban-reason">사유 · 사용자에게 보입니다</label>
+      <input id="ops-ban-reason" class="input" maxlength="200" autocomplete="off" placeholder="예: 친구 이름에 욕설을 썼습니다" value="${esc(d.banDraft)}">
+      <p class="ops-help">의견 보내기와 친구 기능을 막고, 친구 프로필 · 친구 코드 · 친구 목록을 지웁니다. 게임과 기록 저장은 그대로 할 수 있습니다.</p>
+      <div class="actions"><button type="button" class="btn btn-ghost btn-danger" data-act="ops-ban"${busy}>${armed('ban', '의견 · 친구 기능 막기', '한 번 더 누르면 막습니다')}</button></div>`}
+    <h3 class="section-label">정리</h3>
+    <div class="ops-danger">
+      <div>
+        <span><b>친구 프로필 지우기</b><small>친구에게 보이는 이름이 규칙에 맞지 않을 때. 친구 프로필 · 친구 코드 · 친구 목록과 신청을 지웁니다. 사용자는 새 이름으로 다시 켤 수 있습니다.</small></span>
+        <button type="button" class="btn btn-ghost btn-sm btn-danger" data-act="ops-unpub"${d.pub || d.pairs.length ? busy : ' disabled'}>${armed('unpub', '지우기', '한 번 더 누르면 지웁니다')}</button>
+      </div>
+      <div>
+        <span><b>기록 초기화</b><small>금화 · 물건 · 테마 · 플레이 기록을 처음 상태로 되돌립니다. 친구와 보낸 의견은 그대로 둡니다.</small></span>
+        <button type="button" class="btn btn-ghost btn-sm btn-danger" data-act="ops-reset"${p ? busy : ' disabled'}>${armed('reset', '초기화', '한 번 더 누르면 초기화합니다')}</button>
+      </div>
+      <div>
+        <span><b>계정 기록 모두 지우기</b><small>‘계정 기록 삭제 요청’을 처리할 때. 게임 기록을 처음 상태로 되돌리고 친구 프로필 · 친구 목록 · 보낸 의견을 모두 지웁니다. 이용 제한은 그대로 둡니다. Google 로그인 정보까지 지우려면 Firebase 콘솔의 Authentication에서 이 uid를 지워 주세요.</small></span>
+        <button type="button" class="btn btn-ghost btn-sm btn-danger" data-act="ops-wipe"${busy}>${armed('wipe', '모두 지우기', '한 번 더 누르면 모두 지웁니다')}</button>
+      </div>
+    </div>`;
+}
+function renderOps() {
+  for (const t of ['inbox', 'users']) $('ops-tab-' + t).setAttribute('aria-selected', String(ops.tab === t));
+  renderOpsBadge();
+  $('ops-body').innerHTML = ops.tab === 'users' ? (ops.detail ? renderDetail(ops.detail) : renderUsersTab()) : renderInbox();
 }
 
 /* ───────── 앱으로 설치 ───────── */
@@ -3390,7 +4225,35 @@ document.addEventListener('click', e => {
     case 'share-invite': shareInvite(); break;
     case 'friends-refresh': if (friends.pub === undefined) loadFriendsState(authGen); else refreshFriends(); break;
     case 'friends-off': if (armFriend('off')) disableFriends(); break;
+    case 'mine-refresh': mine.error = false; loadMine(); renderMine(); break;
+    case 'ops-tab': opsTab(act.dataset.tab); break;
+    case 'ops-filter': ops.inbox.filter = act.dataset.f; renderOps(); break;
+    case 'ops-refresh': loadInbox(); break;
+    case 'ops-more': loadInbox(true); break;
+    case 'ops-users-more': loadUsers(true); break;
+    case 'ops-users-refresh': loadUsers(); break;
+    case 'ops-reply': handleTicket(act.dataset.id, 'done', true); break;
+    case 'ops-status': handleTicket(act.dataset.id, act.dataset.s, false); break;
+    case 'ops-del': if (opsArm('del:' + act.dataset.id)) deleteTicket(act.dataset.id); break;
+    case 'ops-user': openUser(act.dataset.uid); break;
+    case 'ops-back': closeUser(); break;
+    case 'ops-reload': if (ops.detail) { ops.detail.error = ''; loadDetail(); } break;
+    case 'ops-search': searchUser(); break;
+    case 'ops-search-clear': ops.users.found = null; ops.users.q = ''; renderOps(); break;
+    case 'ops-copy': if (ops.detail) copyText(ops.detail.uid, 'uid를 복사했습니다.'); break;
+    case 'ops-edit': startEdit(); break;
+    case 'ops-edit-cancel': if (ops.detail) { ops.detail.editing = false; renderOps(); } break;
+    case 'ops-edit-save': saveEdit(); break;
+    case 'ops-skin': toggleDraftSkin(act.dataset.id); break;
+    case 'ops-ban': banUser(); break;
+    case 'ops-unban': unbanUser(); break;
+    case 'ops-unpub': if (opsArm('unpub')) unpublishUser(); break;
+    case 'ops-reset': if (opsArm('reset')) resetUser(); break;
+    case 'ops-wipe': if (opsArm('wipe')) wipeUser(); break;
   }
+});
+document.addEventListener('change', e => {
+  if (e.target.id === 'ops-cat') { ops.inbox.cat = e.target.value; renderOps(); }
 });
 
 // 친구 화면의 입력칸: 다시 그려도 쓰던 내용이 남게 기억하고, Enter로 보낸다
@@ -3402,12 +4265,18 @@ document.addEventListener('input', e => {
     friends.codeDraft = v;
   } else if (el.id === 'friend-name') friends.nameDraft = el.value;
   else if (el.id === 'friend-rename') friends.renameDraft = el.value;
+  // 운영자 화면의 입력칸도 다시 그려도 남게 기억한다
+  else if (el.dataset && el.dataset.draft) ops.inbox.drafts[el.dataset.draft] = el.value;
+  else if (el.id === 'ops-search') ops.users.q = el.value;
+  else if (el.id === 'ops-ban-reason' && ops.detail) ops.detail.banDraft = el.value;
+  else if (el.dataset && el.dataset.field && ops.detail && ops.detail.draft) ops.detail.draft[el.dataset.field] = el.value;
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.isComposing) {
     if (e.target.id === 'friend-code') { e.preventDefault(); sendRequest(); }
     else if (e.target.id === 'friend-name') { e.preventDefault(); enableFriends(); }
     else if (e.target.id === 'friend-rename') { e.preventDefault(); renameMe(); }
+    else if (e.target.id === 'ops-search') { e.preventDefault(); searchUser(); }
     return;
   }
   // 방에서 1 · 2 · 3으로 보기 고르기
