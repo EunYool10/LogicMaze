@@ -568,7 +568,16 @@ div.menu-row { cursor: default; }
 .f-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
 .me-chip { flex: none; padding: 0 8px; font-family: var(--sans); font-size: 11.5px; font-weight: 700; line-height: 1.7; color: var(--on-brass); background: var(--brass); border-radius: 999px; }
 .list-note { margin: 10px 0 0; font-size: 13.5px; color: var(--mute); }
+.gift-form { padding: 14px 4px 16px 46px; border-bottom: 1px solid var(--hair); background: linear-gradient(90deg, rgba(var(--brass-rgb), 0.08), transparent 85%); }
+.gift-form .field-label { margin-top: 0; }
+.gift-form .counter { text-align: left; }
+.gift-quick { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.gift-quick .toggle { min-width: 64px; }
+@media (max-width: 400px) {
+  .f-name > span:not(.me-chip) { white-space: normal; overflow: visible; }
+}
 @media (max-width: 480px) {
+  .gift-form { padding-left: 4px; }
   .friend { grid-template-columns: 28px minmax(0, 1fr); }
   .f-actions { grid-column: 2; justify-content: flex-start; }
   .field-row { flex-wrap: wrap; }
@@ -797,9 +806,11 @@ div.menu-row { cursor: default; }
       <section class="doc-sec">
         <h3>친구</h3>
         <ul>
-          <li>Google 계정으로 로그인한 뒤 친구 기능을 켜면 6자리 친구 코드가 생깁니다.</li>
+          <li>Google 계정으로 로그인하면 친구 기능이 저절로 켜지고 6자리 친구 코드가 생깁니다. 이름은 무작위로 정해지며 친구 화면에서 바꿀 수 있습니다.</li>
+          <li>친구 기능을 끄면 친구 코드와 친구 목록이 지워지고, 다시 켤 때까지 꺼져 있습니다.</li>
           <li>친구 코드를 넣거나 초대 링크를 열어 친구 신청을 보내고, 상대가 수락하면 친구가 됩니다.</li>
           <li>친구 순위에서 서로의 탈출 · 완벽 탈출 · 지나온 방 수를 볼 수 있습니다. 금화와 물건은 보이지 않습니다.</li>
+          <li>친구에게 금화를 보낼 수 있습니다. 한 번에 10~100개, 하루 300개까지 보낼 수 있고, 받은 금화는 친구가 게임이나 친구 화면을 열 때 들어갑니다.</li>
         </ul>
       </section>
       <section class="doc-sec">
@@ -807,7 +818,7 @@ div.menu-row { cursor: default; }
         <ul>
           <li>정답 10, 첫 시도 +5, 탈출 +30, 열쇠를 하나도 잃지 않으면 +20 금화를 받습니다.</li>
           <li>여분의 열쇠 · 보호의 인장 · 불사조 깃털 · 지혜의 촛대는 입장 전에 골라 가져가고, 통찰의 렌즈는 방 안에서 씁니다.</li>
-          <li>금화와 물건은 게임 안에서만 쓰이고 돈으로 바꿀 수 없습니다.</li>
+          <li>금화와 물건은 게임 안에서만 쓰이고 돈으로 바꿀 수 없습니다. 친구에게 보낸 금화는 돌려받을 수 없습니다.</li>
         </ul>
       </section>
       <section class="doc-sec">
@@ -885,7 +896,7 @@ div.menu-row { cursor: default; }
     <div class="frame pad doc">
       <p class="eyebrow">Leges</p>
       <h2 class="h1" id="terms-title" tabindex="-1" data-focus>이용약관 · 개인정보 처리방침</h2>
-      <p class="doc-meta">시행일 2026년 10월 25일 · 로그인하면 아래 내용에 동의하는 것으로 봅니다. 로그인하지 않아도 모든 기능을 쓸 수 있습니다.</p>
+      <p class="doc-meta">시행일 2026년 10월 26일 · 로그인하면 아래 내용에 동의하는 것으로 봅니다. 로그인하지 않아도 모든 기능을 쓸 수 있습니다.</p>
       <section class="doc-sec">
         <h3>1. 어떤 서비스인가요</h3>
         <ul>
@@ -908,15 +919,17 @@ div.menu-row { cursor: default; }
           <li>게임 기록: 금화, 가진 물건과 테마, 판 수 · 탈출 · 완벽 탈출 · 지나온 방 수, 마지막 저장 시각.</li>
           <li>의견 보내기: 보낸 내용과 종류, 계정 고유 번호, 게임 버전, 기기 정보(브라우저 · 운영체제 종류, 화면 크기), 보낸 시각, 운영진의 처리 상태와 답변. 1분에 한 번만 보낼 수 있게 보낸 횟수와 마지막으로 보낸 시각도 저장합니다.</li>
           <li>이용 제한을 받으면: 제한한 이유와 시각.</li>
-          <li>친구 기능을 켜면: 직접 정한 이름, 친구 코드, 쓰고 있는 테마, 판 수 · 탈출 · 완벽 탈출 · 지나온 방 수, 주고받은 친구 신청과 친구 목록.</li>
+          <li>친구 기능(로그인하면 켜지고, 끌 수 있습니다): 친구에게 보이는 이름, 친구 코드, 쓰고 있는 테마, 판 수 · 탈출 · 완벽 탈출 · 지나온 방 수, 주고받은 친구 신청과 친구 목록, 친구 기능을 껐는지.</li>
+          <li>금화 선물: 보낸 사람과 받는 사람의 계정 고유 번호, 금화 수, 보낸 시각, 오늘 보낸 금화 수, 받은 금화 합계.</li>
           <li>로그인하지 않으면 모든 기록은 이 기기의 브라우저 저장소에만 있습니다. 오답 노트는 로그인해도 이 기기에만 저장합니다. 광고 추적 쿠키는 쓰지 않습니다.</li>
         </ul>
       </section>
       <section class="doc-sec">
         <h3>4. 다른 사람에게 보이는 정보</h3>
         <ul>
-          <li>친구 기능을 켜지 않으면 다른 플레이어에게 공개되는 정보는 없습니다. 내 계정 기록과 보낸 의견(답변 포함)은 나와 운영진만 볼 수 있습니다.</li>
-          <li>친구 기능을 켜면 직접 정한 이름, 친구 코드, 테마, 판 수 · 탈출 · 완벽 탈출 · 지나온 방 수가 로그인한 다른 플레이어에게 보일 수 있습니다(내 친구 코드를 알거나 나와 친구 신청을 주고받은 사람). 이메일, Google 이름과 사진, 금화와 물건은 보이지 않습니다.</li>
+          <li>로그인하면 친구 기능이 켜져 있어, 친구에게 보이는 이름(처음에는 무작위), 친구 코드, 테마, 판 수 · 탈출 · 완벽 탈출 · 지나온 방 수가 로그인한 다른 플레이어에게 보일 수 있습니다(내 친구 코드를 알거나 나와 친구 신청을 주고받은 사람). 이메일, Google 이름과 사진, 금화와 물건은 보이지 않습니다.</li>
+          <li>친구 기능을 끄면 다른 플레이어에게 공개되는 정보는 없습니다. 금화를 보내면 받은 사람에게 보낸 사람의 이름과 금화 수가 보입니다.</li>
+          <li>내 계정 기록과 보낸 의견(답변 포함)은 나와 운영진만 볼 수 있습니다.</li>
         </ul>
       </section>
       <section class="doc-sec">
@@ -942,6 +955,7 @@ div.menu-row { cursor: default; }
         <h3>7. 공정한 플레이</h3>
         <ul>
           <li>금화나 기록 조작, 버그 악용, 데이터베이스를 직접 건드리는 행동은 하면 안 됩니다.</li>
+          <li>금화를 돈이나 다른 물건과 바꾸는 조건으로 주고받으면 안 됩니다. 여러 계정을 만들어 한 계정으로 금화를 모으는 것도 안 됩니다.</li>
           <li>계정에 저장할 때마다 서버가 금화 · 물건 · 플레이 기록이 서로 맞는지 확인하고, 맞지 않는 기록은 저장하지 않습니다.</li>
           <li>친구에게 보이는 이름에 욕설, 남을 불쾌하게 하는 말, 개인정보를 쓰면 안 됩니다.</li>
           <li>이상한 기록은 운영진이 고치거나 처음 상태로 되돌릴 수 있고, 규칙에 맞지 않는 이름은 친구 프로필째 지울 수 있습니다.</li>
@@ -951,7 +965,8 @@ div.menu-row { cursor: default; }
       <section class="doc-sec">
         <h3>8. 운영진</h3>
         <ul>
-          <li>운영진 계정은 확인과 테스트를 위해 금화가 무한이며, 상점 물건을 금화를 쓰지 않고 받을 수 있습니다.</li>
+          <li>운영진 계정은 확인과 테스트를 위해 금화가 무한이며, 상점 물건을 금화를 쓰지 않고 받을 수 있습니다. 친구에게 금화를 보낼 때도 한도가 없고 금화가 줄지 않습니다.</li>
+          <li>운영진은 이벤트나 보상으로 플레이어에게 금화를 줄 수 있습니다.</li>
           <li>운영진은 문의를 처리하려고 보낸 의견, 계정 기록(금화 · 물건 · 테마 · 플레이 기록), 친구 프로필과 친구 목록을 볼 수 있고, 잃어버린 기록을 되살리는 것처럼 문제를 고칠 때 계정 기록을 바꿀 수 있습니다.</li>
           <li>운영진에게도 이메일과 Google 이름 · 사진은 보이지 않습니다.</li>
         </ul>
@@ -1211,6 +1226,13 @@ const FIREBASE_VERSION = '10.12.2';
 
 // 패치노트 (맨 위가 지금 버전). 약관을 바꾸면 여기에도 적는다.
 const PATCH_NOTES = [
+  { v: '4.2.0', date: '2026년 10월 26일', items: [
+    '로그인하면 친구 기능이 처음부터 켜져 있습니다. 이름은 무작위로 정해지고 친구 화면에서 바꿀 수 있으며, 친구 기능을 끄면 다시 켤 때까지 꺼져 있습니다.',
+    '친구에게 금화를 보낼 수 있습니다. 서로 친구인 사람에게 한 번에 10~100개, 하루 300개까지 보낼 수 있고, 받은 금화는 친구 화면의 ‘받은 금화’에 기록됩니다.',
+    '운영진이 이벤트나 보상으로 금화를 줄 수 있습니다.',
+    '유형별 연습과 크레딧의 문제 수 표시를 정리했습니다.',
+    '약관의 ‘모으는 정보와 쓰는 곳’, ‘다른 사람에게 보이는 정보’, ‘공정한 플레이’, ‘운영진’을 고쳤습니다.',
+  ] },
   { v: '4.1.0', date: '2026년 10월 25일', items: [
     '의견 보내기 화면에서 내가 보낸 의견과 처리 상태, 운영진의 답변을 볼 수 있습니다. 새 답변이 오면 메뉴 아래 ‘의견 보내기’에 숫자로 알려 드립니다.',
     '운영진이 게임 안에서 문의에 답변하고, 계정 기록 삭제 요청과 신고를 바로 처리합니다.',
@@ -1703,9 +1725,10 @@ function toast(msg) {
 /* ───────── 기록 (손님은 이 기기, 로그인하면 계정에도 저장) ───────── */
 const LS_PREFIX = 'logicmaze.v2.';
 // rev: 운영진이 이 계정 기록을 고친 횟수. 저장할 때 그대로 보내서, 운영진이 고친 뒤의 옛 기록은 서버가 받지 않는다.
+// gift: 운영진이 준 금화, got: 친구들이 보낸 금화 가운데 받아 넣은 양(giftbox의 total까지), friendsOff: 친구 기능을 직접 껐는지
 function defaultProfile() {
   const items = Object.fromEntries(Object.keys(WARES).map(id => [id, 0]));
-  return { v: 1, coins: 0, items, skins: ['emerald'], skin: 'emerald', stats: { runs: 0, clears: 0, perfect: 0, rooms: 0 }, rev: 0 };
+  return { v: 1, coins: 0, items, skins: ['emerald'], skin: 'emerald', stats: { runs: 0, clears: 0, perfect: 0, rooms: 0 }, rev: 0, gift: 0, got: 0, friendsOff: false };
 }
 function sanitize(p) {
   const d = defaultProfile();
@@ -1717,6 +1740,9 @@ function sanitize(p) {
   d.skin = SKINS[p.skin] && d.skins.includes(p.skin) ? p.skin : 'emerald';
   if (p.stats && typeof p.stats === 'object') for (const k of Object.keys(d.stats)) d.stats[k] = int(p.stats[k], 10000000);
   d.rev = int(p.rev, 1000000);
+  d.gift = int(p.gift, 10000000);
+  d.got = int(p.got, 10000000);
+  d.friendsOff = p.friendsOff === true;
   return d;
 }
 function readLocal(slot) {
@@ -1738,10 +1764,12 @@ function sameProfile(a, b) {
 }
 // 계정 기록(cloud) 위에 이 기기에서 바뀐 것(local − base)을 얹는다.
 // 금화와 판 기록의 변화는 그대로 더하고, 물건은 0~최대 개수 안으로, 새로 산 테마는 목록에 더한다. 금화가 모자라면 null.
+// 이 기기에서 받아 넣은 친구 선물(got)은 빼고 더한다. 계정 기록의 got을 기준으로 불러온 뒤 다시 받아 넣는다.
 function rebase(local, base, cloud) {
   const m = sanitize(cloud);
-  m.coins = cloud.coins + local.coins - base.coins;
+  m.coins = cloud.coins + local.coins - base.coins - Math.max(0, local.got - base.got);
   if (m.coins < 0) return null;
+  if (local.friendsOff !== base.friendsOff) m.friendsOff = local.friendsOff;
   for (const k of Object.keys(m.stats)) m.stats[k] = cloud.stats[k] + Math.max(0, local.stats[k] - base.stats[k]);
   for (const id of Object.keys(WARES)) m.items[id] = Math.max(0, Math.min(WARES[id].max, cloud.items[id] + local.items[id] - base.items[id]));
   for (const s of local.skins) if (!base.skins.includes(s) && !m.skins.includes(s)) m.skins.push(s);
@@ -1977,7 +2005,9 @@ async function loadAccount(gen, adopt) {
         : !account.sent || sameProfile(cloud, account.base) ? account.base : null;
       const merged = from && !sameProfile(profile, from) ? rebase(profile, from, cloud) : null;
       // 이 기기에서 쓰던 기록보다 운영진이 고친 횟수(rev)가 늘었으면 알린다
-      if (hasLocal('u.' + uid) && account.base && cloud.rev > account.base.rev) toast('운영진이 계정 기록을 고쳐서, 고친 기록을 불러왔습니다.');
+      if (hasLocal('u.' + uid) && account.base && cloud.rev > account.base.rev) {
+        toast(cloud.gift > account.base.gift ? `운영진이 금화 ${fmt(cloud.gift - account.base.gift)}개를 보냈습니다!` : '운영진이 계정 기록을 고쳐서, 고친 기록을 불러왔습니다.');
+      }
       else if (!merged && !sameProfile(profile, from || cloud)) toast('계정에 저장된 기록과 맞지 않는 변경이 있어 계정 기록을 불러왔습니다.');
       // profile은 게임이 그 자리에서 고치므로 base와 같은 객체를 쓰면 안 된다 (고친 것이 base에도 들어가 '바뀐 것 없음'이 된다)
       profile = merged || sanitize(cloud);
@@ -2003,6 +2033,7 @@ async function loadAccount(gen, adopt) {
   if (account.loaded && isDirty()) await saveCloud();
   if (account.loaded && friends.pub === undefined && gen === authGen) loadFriendsState(gen);
   if (account.loaded && mine.list === null && gen === authGen) loadMine(gen);
+  if (account.loaded && gen === authGen) claimGifts(gen);
   if (account.loaded && account.admin && ops.inbox.list === null && gen === authGen) loadInbox();
 }
 // 처음 로그인: 이 기기의 기록(손님 기록)을 계정으로 옮긴다.
@@ -2346,9 +2377,8 @@ function equip(id) {
 
 function renderCredits() {
   const handmade = Object.values(BANK).reduce((s, list) => s + list.length, 0);
-  const generated = GENERATORS.length + T3_GENS.length + COND_GENS.length + COUNTER_GENS.length + 1;   // + 진리집합
   $('credit-numbers').innerHTML = [
-    ['직접 쓴 문제', handmade + '문항'], ['자동 생성 문제', generated + '종'], ['문제 유형', Object.keys(KINDS).length + '종'],
+    ['직접 쓴 문제', handmade + '문항'], ['문제 유형', Object.keys(KINDS).length + '종'],
     ['공통수학 단원', Object.keys(UNITS).length + '개'], ['테마', Object.keys(SKINS).length + '종'],
   ].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
 }
@@ -2906,19 +2936,18 @@ function finishRun(kind) {
 
 /* ───────── 유형별 연습 ───────── */
 const PRACTICE = [
-  ['contra', '원래 명제 p → q의 대우 ~q → ~p를 고릅니다.', ['t1', 't2', 't3'], true],
-  ['converse', '가정과 결론의 자리만 바꾼 역 q → p를 고릅니다.', ['t1', 't2'], true],
-  ['neg', '‘모든’ ↔ ‘어떤’, ‘그리고’ ↔ ‘또는’으로 명제의 부정을 만듭니다.', ['neg'], false],
-  ['cond', 'p가 q이기 위한 충분 · 필요 · 필요충분조건인지 가립니다.', ['cond'], true],
-  ['counter', '가정은 만족하지만 결론은 만족하지 않는 반례를 찾습니다.', ['counter'], true],
-  ['truth', '세 명제 가운데 참인 것 하나를 고릅니다.', ['truth'], false],
-  ['tset', '전체집합 U에서 조건을 참이 되게 하는 원소를 모읍니다.', [], true],
+  ['contra', '원래 명제 p → q의 대우 ~q → ~p를 고릅니다.', ['t1', 't2', 't3']],
+  ['converse', '가정과 결론의 자리만 바꾼 역 q → p를 고릅니다.', ['t1', 't2']],
+  ['neg', '‘모든’ ↔ ‘어떤’, ‘그리고’ ↔ ‘또는’으로 명제의 부정을 만듭니다.', ['neg']],
+  ['cond', 'p가 q이기 위한 충분 · 필요 · 필요충분조건인지 가립니다.', ['cond']],
+  ['counter', '가정은 만족하지만 결론은 만족하지 않는 반례를 찾습니다.', ['counter']],
+  ['truth', '세 명제 가운데 참인 것 하나를 고릅니다.', ['truth']],
+  ['tset', '전체집합 U에서 조건을 참이 되게 하는 원소를 모읍니다.', []],
 ];
 function renderPractice() {
-  $('drill-grid').innerHTML = PRACTICE.map(([kind, desc, lists, gen]) => {
+  $('drill-grid').innerHTML = PRACTICE.map(([kind, desc, lists]) => {
     const n = lists.reduce((s, k) => s + BANK[k].length, 0);
-    const count = n ? `${n}문항${gen ? ' + 자동 생성' : ''}` : '자동 생성';
-    return `<button type="button" class="drill" data-act="practice" data-kind="${kind}"><b>${KINDS[kind].label}</b><small>${desc}</small><span class="chip">${count}</span></button>`;
+    return `<button type="button" class="drill" data-act="practice" data-kind="${kind}"><b>${KINDS[kind].label}</b><small>${desc}</small>${n ? `<span class="chip">${n}문항</span>` : ''}</button>`;
   }).join('');
 }
 
@@ -2996,7 +3025,11 @@ const CODE_RE = /^[A-HJ-NP-Z2-9]{6}$/;
 const NAME_RE = /^[가-힣ㄱ-ㅣA-Za-z0-9._-][가-힣ㄱ-ㅣA-Za-z0-9 ._-]{0,10}[가-힣ㄱ-ㅣA-Za-z0-9._-]$/;   // firestore.rules와 같은 규칙
 const MAX_FRIENDS = 50;
 // pub: undefined(아직 모름) · null(친구 기능 꺼짐) · { code, name, skin, stats }
-const friends = { pub: undefined, list: null, loading: false, busy: false, error: '', invite: '', codeDraft: '', nameDraft: '', renaming: false, renameDraft: '', armed: '', armedUntil: 0 };
+// giving: 금화를 보내려고 연 친구(id), giftDraft: 보낼 금화, sentToday: 오늘 보낸 금화(null = 모름), inbox: 받은 금화 기록
+const friends = {
+  pub: undefined, list: null, loading: false, busy: false, error: '', invite: '', codeDraft: '', nameDraft: '', renaming: false, renameDraft: '', armed: '', armedUntil: 0,
+  giving: '', giftDraft: '50', sentToday: null, inbox: [], claiming: false, names: new Map(),
+};
 
 function newCode() {
   const a = new Uint32Array(6);
@@ -3012,12 +3045,14 @@ function sameStats(a, b) { return !!a && !!b && ['runs', 'clears', 'perfect', 'r
 function pubRef(uid) { return fb.fsM.doc(fb.db, 'players', uid); }
 function pickPub(d) { return { code: d.code, name: d.name, skin: d.skin, stats: sanitize({ stats: d.stats }).stats }; }
 function resetFriends() {
-  Object.assign(friends, { pub: undefined, list: null, loading: false, busy: false, error: '', renaming: false, armed: '' });
+  Object.assign(friends, { pub: undefined, list: null, loading: false, busy: false, error: '', renaming: false, armed: '', giving: '', sentToday: null, inbox: [], claiming: false });
+  friends.names.clear();
   renderFriendBadge();
 }
 function friendsReady() { return !!(account.user && fb && account.loaded && friends.pub); }
 
-// 계정 기록을 불러온 뒤: 친구 기능을 켰는지 보고, 켰다면 공개 기록을 계정 기록에 맞추고 받은 신청을 센다
+// 계정 기록을 불러온 뒤: 친구 기능을 켰는지 보고, 켰다면 공개 기록을 계정 기록에 맞추고 받은 신청을 센다.
+// 친구 기능은 처음부터 켜져 있다: 공개 프로필이 없고 직접 끈 적(friendsOff)도 없으면 무작위 이름으로 켠다.
 async function loadFriendsState(gen) {
   if (!account.user || !fb || friends.loading) return;
   friends.loading = true;
@@ -3035,6 +3070,7 @@ async function loadFriendsState(gen) {
   }
   if (gen !== authGen) return;
   if (friends.pub) { publishPub(); await refreshFriends(gen); }
+  else if (friends.pub === null && !profile.friendsOff) await createPub(randomName(), true);
   else if (state.screen === 'friends') renderFriends();
 }
 // 공개 프로필의 테마 · 기록을 계정에 저장된 기록(base)에 맞춘다. 실패해도 게임에는 영향이 없고 다음 저장 때 다시 맞춘다.
@@ -3069,7 +3105,8 @@ async function refreshFriends(gen = authGen) {
     const people = await Promise.all(rows.map(r =>
       fsM.getDoc(pubRef(r.users.find(u => u !== uid))).then(s => (s.exists() ? pickPub(s.data()) : null)).catch(() => null)));
     if (gen !== authGen) return;
-    friends.list = rows.map((r, k) => ({ id: r.id, status: r.status, mine: r.from === uid, player: people[k] }));
+    friends.list = rows.map((r, k) => ({ id: r.id, uid: r.users.find(u => u !== uid), status: r.status, mine: r.from === uid, player: people[k] }));
+    friends.list.forEach(f => { if (f.player) friends.names.set(f.uid, f.player.name); });
     friends.error = '';
   } catch (e) {
     if (gen !== authGen) return;
@@ -3092,16 +3129,23 @@ function renderFriendBadge() {
   badge.setAttribute('aria-label', `받은 친구 신청 ${n}개`);
 }
 
-// 친구 기능 켜기: 공개 프로필과 친구 코드를 한 번에 만든다. 이미 있는 코드와 겹치면(서버가 거부) 다른 코드로 다시 해 본다.
+// 친구 기능 다시 켜기 (직접 끈 뒤): 고른 이름으로 켠다
 async function enableFriends() {
   if (friends.busy || !account.user || !fb) return;
   if (mine.ban) { toast(banText()); return; }
   const name = cleanName($('friend-name') ? $('friend-name').value : friends.nameDraft);
   if (!NAME_RE.test(name)) { toast('이름은 한글 · 영문 · 숫자로 2~12자로 정해 주세요.'); return; }
+  await createPub(name, false);
+}
+// 공개 프로필과 친구 코드를 한 번에 만든다. 이미 있는 코드와 겹치면(서버가 거부) 다른 코드로 다시 해 본다.
+// auto: 로그인하자마자 저절로 켤 때 (이용 제한이면 켜지 않고, 실패해도 조용히 넘어가 다음에 다시 해 본다)
+async function createPub(name, auto) {
+  if (friends.busy || !account.user || !fb) return;
   friends.busy = true;
-  renderFriends();
+  if (state.screen === 'friends') renderFriends();
   const gen = authGen, uid = account.user.uid, { fsM, db } = fb;
   try {
+    if (auto && (await fsM.getDoc(fsM.doc(db, 'bans', uid))).exists()) return;
     await flushSave();   // 공개 기록은 계정에 저장된 기록과 같아야 하므로 기다리던 저장부터 보낸다
     if (gen !== authGen) return;
     if (!account.loaded || isDirty()) throw new Error('계정 기록이 아직 저장되지 않았습니다');
@@ -3118,11 +3162,12 @@ async function enableFriends() {
     friends.pub = made;
     friends.list = [];
     friends.nameDraft = '';
-    toast(`친구 기능을 켰습니다. 내 친구 코드는 ${made.code}입니다.`);
+    if (profile.friendsOff) { profile.friendsOff = false; commit(); }
+    toast(auto ? `친구 기능이 켜졌습니다. 내 친구 코드는 ${made.code}이고, 이름은 친구 화면에서 바꿀 수 있습니다.` : `친구 기능을 켰습니다. 내 친구 코드는 ${made.code}입니다.`);
     await refreshFriends(gen);
   } catch (e) {
     console.warn('친구 기능을 켜지 못했습니다', e);
-    if (gen === authGen) toast('친구 기능을 켜지 못했습니다. 잠시 후 다시 시도해 주세요.');
+    if (gen === authGen && !auto) toast('친구 기능을 켜지 못했습니다. 잠시 후 다시 시도해 주세요.');
   } finally {
     friends.busy = false;
     if (state.screen === 'friends') renderFriends();
@@ -3209,7 +3254,8 @@ async function renameMe() {
   else toast('이름을 바꾸지 못했습니다. 잠시 후 다시 시도해 주세요.');
   if (state.screen === 'friends') renderFriends();
 }
-// 친구 기능 끄기: 공개 프로필, 친구 코드, 친구 목록과 신청을 모두 지운다
+// 친구 기능 끄기: 공개 프로필, 친구 코드, 친구 목록과 신청을 모두 지우고, 끈 것을 계정 기록(friendsOff)에 남겨
+// 다시 켤 때까지 저절로 켜지지 않게 한다
 async function disableFriends() {
   if (friends.busy || !friendsReady()) return;
   friends.busy = true;
@@ -3225,7 +3271,10 @@ async function disableFriends() {
     if (gen !== authGen) return;
     friends.pub = null;
     friends.list = null;
-    toast('친구 기능을 껐습니다. 공개 프로필과 친구 목록을 지웠습니다.');
+    friends.giving = '';
+    profile.friendsOff = true;
+    commit();
+    toast('친구 기능을 껐습니다. 공개 프로필과 친구 목록을 지웠고, 다시 켤 때까지 꺼져 있습니다.');
   } catch (e) {
     console.warn('친구 기능을 끄지 못했습니다', e);
     toast('친구 기능을 끄지 못했습니다. 잠시 후 다시 시도해 주세요.');
@@ -3286,6 +3335,25 @@ function friendLine(f, opts) {
         <span class="f-sub">${opts.sub}</span>
       </div>
       <div class="f-actions">${opts.actions || ''}</div>
+    </li>${opts.after || ''}`;
+}
+// 친구에게 금화 보내기 (친구 줄 바로 아래에 열린다)
+function giftForm(f) {
+  const busy = friends.busy ? ' disabled' : '';
+  const left = friends.sentToday === null ? null : Math.max(0, GIFT_DAY - friends.sentToday);
+  const note = account.admin
+    ? '운영진은 한도 없이 보낼 수 있고, 보내도 금화가 줄지 않습니다.'
+    : `한 번에 ${GIFT_MIN}~${GIFT_MAX}개 · 하루 ${GIFT_DAY}개까지${left === null ? '' : ` · 오늘 ${fmt(left)}개 더 보낼 수 있습니다`} · 내 금화 ${fmt(profile.coins)}개`;
+  return `
+    <li class="gift-form">
+      <label class="field-label" for="gift-amount">${esc(f.player.name)}에게 보낼 금화</label>
+      <div class="field-row">
+        <input id="gift-amount" class="input" inputmode="numeric" maxlength="7" autocomplete="off" value="${esc(friends.giftDraft)}">
+        <button type="button" class="btn btn-brass" data-act="gift-send" data-id="${esc(f.id)}"${busy}>${friends.busy ? '보내는 중…' : '보내기'}</button>
+        <button type="button" class="btn btn-ghost" data-act="gift-cancel"${busy}>취소</button>
+      </div>
+      <div class="gift-quick">${[10, 50, 100].map(n => `<button type="button" class="toggle" data-act="gift-preset" data-n="${n}" aria-pressed="${String(friends.giftDraft) === String(n)}">${n}개</button>`).join('')}</div>
+      <p class="counter">${note}</p>
     </li>`;
 }
 function statLine(p) { return p ? `탈출 ${fmt(p.stats.clears)} · 완벽 ${fmt(p.stats.perfect)} · 방 ${fmt(p.stats.rooms)}` : '친구 기능을 껐습니다'; }
@@ -3296,8 +3364,8 @@ function renderFriends() {
   if (!account.user) {
     html = `
       <div class="frame pad friends-intro">
-        <p class="story">친구 코드를 주고받아 친구를 맺고, 서로의 탈출 기록을 순위로 볼 수 있습니다. 친구 기능은 Google 계정으로 로그인한 뒤에 쓸 수 있습니다.</p>
-        ${friends.invite ? `<p class="admin-note">초대받은 친구 코드 <b class="mono">${esc(friends.invite)}</b> · 로그인하고 친구 기능을 켜면 바로 신청할 수 있습니다.</p>` : ''}
+        <p class="story">친구 코드를 주고받아 친구를 맺고, 서로의 탈출 기록을 순위로 보거나 금화를 보낼 수 있습니다. Google 계정으로 로그인하면 친구 기능이 바로 켜집니다.</p>
+        ${friends.invite ? `<p class="admin-note">초대받은 친구 코드 <b class="mono">${esc(friends.invite)}</b> · 로그인하면 바로 신청할 수 있습니다.</p>` : ''}
         <div class="actions"><button type="button" class="btn btn-brass" data-act="login"${account.busy ? ' disabled' : ''}>Google 계정으로 로그인</button></div>
       </div>`;
   } else if (!fb || !account.loaded || friends.pub === undefined) {
@@ -3305,11 +3373,13 @@ function renderFriends() {
     html = `<div class="frame pad friends-intro"><p class="story">${msg}</p>${friends.error ? '<div class="actions"><button type="button" class="btn btn-ghost" data-act="friends-refresh">새로 고침</button></div>' : ''}</div>`;
   } else if (!friends.pub && mine.ban) {
     html = `<div class="frame pad friends-intro"><p class="story">${esc(banText())}</p></div>`;
+  } else if (!friends.pub && !profile.friendsOff && friends.busy) {
+    html = '<div class="frame pad friends-intro"><p class="story">친구 기능을 켜는 중…</p></div>';
   } else if (!friends.pub) {
     if (!friends.nameDraft) friends.nameDraft = randomName();
     html = `
       <div class="frame pad friends-intro">
-        <p class="story">친구 코드를 주고받아 친구를 맺고, 서로의 탈출 기록을 순위로 볼 수 있습니다.</p>
+        <p class="story">${profile.friendsOff ? '친구 기능을 꺼 두었습니다. 다시 켜면 새 친구 코드가 생깁니다.' : '친구 코드를 주고받아 친구를 맺고, 서로의 탈출 기록을 순위로 보거나 금화를 보낼 수 있습니다.'}</p>
         ${friends.invite ? `<p class="admin-note">초대받은 친구 코드 <b class="mono">${esc(friends.invite)}</b> · 친구 기능을 켜면 바로 신청할 수 있습니다.</p>` : ''}
         <label class="field-label" for="friend-name">친구에게 보일 이름</label>
         <input id="friend-name" class="input" maxlength="12" autocomplete="off" spellcheck="false" value="${esc(friends.nameDraft)}">
@@ -3326,6 +3396,7 @@ function renderFriends() {
       b.player.stats.clears - a.player.stats.clears || b.player.stats.perfect - a.player.stats.perfect
       || b.player.stats.rooms - a.player.stats.rooms || a.player.name.localeCompare(b.player.name, 'ko'));
     const removeBtn = f => `<button type="button" class="btn btn-text btn-sm" data-act="friend-remove" data-id="${esc(f.id)}"${busy}>${friends.armed === f.id ? '정말 지울까요?' : '삭제'}</button>`;
+    const giftBtn = f => (f.player && friends.giving !== f.id ? `<button type="button" class="btn btn-ghost btn-sm" data-act="gift-open" data-id="${esc(f.id)}"${busy}>금화 보내기</button>` : '');
     html = `
       <article class="frame me-card">
         <div class="me-top">
@@ -3372,9 +3443,18 @@ function renderFriends() {
       })).join('')}</ul>` : ''}
       <h3 class="section-label">친구 순위</h3>
       <ul class="friend-list">${ranked.map((f, k) => friendLine(f, {
-        me: f.me, rank: k + 1, sub: statLine(f.player), actions: f.me ? '' : removeBtn(f),
+        me: f.me, rank: k + 1, sub: statLine(f.player), actions: f.me ? '' : giftBtn(f) + removeBtn(f),
+        after: !f.me && friends.giving === f.id ? giftForm(f) : '',
       })).join('')}${mates.filter(f => !f.player).map(f => friendLine(f, { sub: statLine(null), actions: removeBtn(f) })).join('')}</ul>
       <p class="list-note">${friends.loading ? '불러오는 중…' : mates.length ? '탈출 → 완벽 탈출 → 지나온 방 순서로 줄을 세웁니다.' : '아직 친구가 없습니다. 내 친구 코드나 초대 링크를 친구에게 보내 보세요.'}</p>
+      ${friends.inbox.length ? `
+      <h3 class="section-label">받은 금화</h3>
+      <ul class="friend-list">${friends.inbox.map(g => `
+        <li class="friend">
+          <span class="rank"><svg aria-hidden="true"><use href="#i-coin"/></svg></span>
+          <div><span class="f-name"><span>${friends.names.get(g.from) ? esc(friends.names.get(g.from)) : '떠난 플레이어'}</span></span><span class="f-sub">금화 ${fmt(g.amount)}개 · ${when(g.at)}</span></div>
+          <div class="f-actions"></div>
+        </li>`).join('')}</ul>` : ''}
       <div class="actions">
         <button type="button" class="btn btn-ghost" data-act="friends-refresh"${busy}>새로 고침</button>
         <button type="button" class="btn btn-text" data-act="friends-off"${busy}>${friends.armed === 'off' ? '한 번 더 누르면 친구 기능을 끕니다' : '친구 기능 끄기'}</button>
@@ -3390,6 +3470,7 @@ function openFriends() {
   if (!account.user || !fb || !account.loaded) return;
   if (friends.pub === undefined) loadFriendsState(authGen);
   else if (friends.pub) { publishPub(); refreshFriends(); }
+  claimGifts();
 }
 // 초대 링크(?friend=코드)로 들어오면 코드를 기억해 두고 주소에서는 지운다
 function readInvite() {
@@ -3402,6 +3483,139 @@ function readInvite() {
     history.replaceState(null, '', location.pathname + (rest ? '?' + rest : '') + location.hash);
     if (CODE_RE.test(code)) { friends.invite = code; friends.codeDraft = code; }
   } catch (e) { /* 주소를 바꿀 수 없는 환경 */ }
+}
+
+/* ───────── 금화 선물 ─────────
+   giftbox/<uid>: { total } 친구들이 보낸 금화 합계 (보낸 사람이 올린다). 계정 기록의 got까지 받아 넣었다.
+   giftMeta/<uid>: { day, total, to, amount } 오늘(한국 시간) 보낸 양. gifts/<자동 id>: { from, to, amount, at } 받은 기록 */
+const GIFT_MIN = 10, GIFT_MAX = 100, GIFT_DAY = 300;   // firestore.rules와 같은 한도 (운영진은 한도 없음)
+const GIFT_KEEP = 20;   // 받은 기록은 최근 것만 남긴다
+function giftDay() { return Math.floor((Date.now() + 9 * 3600e3) / 86400e3); }
+function giftError(code) { return Object.assign(new Error(code), { code }); }
+
+// 친구가 보낸 금화를 계정 기록에 넣고(got을 상자의 total까지 올린다), 받은 기록을 읽는다
+async function claimGifts(gen = authGen) {
+  if (!account.user || !fb || !account.loaded || friends.claiming) return;
+  const uid = account.user.uid, { fsM, db } = fb;
+  friends.claiming = true;
+  try {
+    const [box, logs] = await Promise.all([
+      fsM.getDoc(fsM.doc(db, 'giftbox', uid)),
+      fsM.getDocs(fsM.query(fsM.collection(db, 'gifts'), fsM.where('to', '==', uid), fsM.limit(50))),
+    ]);
+    if (gen !== authGen) return;
+    const rows = logs.docs.map(d => ({ id: d.id, from: String(d.data().from || ''), amount: Number(d.data().amount) || 0, at: msOf(d.data().at) }))
+      .sort((a, b) => b.at - a.at);
+    const old = rows.slice(GIFT_KEEP);
+    if (old.length) {
+      const batch = fsM.writeBatch(db);
+      old.forEach(r => batch.delete(fsM.doc(db, 'gifts', r.id)));
+      batch.commit().catch(e => console.warn('오래된 선물 기록을 지우지 못했습니다', e));
+    }
+    friends.inbox = rows.slice(0, GIFT_KEEP);
+    const unknown = [...new Set(friends.inbox.map(g => g.from))].filter(u => u && !friends.names.has(u));
+    await Promise.all(unknown.map(u => fsM.getDoc(pubRef(u)).then(s => { if (s.exists()) friends.names.set(u, String(s.data().name)); }).catch(() => {})));
+    if (gen !== authGen) return;
+    const total = box.exists() ? Number(box.data().total) || 0 : 0;
+    const add = total - profile.got;
+    if (add > 0 && !state.run && account.loaded) {
+      profile.coins = Math.min(10000000, profile.coins + add);
+      profile.got = total;
+      commit();
+      afterProfileChange();
+      toast(`친구가 보낸 금화 ${fmt(add)}개를 받았습니다.`);
+    }
+  } catch (e) {
+    if (gen === authGen) console.warn('금화 선물을 확인하지 못했습니다', e);
+  } finally {
+    if (gen === authGen) friends.claiming = false;
+  }
+  if (gen === authGen && state.screen === 'friends') renderFriends();
+}
+// 금화 보내기 칸을 연다. 오늘 보낸 양을 읽어 남은 양을 보여 준다.
+async function openGift(id) {
+  if (!friendsReady()) return;
+  friends.giving = id;
+  if (!/^\d+$/.test(String(friends.giftDraft))) friends.giftDraft = '50';
+  renderFriends();
+  if ($('gift-amount')) $('gift-amount').focus();
+  if (account.admin) return;
+  const gen = authGen;
+  try {
+    const m = await fb.fsM.getDoc(fb.fsM.doc(fb.db, 'giftMeta', account.user.uid));
+    if (gen !== authGen) return;
+    friends.sentToday = m.exists() && m.data().day === giftDay() ? Number(m.data().total) || 0 : 0;
+  } catch (e) {
+    friends.sentToday = null;
+  }
+  if (state.screen === 'friends' && friends.giving === id) renderFriends();
+}
+// 금화 보내기: 내 계정 기록의 금화를 줄이고, 오늘 보낸 양을 올리고, 친구 상자를 올리고, 기록을 남긴다 (한 트랜잭션).
+// 서버는 줄인 금화와 보낸 금화가 같은지, 그 저장에서 다른 것이 바뀌지 않았는지 확인한다. 운영진은 금화가 줄지 않는다.
+async function sendGift(id) {
+  if (friends.busy || !friendsReady()) return;
+  const f = (friends.list || []).find(x => x.id === id && x.status === 'accepted' && x.player);
+  if (!f) return;
+  const admin = account.admin, raw = String($('gift-amount') ? $('gift-amount').value : friends.giftDraft).trim();
+  const amount = /^\d{1,7}$/.test(raw) ? Number(raw) : NaN;
+  if (admin ? !(amount >= 1) : !(amount >= GIFT_MIN && amount <= GIFT_MAX)) {
+    toast(admin ? '보낼 금화를 1 이상의 정수로 적어 주세요.' : `한 번에 ${GIFT_MIN}~${GIFT_MAX}개를 보낼 수 있습니다.`);
+    return;
+  }
+  if (!admin && friends.sentToday !== null && friends.sentToday + amount > GIFT_DAY) { toast(`오늘은 ${fmt(Math.max(0, GIFT_DAY - friends.sentToday))}개만 더 보낼 수 있습니다.`); return; }
+  if (!admin && profile.coins < amount) { toast('금화가 모자랍니다.'); return; }
+  friends.busy = true;
+  renderFriends();
+  const gen = authGen, uid = account.user.uid, to = f.uid, { fsM, db } = fb;
+  try {
+    await flushSave();   // 금화를 줄이는 저장은 계정 기록 그대로에서 금화만 줄여야 하므로 기다리던 저장부터 보낸다
+    if (gen !== authGen) return;
+    if (!account.loaded || isDirty()) throw giftError('gift/unsaved');
+    const before = account.base;
+    let next = null, sent = 0;
+    await fsM.runTransaction(db, async tx => {
+      next = null;
+      if (!admin) {
+        const uref = fsM.doc(db, 'users', uid), mref = fsM.doc(db, 'giftMeta', uid);
+        const u = await tx.get(uref);
+        const m = await tx.get(mref);
+        const cur = sanitize(u.data());
+        const day = giftDay();
+        sent = m.exists() && m.data().day === day ? Number(m.data().total) || 0 : 0;
+        if (cur.coins < amount) throw giftError('gift/coins');
+        if (sent + amount > GIFT_DAY) throw giftError('gift/limit');
+        next = { ...cur, coins: cur.coins - amount };
+        tx.set(uref, { ...next, updatedAt: fsM.serverTimestamp() });
+        tx.set(mref, { day, total: sent + amount, to, amount });
+      }
+      tx.set(fsM.doc(db, 'giftbox', to), { total: fsM.increment(amount) }, { merge: true });
+      tx.set(fsM.doc(fsM.collection(db, 'gifts')), { from: uid, to, amount, at: fsM.serverTimestamp() });
+    });
+    if (gen !== authGen) return;
+    if (next) {
+      // 줄인 계정 기록이 새 기준이 된다 (보내는 동안 이 기기에서 바뀐 것이 있으면 그 위에 얹는다)
+      account.base = next;
+      profile = sameProfile(profile, before) ? sanitize(next) : (rebase(profile, before, next) || sanitize(next));
+      writeLocal(slotName(), profile);
+      markSync();
+      friends.sentToday = sent + amount;
+      afterProfileChange();
+    }
+    friends.giving = '';
+    toast(`${f.player.name}에게 금화 ${fmt(amount)}개를 보냈습니다.`);
+  } catch (e) {
+    console.warn('금화를 보내지 못했습니다', e);
+    const code = e && e.code;
+    if (gen === authGen) {
+      toast(code === 'gift/coins' ? '금화가 모자랍니다.'
+        : code === 'gift/limit' ? `오늘은 더 보낼 수 없습니다. 하루 ${GIFT_DAY}개까지 보낼 수 있습니다.`
+        : code === 'permission-denied' ? '보내지 못했습니다. 서로 친구인지, 오늘 보낼 수 있는 금화가 남았는지 확인해 주세요.'
+        : '보내지 못했습니다. 잠시 후 다시 시도해 주세요.');
+    }
+  } finally {
+    friends.busy = false;
+    if (state.screen === 'friends') renderFriends();
+  }
 }
 
 /* ───────── 패치노트 · 의견 보내기 ───────── */
@@ -3812,7 +4026,8 @@ async function opsRun(work, done) {
     console.warn('운영자 작업을 하지 못했습니다', e);
     if (seq === ops.seq) {
       toast(e && e.code === 'ops/changed' ? '그 사이에 사용자가 기록을 저장했습니다. 새 기록을 불러왔으니 확인한 뒤 다시 고쳐 주세요.'
-        : e && e.code === 'ops/missing' ? '계정 기록이 없습니다.' : opsError(e));
+        : e && e.code === 'ops/missing' ? '계정 기록이 없습니다.'
+        : e && e.code === 'ops/full' ? '이미 금화가 1,000만 개라 더 줄 수 없습니다.' : opsError(e));
     }
     return false;
   } finally {
@@ -3926,13 +4141,13 @@ async function saveEdit() {
     v[k] = Number(raw);
   }
   const over = Object.keys(WARES).find(id => v[id] > WARES[id].max);
-  const maxCoins = Math.min(10000000, v.runs * 125);
+  const p = d.user.profile, maxCoins = Math.min(10000000, v.runs * 125 + p.gift + p.got);
   const why = over ? `${WARES[over].name}${WARES[over].obj === '을' ? '은' : '는'} ${WARES[over].max}개까지입니다.`
     : v.runs > 10000000 ? '판 수는 1,000만까지입니다.'
     : v.clears > v.runs ? '탈출은 판 수보다 많을 수 없습니다.'
     : v.perfect > v.clears ? '완벽 탈출은 탈출보다 많을 수 없습니다.'
     : v.rooms > v.runs * 5 ? '지나온 방은 판 수 × 5까지입니다.'
-    : v.coins > maxCoins ? `금화는 판 수 × 125까지입니다 (지금 판 수로는 ${fmt(maxCoins)}).`
+    : v.coins > maxCoins ? `금화는 판 수 × 125 + 받은 금화까지입니다 (지금은 ${fmt(maxCoins)}). 더 주려면 ‘금화 주기’를 쓰세요.`
     : '';
   if (why) { toast(why); return; }
   const next = {
@@ -3944,9 +4159,30 @@ async function saveEdit() {
   const ok = await opsRun(() => writeRecord(uid, () => next, d.user.profile), '기록을 고쳤습니다. 사용자가 다음에 게임을 열면 고친 기록을 받습니다.');
   await afterUserOp(uid, ok);
 }
+// 운영자 금화 주기: 판 수와 상관없이 준다 (gift에 더해 두어 그 뒤의 저장도 서버 확인을 통과한다)
+async function giveCoins() {
+  const d = ops.detail;
+  if (!d || !d.user || ops.busy) return;
+  const raw = String(d.giveDraft || '').trim();
+  const n = /^\d{1,8}$/.test(raw) ? Number(raw) : 0;
+  if (n < 1) { toast('줄 금화를 1 이상의 정수로 적어 주세요.'); if ($('ops-give')) $('ops-give').focus(); return; }
+  const uid = d.uid;
+  let given = 0;
+  const ok = await opsRun(() => writeRecord(uid, now => {
+    given = Math.min(n, 10000000 - now.coins);
+    if (given <= 0) throw Object.assign(new Error('full'), { code: 'ops/full' });
+    return { ...now, coins: now.coins + given, gift: now.gift + given };
+  }));
+  if (ok) {
+    d.giveDraft = '';
+    toast(given < n ? `금화는 1,000만 개까지라 ${fmt(given)}개만 주었습니다.` : `금화 ${fmt(given)}개를 주었습니다. 사용자가 다음에 게임을 열면 받습니다.`);
+  }
+  await afterUserOp(uid, ok);
+}
+// 기록 초기화: 받아 넣은 선물(got)은 그대로 두어, 이미 받은 선물을 다시 받지 않게 한다
 async function resetUser() {
   const uid = ops.detail.uid;
-  const ok = await opsRun(() => writeRecord(uid, () => defaultProfile()), '기록을 처음 상태로 되돌렸습니다.');
+  const ok = await opsRun(() => writeRecord(uid, now => ({ ...defaultProfile(), got: now.got, friendsOff: now.friendsOff })), '기록을 처음 상태로 되돌렸습니다.');
   await afterUserOp(uid, ok);
 }
 async function unpublishUser() {
@@ -3975,19 +4211,28 @@ async function unbanUser() {
   if (ok) ops.bans.delete(uid);
   await afterUserOp(uid, ok);
 }
-// 계정 기록 삭제 요청 처리: 게임 기록은 처음 상태로(rev를 올려 다른 기기의 예전 기록이 되살아나지 않게),
-// 친구 프로필 · 친구 코드 · 친구 목록 · 보낸 의견 · 보낸 횟수 기록은 지운다. 이용 제한은 그대로 둔다.
+// 계정 기록 삭제 요청 처리: 게임 기록은 처음 상태로(rev를 올려 다른 기기의 예전 기록이 되살아나지 않게, 친구 기능은 꺼 두고,
+// 받지 않은 선물도 받은 것으로 쳐서), 친구 프로필 · 친구 코드 · 친구 목록 · 보낸 의견 · 보낸 횟수 · 받은 선물 기록은 지운다.
+// 이용 제한은 그대로 둔다.
 async function wipeUser() {
   const uid = ops.detail.uid, { fsM, db } = fb;
   const ok = await opsRun(async () => {
-    const [u, f, steps] = await Promise.all([
+    const [u, f, box, g, steps] = await Promise.all([
       fsM.getDoc(fsM.doc(db, 'users', uid)),
       fsM.getDocs(fsM.query(fsM.collection(db, 'feedback'), fsM.where('uid', '==', uid))),
+      fsM.getDoc(fsM.doc(db, 'giftbox', uid)),
+      fsM.getDocs(fsM.query(fsM.collection(db, 'gifts'), fsM.where('to', '==', uid))),
       unpublishSteps(uid),
     ]);
     f.docs.forEach(x => steps.push(b => b.delete(x.ref)));
+    g.docs.forEach(x => steps.push(b => b.delete(x.ref)));
     steps.push(b => b.delete(fsM.doc(db, 'feedbackMeta', uid)));
-    if (u.exists()) steps.push(b => b.set(fsM.doc(db, 'users', uid), { ...defaultProfile(), rev: sanitize(u.data()).rev + 1, updatedAt: fsM.serverTimestamp() }));
+    if (u.exists()) {
+      const now = sanitize(u.data()), total = box.exists() ? Number(box.data().total) || 0 : 0;
+      steps.push(b => b.set(fsM.doc(db, 'users', uid), {
+        ...defaultProfile(), got: Math.min(10000000, Math.max(now.got, total)), friendsOff: true, rev: now.rev + 1, updatedAt: fsM.serverTimestamp(),
+      }));
+    }
     await commitSteps(steps);
   }, '계정 기록을 모두 지웠습니다.');
   if (ok) {
@@ -4110,7 +4355,7 @@ function renderDetail(d) {
       <div class="ops-grid">${OPS_FIELDS.map(([k, label]) => `<label>${label}<input class="input" type="text" inputmode="numeric" data-field="${k}" value="${esc(d.draft[k])}"></label>`).join('')}</div>
       <p class="field-label">테마</p>
       <div class="ops-skins">${Object.entries(SKINS).map(([id, s]) => `<button type="button" class="toggle" data-act="ops-skin" data-id="${id}" aria-pressed="${d.draft.skins.includes(id)}"${id === 'emerald' ? ' disabled' : ''}>${s.name}</button>`).join('')}</div>
-      <p class="ops-help">금화는 판 수 × 125까지, 완벽 탈출 ≤ 탈출 ≤ 판 수, 지나온 방 ≤ 판 수 × 5, 물건은 종류마다 0~9개입니다. 저장하면 이 사용자의 다른 기기에 남은 예전 기록은 서버가 받지 않고, 사용자가 다음에 게임을 열 때 고친 기록 위에 그 뒤의 진행만 더해집니다.</p>
+      <p class="ops-help">금화는 판 수 × 125 + 받은 금화(운영진 · 친구)까지, 완벽 탈출 ≤ 탈출 ≤ 판 수, 지나온 방 ≤ 판 수 × 5, 물건은 종류마다 0~9개입니다. 금화를 더 주려면 ‘금화 주기’를 쓰세요. 저장하면 이 사용자의 다른 기기에 남은 예전 기록은 서버가 받지 않고, 사용자가 다음에 게임을 열 때 고친 기록 위에 그 뒤의 진행만 더해집니다.</p>
       <div class="actions">
         <button type="button" class="btn btn-brass" data-act="ops-edit-save"${busy}>${ops.busy ? '저장하는 중…' : '고친 기록 저장'}</button>
         <button type="button" class="btn btn-ghost" data-act="ops-edit-cancel"${busy}>취소</button>
@@ -4121,15 +4366,22 @@ function renderDetail(d) {
         ${fact('금화', fmt(p.coins))}${fact('판 수', fmt(p.stats.runs))}${fact('탈출', fmt(p.stats.clears))}${fact('완벽 탈출', fmt(p.stats.perfect))}${fact('지나온 방', fmt(p.stats.rooms))}
         ${Object.keys(WARES).map(id => fact(WARES[id].name, p.items[id] + '개')).join('')}
         ${fact('테마', p.skins.map(s => esc(SKINS[s].name) + (s === p.skin ? ' (사용 중)' : '')).join(', '), false, true)}
+        ${fact('운영진이 준 금화', fmt(p.gift))}${fact('친구에게 받은 금화', fmt(p.got))}${fact('친구 기능', p.friendsOff ? '직접 끔' : '켜 둠')}
         ${fact('마지막 저장', when(d.user.updatedAt))}${fact('운영진 수정', fmt(p.rev) + '회')}
       </dl>
+      <label class="field-label" for="ops-give">금화 주기 · 판 수와 상관없이 줄 수 있습니다</label>
+      <div class="field-row">
+        <input id="ops-give" class="input" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="줄 금화 (예: 500)" value="${esc(d.giveDraft || '')}">
+        <button type="button" class="btn btn-brass" data-act="ops-give"${busy}>금화 주기</button>
+      </div>
+      <p class="ops-help">사용자는 다음에 게임을 열 때 받고, ‘운영진이 금화를 보냈습니다’라는 알림을 봅니다.</p>
       <div class="actions"><button type="button" class="btn btn-ghost" data-act="ops-edit"${busy}>기록 고치기</button></div>`;
   }
   return `
     ${back}
     <article class="frame me-card">
       <div class="me-top">
-        <div><span class="f-sub">친구에게 보이는 이름</span><span class="me-name">${d.pub ? esc(d.pub.name) : '친구 기능을 켜지 않았습니다'}</span></div>
+        <div><span class="f-sub">친구에게 보이는 이름</span><span class="me-name">${d.pub ? esc(d.pub.name) : '친구 프로필이 없습니다'}</span></div>
         ${d.ban ? '<span class="state s-ban">이용 제한 중</span>' : ''}
       </div>
       <dl class="ops-facts">
@@ -4153,7 +4405,7 @@ function renderDetail(d) {
     <h3 class="section-label">정리</h3>
     <div class="ops-danger">
       <div>
-        <span><b>친구 프로필 지우기</b><small>친구에게 보이는 이름이 규칙에 맞지 않을 때. 친구 프로필 · 친구 코드 · 친구 목록과 신청을 지웁니다. 사용자는 새 이름으로 다시 켤 수 있습니다.</small></span>
+        <span><b>친구 프로필 지우기</b><small>친구에게 보이는 이름이 규칙에 맞지 않을 때. 친구 프로필 · 친구 코드 · 친구 목록과 신청을 지웁니다. 사용자가 다음에 게임을 열면 무작위 이름과 새 코드로 다시 켜집니다.</small></span>
         <button type="button" class="btn btn-ghost btn-sm btn-danger" data-act="ops-unpub"${d.pub || d.pairs.length ? busy : ' disabled'}>${armed('unpub', '지우기', '한 번 더 누르면 지웁니다')}</button>
       </div>
       <div>
@@ -4161,7 +4413,7 @@ function renderDetail(d) {
         <button type="button" class="btn btn-ghost btn-sm btn-danger" data-act="ops-reset"${p ? busy : ' disabled'}>${armed('reset', '초기화', '한 번 더 누르면 초기화합니다')}</button>
       </div>
       <div>
-        <span><b>계정 기록 모두 지우기</b><small>‘계정 기록 삭제 요청’을 처리할 때. 게임 기록을 처음 상태로 되돌리고 친구 프로필 · 친구 목록 · 보낸 의견을 모두 지웁니다. 이용 제한은 그대로 둡니다. Google 로그인 정보까지 지우려면 Firebase 콘솔의 Authentication에서 이 uid를 지워 주세요.</small></span>
+        <span><b>계정 기록 모두 지우기</b><small>‘계정 기록 삭제 요청’을 처리할 때. 게임 기록을 처음 상태로 되돌리고 친구 프로필 · 친구 목록 · 보낸 의견 · 받은 선물 기록을 모두 지우며, 친구 기능은 꺼 둡니다. 이용 제한은 그대로 둡니다. Google 로그인 정보까지 지우려면 Firebase 콘솔의 Authentication에서 이 uid를 지워 주세요.</small></span>
         <button type="button" class="btn btn-ghost btn-sm btn-danger" data-act="ops-wipe"${busy}>${armed('wipe', '모두 지우기', '한 번 더 누르면 모두 지웁니다')}</button>
       </div>
     </div>`;
@@ -4250,6 +4502,11 @@ document.addEventListener('click', e => {
     case 'ops-unpub': if (opsArm('unpub')) unpublishUser(); break;
     case 'ops-reset': if (opsArm('reset')) resetUser(); break;
     case 'ops-wipe': if (opsArm('wipe')) wipeUser(); break;
+    case 'ops-give': giveCoins(); break;
+    case 'gift-open': openGift(act.dataset.id); break;
+    case 'gift-cancel': friends.giving = ''; renderFriends(); break;
+    case 'gift-preset': friends.giftDraft = act.dataset.n; renderFriends(); break;
+    case 'gift-send': sendGift(act.dataset.id); break;
   }
 });
 document.addEventListener('change', e => {
@@ -4269,6 +4526,8 @@ document.addEventListener('input', e => {
   else if (el.dataset && el.dataset.draft) ops.inbox.drafts[el.dataset.draft] = el.value;
   else if (el.id === 'ops-search') ops.users.q = el.value;
   else if (el.id === 'ops-ban-reason' && ops.detail) ops.detail.banDraft = el.value;
+  else if (el.id === 'ops-give' && ops.detail) ops.detail.giveDraft = el.value;
+  else if (el.id === 'gift-amount') friends.giftDraft = el.value;
   else if (el.dataset && el.dataset.field && ops.detail && ops.detail.draft) ops.detail.draft[el.dataset.field] = el.value;
 });
 document.addEventListener('keydown', e => {
@@ -4277,6 +4536,8 @@ document.addEventListener('keydown', e => {
     else if (e.target.id === 'friend-name') { e.preventDefault(); enableFriends(); }
     else if (e.target.id === 'friend-rename') { e.preventDefault(); renameMe(); }
     else if (e.target.id === 'ops-search') { e.preventDefault(); searchUser(); }
+    else if (e.target.id === 'ops-give') { e.preventDefault(); giveCoins(); }
+    else if (e.target.id === 'gift-amount') { e.preventDefault(); sendGift(friends.giving); }
     return;
   }
   // 방에서 1 · 2 · 3으로 보기 고르기

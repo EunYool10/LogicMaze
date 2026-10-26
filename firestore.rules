@@ -24,6 +24,11 @@ rules_version = '2';
 //   - rev: int (optional, 0..1,000,000) - how many times admins changed this record (운영자 화면).
 //       The owner's saves must keep it, so a device holding an older copy is refused, reloads the record
 //       and adds only its own new progress on top. Each admin change raises it by exactly 1.
+//   - gift: int (optional, 0..10,000,000) - coins admins have given (운영자 화면 → 금화 주기). Only admins change it.
+//   - got: int (optional, 0..10,000,000) - coins taken in from friends' gifts; never more than giftbox/<uid>.total.
+//       Only goes up, and a save that raises it may add that many coins on top of what the progress pays.
+//   - friendsOff: bool (optional) - the player turned the friend feature off (it is on by default)
+//   coins <= 125 * stats.runs + gift + got
 //
 // Collection: feedback ('의견 보내기')
 // Document ID: '<uid>_<n>', where n is the sender's feedbackMeta count after this message
@@ -80,6 +85,23 @@ rules_version = '2';
 //   - at: timestamp (== request.time)
 // A restricted player cannot send feedback, turn the friend feature on, update a public profile, or send or accept
 // friend requests. They can still play, save their record, read their own restriction and delete their own friend data.
+//
+// 금화 선물 (friends send each other coins; admins have no limits and pay nothing):
+// Collection: giftbox (one per receiver)
+// Document ID: the receiver's uid
+// Fields: total: int - every coin friends have sent this player (only goes up; the receiver takes them in by raising users.got)
+// Only friends write it (FieldValue.increment), in one transaction that also lowers the sender's users.coins by exactly
+// the amount (nothing else may change in that save), raises giftMeta/<sender> and adds a gifts log entry.
+// A gift is 10..100 coins and a sender sends at most 300 coins per day (Korean time). The receiver and admins read it.
+//
+// Collection: giftMeta (one per sender)
+// Document ID: the sender's uid
+// Fields: day: int (days since 1970-01-01 in Korean time, == today), total: int (coins sent today, 10..300; only goes up within a day)
+//
+// Collection: gifts (log shown to the receiver)
+// Document ID: auto id
+// Fields: from (== sender uid), to (receiver uid), amount (int), at (timestamp == request.time).
+// Created only together with a giftbox raise of the same amount. The receiver and the sender read it; the receiver deletes it.
 //
 // Admins (운영자 화면) can read every document above, change feedback status and replies, change users records
 // (raising rev), delete public profiles, friend codes, friendships, feedback and feedbackMeta, and write bans.
@@ -185,13 +207,16 @@ service cloud.firestore {
     function isValidProfile(data) {
       return data is map
         && data.keys().hasAll(['v', 'coins', 'items', 'skins', 'skin', 'stats', 'updatedAt'])
-        && data.keys().hasOnly(['v', 'coins', 'items', 'skins', 'skin', 'stats', 'updatedAt', 'rev'])
+        && data.keys().hasOnly(['v', 'coins', 'items', 'skins', 'skin', 'stats', 'updatedAt', 'rev', 'gift', 'got', 'friendsOff'])
         && (!('rev' in data) || isIntInRange(data.rev, 0, 1000000))
+        && (!('gift' in data) || isIntInRange(data.gift, 0, 10000000))
+        && (!('got' in data) || isIntInRange(data.got, 0, 10000000))
+        && (!('friendsOff' in data) || data.friendsOff is bool)
         && data.v is int && data.v == 1
         && isValidItems(data.items)
         && isValidStats(data.stats)
         && isIntInRange(data.coins, 0, 10000000)
-        && data.coins <= data.stats.runs * 125
+        && data.coins <= data.stats.runs * 125 + data.get('gift', 0) + data.get('got', 0)
         && isValidSkins(data)
         && data.updatedAt == request.time;
     }
@@ -244,11 +269,16 @@ service cloud.firestore {
         && rooms >= 0 && rooms <= runs * 5;
     }
 
-    // An update: coins go up by at most what the new progress pays, minus the price of new items and themes
+    // An update: coins go up by at most what the new progress pays, minus the price of new items and themes,
+    // plus friends' gifts taken in (got goes up, never past giftbox/<uid>.total). Only admins change gift.
     function isFairUpdate(after, before) {
       let cost = isAdmin() ? 0 : itemCost(after.items, before.items) + skinCost(after.skins, before.skins);
+      let got = after.get('got', 0) - before.get('got', 0);
       return isNewProgress(after.stats, before.stats)
-        && after.coins - before.coins <= maxEarned(after.stats) - maxEarned(before.stats) - cost;
+        && after.get('gift', 0) == before.get('gift', 0)
+        && got >= 0
+        && (got == 0 || after.got <= get(giftboxPath(request.auth.uid)).data.total)
+        && after.coins - before.coins <= maxEarned(after.stats) - maxEarned(before.stats) - cost + got;
     }
 
     // A new account: coins plus the price of every item and theme it holds fit in what its runs could earn
@@ -310,6 +340,81 @@ service cloud.firestore {
     }
 
     // ===============================================================
+    // 금화 선물 (friends' gifts)
+    // ===============================================================
+
+    function userPath(userId) {
+      return /databases/$(database)/documents/users/$(userId);
+    }
+
+    function giftboxPath(userId) {
+      return /databases/$(database)/documents/giftbox/$(userId);
+    }
+
+    function giftMetaPath(userId) {
+      return /databases/$(database)/documents/giftMeta/$(userId);
+    }
+
+    function friendshipPath(a, b) {
+      return /databases/$(database)/documents/friendships/$(a < b ? a + '_' + b : b + '_' + a);
+    }
+
+    // Today in Korean time (UTC+9), as days since 1970-01-01
+    function giftDay() {
+      return math.floor((request.time.toMillis() + 32400000) / 86400000);
+    }
+
+    // Coins the sender had sent today before this write
+    function sentToday(userId) {
+      return exists(giftMetaPath(userId)) && get(giftMetaPath(userId)).data.day == giftDay()
+        ? get(giftMetaPath(userId)).data.total : 0;
+    }
+
+    // How much this request raises giftbox/<to> (state after the whole write minus the stored state),
+    // so writing the same giftbox twice in one batch counts as one bigger gift
+    function boxRaise(to) {
+      return getAfter(giftboxPath(to)).data.total
+        - (exists(giftboxPath(to)) ? get(giftboxPath(to)).data.total : 0);
+    }
+
+    // The signed-in player sends boxRaise(to) coins to `to`. Admins send any amount and pay nothing.
+    function isGiftTransfer(to) {
+      return request.auth.uid != to
+        && (isAdmin() ? boxRaise(to) >= 1 && boxRaise(to) <= 1000000 : isFriendGift(to, boxRaise(to)));
+    }
+
+    // A friend's gift: 10..100 coins, at most 300 a day, to an accepted friend. The same write lowers the sender's
+    // coins by exactly the amount with no new progress, items or themes (so the gift cannot pay for anything else),
+    // and raises giftMeta/<sender> by the amount, naming this receiver (so one write carries one gift).
+    function isFriendGift(to, amount) {
+      let me = request.auth.uid;
+      let before = get(userPath(me)).data;
+      let after = getAfter(userPath(me)).data;
+      let meta = getAfter(giftMetaPath(me)).data;
+      return !isBanned()
+        && amount >= 10 && amount <= 100
+        && after.coins == before.coins - amount
+        && after.stats == before.stats
+        && itemCost(after.items, before.items) == 0
+        && skinCost(after.skins, before.skins) == 0
+        && exists(friendshipPath(me, to))
+        && get(friendshipPath(me, to)).data.status == 'accepted'
+        && meta.to == to
+        && meta.amount == amount
+        && meta.total == sentToday(me) + amount;
+    }
+
+    // giftMeta: today's total only goes up, by this gift's amount (a new day starts again from the amount)
+    function isValidGiftMeta(data, sentBefore) {
+      return hasExactKeys(data, ['day', 'total', 'to', 'amount'])
+        && data.day == giftDay()
+        && data.to is string && data.to != request.auth.uid
+        && isIntInRange(data.amount, 10, 100)
+        && data.total == sentBefore + data.amount
+        && data.total <= 300;
+    }
+
+    // ===============================================================
     // Friends (친구)
     // ===============================================================
 
@@ -355,6 +460,8 @@ service cloud.firestore {
       allow read: if isOwner(userId) || isAdmin();
       allow create: if isOwner(userId)
         && isValidProfile(request.resource.data)
+        && request.resource.data.get('gift', 0) == 0
+        && request.resource.data.get('got', 0) == 0
         && isFairStart(request.resource.data);
       // The owner saves fair progress and keeps rev; an admin may set any valid record, raising rev by 1
       allow update: if isValidProfile(request.resource.data)
@@ -445,6 +552,42 @@ service cloud.firestore {
       allow get: if isOwner(userId) || isAdmin();
       allow list, delete: if isAdmin();
       allow create, update: if isAdmin() && isValidBan(request.resource.data);
+    }
+
+    // 금화 선물: what friends sent this player in total. Senders raise it; the receiver only reads it.
+    match /giftbox/{userId} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if false;
+      allow create, update: if isAuthenticated()
+        && hasExactKeys(request.resource.data, ['total'])
+        && request.resource.data.total is int
+        && isGiftTransfer(userId);
+      allow delete: if false;
+    }
+
+    match /giftMeta/{userId} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if false;
+      allow create: if isOwner(userId) && isValidGiftMeta(request.resource.data, 0);
+      allow update: if isOwner(userId)
+        && isValidGiftMeta(request.resource.data, resource.data.day == giftDay() ? resource.data.total : 0);
+      allow delete: if false;
+    }
+
+    // Gift log: written with the gift it describes; the receiver lists (where to == uid) and deletes it
+    match /gifts/{giftId} {
+      allow read: if isAdmin()
+        || (isAuthenticated() && (resource.data.to == request.auth.uid || resource.data.from == request.auth.uid));
+      allow create: if isAuthenticated()
+        && hasExactKeys(request.resource.data, ['from', 'to', 'amount', 'at'])
+        && request.resource.data.from == request.auth.uid
+        && request.resource.data.to is string
+        && request.resource.data.amount is int
+        && request.resource.data.at == request.time
+        && boxRaise(request.resource.data.to) == request.resource.data.amount
+        && isGiftTransfer(request.resource.data.to);
+      allow update: if false;
+      allow delete: if isAdmin() || (isAuthenticated() && resource.data.to == request.auth.uid);
     }
   }
 }
