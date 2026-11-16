@@ -4584,7 +4584,45 @@ function init() {
   // (샌드박스 iframe 같은 곳에서는 navigator.serviceWorker를 읽기만 해도 오류가 나므로 try로 감싼다)
   try {
     if ('serviceWorker' in navigator && location.protocol === 'https:') {
-      navigator.serviceWorker.register('sw.js').catch(() => {});
+      navigator.serviceWorker.register('sw.js').then(reg => {
+        let applyAfterControllerChange = false;
+        const showUpdate = version => {
+          if (!version || document.getElementById('app-update-notice')) return;
+          const bar = document.createElement('aside');
+          bar.id = 'app-update-notice';
+          bar.setAttribute('role', 'status');
+          bar.style.cssText = 'position:fixed;z-index:2147483647;inset:auto 16px 16px;margin:auto;max-width:560px;padding:14px 16px;border:1px solid #a7f3d0;border-radius:14px;background:#10241c;color:#f0fff8;box-shadow:0 12px 40px #0008;display:flex;align-items:center;gap:12px;font:14px/1.5 system-ui,sans-serif';
+          const text = document.createElement('span'); text.textContent = `논리 미궁 새 버전 v${version}이 준비됐어요.`; text.style.flex = '1';
+          const update = document.createElement('button'); update.type = 'button'; update.textContent = '지금 업데이트';
+          update.style.cssText = 'border:0;border-radius:9px;padding:9px 13px;background:#a7f3d0;color:#10241c;font-weight:700;cursor:pointer;white-space:nowrap';
+          update.addEventListener('click', () => { if (reg.waiting) { applyAfterControllerChange = true; reg.waiting.postMessage('SKIP_WAITING'); } else location.reload(); });
+          const later = document.createElement('button'); later.type = 'button'; later.textContent = '나중에'; later.style.cssText = 'border:0;background:transparent;color:inherit;cursor:pointer;white-space:nowrap';
+          later.addEventListener('click', () => bar.remove()); bar.append(text, update, later); document.body.append(bar);
+        };
+        reg.addEventListener('updatefound', () => {
+          const worker = reg.installing;
+          if (worker) worker.addEventListener('statechange', () => { if (worker.state === 'installed' && navigator.serviceWorker.controller) showUpdate(APP_VERSION); });
+        });
+        if (reg.waiting && navigator.serviceWorker.controller) showUpdate(APP_VERSION);
+        let reloading = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (applyAfterControllerChange && !reloading) { reloading = true; location.reload(); }
+        });
+        document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') reg.update().catch(() => {}); });
+        let checking = false;
+        const checkVersion = async () => {
+          if (checking || document.visibilityState === 'hidden') return; checking = true;
+          try {
+            const url = new URL('./index.html', location.href); url.searchParams.set('_update_check', String(Date.now()));
+            const response = await fetch(url, { cache: 'no-store' }); if (!response.ok) return;
+            const html = await response.text();
+            const match = html.match(/const PATCH_NOTES = \[\s*\{\s*v:\s*['"]([^'"]+)['"]/);
+            if (match && match[1] !== APP_VERSION) showUpdate(match[1]);
+          } catch { /* 다음 확인 때 다시 시도 */ } finally { checking = false; }
+        };
+        window.setInterval(checkVersion, 30 * 60_000);
+        window.addEventListener('load', checkVersion, { once: true });
+      }).catch(() => {});
     }
   } catch (e) { /* 등록할 수 없는 환경 */ }
 }
